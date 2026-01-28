@@ -1,0 +1,49 @@
+version: '3.9'
+
+name: cawe_blog_infra
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: cawe_blog_db
+    environment:
+      TZ: ${TZ:-America/Sao_Paulo}
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - cawe_dev_blog_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT}:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:8-alpine
+    container_name: cawe_blog_redis
+    environment:
+      TZ: ${TZ:-America/Sao_Paulo}
+    volumes:
+      - cawe_dev_blog_redis_data:/data
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      retries: 3
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: cawe_blog_mailpit
+    environment:
+      TZ: ${TZ:-America/Sao_Paulo}
+    ports:
+      - "${MAIL_DASHBOARD_PORT:-8025}:8025"
+      - "${MAIL_PORT:-1025}:1025"
+
+volumes:
+  cawe_dev_blog_data:
+  cawe_dev_blog_redis_data:
