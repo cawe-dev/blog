@@ -1,0 +1,15 @@
+{
+    "agents": [
+        "gemini",
+        "claude_code",
+        "copilot"
+    ],
+    "guidelines": true,
+    "herd_mcp": false,
+    "mcp": true,
+    "sail": false,
+    "skills": [
+        "wayfinder-development",
+        "pest-testing"
+    ]
+}
