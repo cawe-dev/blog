@@ -51,4 +51,10 @@ class Post extends Model
             ->withPivot('context', 'term')
             ->withTimestamps();
     }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'post_tag')
+            ->withTimestamps();
+    }
 }
