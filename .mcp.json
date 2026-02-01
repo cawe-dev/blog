@@ -4,7 +4,7 @@
             "command": "wsl.exe",
             "args": [
                 "/usr/bin/php8.5",
-                "/home/cawe/projetos/laravel/blog/cawe-dev-blog/artisan",
+                "/home/cawe/projetos/laravel/blog/artisan",
                 "boost:mcp"
             ]
         }

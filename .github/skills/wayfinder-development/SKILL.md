@@ -69,14 +69,10 @@ show(1, { query: { page: 1 } }) // "/posts/1?page=1"
 
 ## Wayfinder + Inertia
 
-Use Wayfinder with `useForm`:
+Use Wayfinder with the `<Form>` component:
+<code-snippet name="Wayfinder Form (Vue)" lang="vue">
 
-<code-snippet name="Wayfinder useForm" lang="typescript">
-
-import { store } from "@/actions/App/Http/Controllers/ExampleController";
-
-const form = useForm({ name: "My Big Post" });
-form.submit(store());
+<Form v-bind="store.form()"><input name="title" /></Form>
 
 </code-snippet>
 
