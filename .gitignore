@@ -4,6 +4,8 @@
 /public/build
 /public/hot
 /public/storage
+/public/js
+/public/css
 /resources/js/actions
 /resources/js/routes
 /resources/js/wayfinder

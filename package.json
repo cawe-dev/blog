@@ -3,9 +3,10 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
+        "dev": "npm run tiptap:build && vite",
+        "build": "npm run tiptap:build && vite build",
+        "tiptap:build": "node bin/build-tiptap.js",
         "build:ssr": "vite build && vite build --ssr",
-        "dev": "vite",
         "format": "prettier --write resources/",
         "format:check": "prettier --check resources/",
         "lint": "eslint . --fix"
@@ -28,6 +29,7 @@
     "dependencies": {
         "@inertiajs/vue3": "^2.3.7",
         "@tailwindcss/vite": "^4.1.11",
+        "@tiptap/core": "^3.18.0",
         "@vitejs/plugin-vue": "^6.0.0",
         "@vueuse/core": "^12.8.2",
         "class-variance-authority": "^0.7.1",
