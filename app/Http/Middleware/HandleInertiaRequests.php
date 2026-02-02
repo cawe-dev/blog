@@ -41,6 +41,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'context' => $request->session()->get('blog-context', 'professional'),
         ];
     }
 }
