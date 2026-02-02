@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import "./filament/plugins/reference-link.css";
+@import "@nuxt/ui";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
