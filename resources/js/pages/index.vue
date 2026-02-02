@@ -1,5 +1,9 @@
-<template>
-    <UApp>
+<script setup lang="ts">
+import Layout from '@/layouts/blog.vue'
 
-    </UApp>
+defineOptions({ layout: Layout })
+</script>
+
+<template>
+
 </template>
