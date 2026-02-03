@@ -33,12 +33,12 @@ class PostReferenceParser
     private function mapMarkToReference(array $mark, string $text, array &$references): void
     {
         $attributes = $mark['attrs'] ?? [];
-        $referenceId = $attributes['data-reference-id'] ?? null;
+        $referenceId = $attributes['referenceId'] ?? null;
 
         if ($referenceId) {
             $references[$referenceId] = [
                 'term' => $text,
-                'context' => $attributes['data-context'] ?? null,
+                'context' => $attributes['context'] ?? null,
             ];
         }
     }
