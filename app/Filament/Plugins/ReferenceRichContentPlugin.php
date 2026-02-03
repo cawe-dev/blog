@@ -113,9 +113,9 @@ class ReferenceRichContentPlugin implements RichContentPlugin
                                 'setReferenceLink',
                                 [
                                     [
-                                        'data-reference-id' => (string) $referenceId,
-                                        'data-term' => (string) ($data['term'] ?? ''),
-                                        'data-context' => (string) ($data['context'] ?? ''),
+                                        'referenceId' => (string) $referenceId,
+                                        'term' => (string) ($data['term'] ?? ''),
+                                        'context' => (string) ($data['context'] ?? ''),
                                     ]
                                 ],
                             ),

@@ -5,35 +5,35 @@ const ReferenceLink = Mark.create({
 
     addAttributes() {
         return {
-            'data-reference-id': {
+            'referenceId': {
                 default: null,
-                parseHTML: element => element.getAttribute('data-reference-id'),
+                parseHTML: element => element.getAttribute('referenceId'),
                 renderHTML: attributes => {
-                    if (!attributes['data-reference-id']) return {};
-                    return { 'data-reference-id': attributes['data-reference-id'] };
+                    if (!attributes['referenceId']) return {};
+                    return { 'referenceId': attributes['referenceId'] };
                 },
             },
-            'data-term': {
+            'term': {
                 default: null,
-                parseHTML: element => element.getAttribute('data-term'),
+                parseHTML: element => element.getAttribute('term'),
                 renderHTML: attributes => {
-                    if (!attributes['data-term']) return {};
-                    return { 'data-term': attributes['data-term'] };
+                    if (!attributes['term']) return {};
+                    return { 'term': attributes['term'] };
                 },
             },
-            'data-context': {
+            'context': {
                 default: null,
-                parseHTML: element => element.getAttribute('data-context'),
+                parseHTML: element => element.getAttribute('context'),
                 renderHTML: attributes => {
-                    if (!attributes['data-context']) return {};
-                    return { 'data-context': attributes['data-context'] };
+                    if (!attributes['context']) return {};
+                    return { 'context': attributes['context'] };
                 },
             },
         };
     },
 
     parseHTML() {
-        return [{ tag: 'span[data-reference-id]' }];
+        return [{ tag: 'span[referenceId]' }];
     },
 
     renderHTML({ HTMLAttributes }) {
