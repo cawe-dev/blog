@@ -31,7 +31,11 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        //
+        $post = Post::with(['category', 'tags', 'references'])->findOrFail($post->id);
+
+        return Inertia::render('blog/post', [
+            'post' => $post->append('content_html'),
+        ]);
     }
 
     public function edit(Post $post)

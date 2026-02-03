@@ -42,7 +42,7 @@ class PostFactory extends Factory
         return [
             "title" => $title,
             "slug" => Str::slug($title),
-            "content" => collect($content)->toJson(),
+            "content" => collect($content),
             "type" => PostType::BOTH,
             "excerpt" => Str::limit($title, 200),
             "is_featured" => $this->faker->boolean(),

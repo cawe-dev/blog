@@ -1,6 +1,7 @@
 import type { User } from '../auth';
 import type { ICategory } from './category';
 import type { ITag } from './tag';
+import type { IReference } from './reference';
 
 export interface IPost {
     id: number;
@@ -14,6 +15,7 @@ export interface IPost {
     author: User;
     category?: ICategory[];
     tags?: ITag[];
+    references?: IReference[];
     published_at: string | null;
     created_at: string;
     updated_at: string;

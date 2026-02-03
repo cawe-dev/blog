@@ -7,7 +7,7 @@ const props = defineProps<{
     viewMode?: 'grid' | 'list'
 }>()
 
-const computedPath = computed(() => `/blog/post/${props.post.id}`)
+const computedPath = computed(() => `/blog/post/${props.post.slug}`)
 
 const formattedDate = computed(() => {
     return new Date(props.post.created_at).toLocaleDateString('pt-BR', {
