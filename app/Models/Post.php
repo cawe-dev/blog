@@ -68,7 +68,10 @@ class Post extends Model
             }
 
             try {
-                return RichContentRenderer::make($this->content)->toUnsafeHtml();
+                return RichContentRenderer::make($this->content)
+                    ->fileAttachmentsDisk('public')
+                    ->fileAttachmentsVisibility('public')
+                    ->toUnsafeHtml();
             } catch (\Throwable $e) {
                 report($e);
                 return '';

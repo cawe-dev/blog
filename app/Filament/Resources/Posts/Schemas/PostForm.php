@@ -84,6 +84,9 @@ class PostForm
                     ->multiple()
                     ->required(),
                 RichEditor::make('content')
+                    ->fileAttachmentsDisk('public')
+                    ->fileAttachmentsDirectory('blog/posts/attachments')
+                    ->fileAttachmentsVisibility('public')
                     ->json()
                     ->live(onBlur: true)
                     ->plugins([ReferenceRichContentPlugin::make()])
