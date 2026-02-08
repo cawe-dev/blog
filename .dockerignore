@@ -1,0 +1,8 @@
+.git
+node_modules
+vendor
+storage/*.key
+.env
+run/db/data
+run/redis/data
+public/build

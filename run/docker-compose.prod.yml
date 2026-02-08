@@ -1,5 +1,6 @@
 version: '3.9'
-name: cawe_blog
+
+name: cawe_blog_prod
 
 services:
   app:
@@ -8,12 +9,15 @@ services:
       dockerfile: run/php/Dockerfile
     container_name: cawe_blog_app
     restart: always
+    environment:
+      APP_ENV: production
     volumes:
       - ../:/var/www/application
-    environment:
-      DB_CONNECTION: pgsql
-      DB_HOST: postgres
-      REDIS_HOST: redis
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   nginx:
     image: nginx:alpine
@@ -28,7 +32,9 @@ services:
       - app
 
   postgres:
-    build: ./db
+    build:
+      context: ./db
+      dockerfile: Dockerfile
     container_name: cawe_blog_db
     restart: always
     environment:
@@ -36,18 +42,27 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - cawe_dev_blog_data:/var/lib/postgresql/data
+      - cawe_prod_db_data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}" ]
-      interval: 5s
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
-    build: ./redis
+    build:
+      context: ./redis
+      dockerfile: Dockerfile
     container_name: cawe_blog_redis
     restart: always
     volumes:
-      - cawe_dev_blog_redis_data:/data
+      - cawe_prod_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      retries: 3
 
 volumes:
-  cawe_dev_blog_data:
-  cawe_dev_blog_redis_data:
+  cawe_prod_db_data:
+  cawe_prod_redis_data:
+  
