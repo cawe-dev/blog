@@ -3,6 +3,7 @@
 namespace App\Filament\Plugins;
 
 use App\Models\Reference;
+use App\TiptapExtensions\ReferenceLink;
 use Filament\Actions\Action;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\RichEditor;
@@ -15,6 +16,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Support\Enums\Width;
+use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Icons\Heroicon;
 
 class ReferenceRichContentPlugin implements RichContentPlugin
@@ -26,13 +28,15 @@ class ReferenceRichContentPlugin implements RichContentPlugin
 
     public function getTipTapPhpExtensions(): array
     {
-        return [];
+        return [
+            app(ReferenceLink::class)
+        ];
     }
 
     public function getTipTapJsExtensions(): array
     {
         return [
-            \Filament\Support\Facades\FilamentAsset::getScriptSrc('reference-link-script'),
+            FilamentAsset::getScriptSrc('reference-link-script'),
         ];
     }
 

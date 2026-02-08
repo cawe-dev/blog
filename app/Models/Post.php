@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PostType;
+use App\Filament\Plugins\ReferenceRichContentPlugin;
 use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -69,6 +70,9 @@ class Post extends Model
 
             try {
                 return RichContentRenderer::make($this->content)
+                    ->plugins([
+                        ReferenceRichContentPlugin::make(),
+                    ])
                     ->fileAttachmentsDisk('public')
                     ->fileAttachmentsVisibility('public')
                     ->toUnsafeHtml();
