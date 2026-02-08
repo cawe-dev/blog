@@ -21,8 +21,36 @@ if [ -f "run/.env" ]; then
     cp run/.env .env
 fi
 
+NGINX_CONF="run/nginx/nginx.conf"
+if [ -f "$NGINX_CONF" ]; then
+    CERT_PATH=$(grep "ssl_certificate " $NGINX_CONF | head -1 | awk '{print $2}' | tr -d ';')
+    CERT_DIR=$(dirname "$CERT_PATH")
+    
+    echo -e "${BLUE}Verificando certificado em: $CERT_DIR...${RESET}"
+
+    if ! $DOCKER_CMD -f run/docker-compose.prod.yml run --rm --entrypoint "ls $CERT_PATH" certbot > /dev/null 2>&1; then
+        echo -e "${YELLOW}⚠️  Certificado não encontrado. Gerando DUMMY via Certbot container...${RESET}"
+        
+        $DOCKER_CMD -f run/docker-compose.prod.yml run --rm --entrypoint "sh -c" certbot "\
+            apk add --no-cache openssl && \
+            mkdir -p $CERT_DIR && \
+            openssl req -x509 -nodes -newkey rsa:4096 -days 1 \
+                -keyout $CERT_DIR/privkey.pem \
+                -out $CERT_DIR/fullchain.pem \
+                -subj '/CN=localhost'"
+                
+        echo -e "${GREEN}Dummy certificate criado com sucesso!${RESET}"
+    fi
+else
+    echo -e "${RED}Erro: Nginx conf não encontrado.${RESET}"
+fi
+
 echo -e "${YELLOW}Subindo containers...${RESET}"
 $DOCKER_CMD -f run/docker-compose.prod.yml up -d --build
+
+echo -e "${YELLOW}Solicitando certificado Let's Encrypt...${RESET}"
+$DOCKER_CMD -f run/docker-compose.prod.yml up certbot
+$DOCKER_CMD -f run/docker-compose.prod.yml exec nginx nginx -s reload
 
 echo -e "${BLUE}Configurando permissões...${RESET}"
 docker exec -u root cawe_blog_app mkdir -p public/js/filament/plugins
