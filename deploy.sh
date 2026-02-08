@@ -11,49 +11,44 @@ echo -e "${GREEN}🚀 Iniciando Deploy de Produção...${RESET}"
 if docker compose version > /dev/null 2>&1; then
     DOCKER_CMD="docker compose"
 elif command -v docker-compose > /dev/null 2>&1; then
-    DOCKER_CMD="docker-compose"
+    DOCKER_CMD="docker compose"
 else
     echo -e "${RED}ERRO: Docker Compose não encontrado.${RESET}"
     exit 1
 fi
 
-echo -e "${YELLOW}Configurando arquivos de ambiente...${RESET}"
 if [ -f "run/.env" ]; then
     cp run/.env .env
-    echo -e "${BLUE}- .env atualizado a partir de run/.env${RESET}"
-elif [ ! -f ".env" ] && [ -f "run/.env.example" ]; then
-    cp run/.env.example .env
-    echo -e "${BLUE}- .env criado a partir de run/.env.example${RESET}"
 fi
-
+sed -i 's/DB_HOST=127.0.0.1/DB_HOST=postgres/g' .env
 if [ -f .env ]; then export $(grep -v '^#' .env | xargs); fi
 
-echo -e "${YELLOW}Subindo containers de produção...${RESET}"
+echo -e "${YELLOW}Subindo containers...${RESET}"
 $DOCKER_CMD -f run/docker-compose.prod.yml up -d --build
 
-if [ $? -ne 0 ]; then
-    echo -e "${RED}❌ Erro no build. Abortando.${RESET}"
-    exit 1
-fi
+echo -e "${BLUE}Configurando permissões...${RESET}"
+docker exec -u root cawe_blog_app mkdir -p public/js/filament/plugins
+docker exec -u root cawe_blog_app chown -R www:www /var/www/application
 
-echo -ne "${BLUE}Aguardando Postgres ficar pronto...${RESET}"
-CONTAINER_DB_NAME="cawe_blog_db"
-DB_USER=${DB_USERNAME:-cawe}
-DB_NAME=${DB_DATABASE:-laravel}
+echo -e "${YELLOW}Compilando assets (Vite) dentro do container...${RESET}"
+docker exec cawe_blog_app npm install
+docker exec cawe_blog_app npm run build
 
-until docker exec $CONTAINER_DB_NAME pg_isready -U "$DB_USER" -d "$DB_NAME" > /dev/null 2>&1; do
-  echo -n "."
-  sleep 1
-done
-echo -e " ${GREEN}Pronto!${RESET}"
-
-echo -e "${YELLOW}Finalizando setup do Laravel...${RESET}"
+echo -e "${YELLOW}Finalizando configuração do Laravel...${RESET}"
 docker exec cawe_blog_app composer install --no-dev --optimize-autoloader
-docker exec cawe_blog_app php artisan key:generate
 docker exec cawe_blog_app php artisan migrate --force
+
+docker exec cawe_blog_app php artisan key:generate
 docker exec cawe_blog_app php artisan filament:assets
+docker exec cawe_blog_app php artisan optimize
+docker exec cawe_blog_app php artisan optimize:clear
+docker exec cawe_blog_app php artisan filament:optimize
+docker exec cawe_blog_app php artisan filament:optimize-clear
 docker exec cawe_blog_app php artisan view:clear
 docker exec cawe_blog_app php artisan config:clear
 docker exec cawe_blog_app php artisan config:cache
+docker exec cawe_blog_app php artisan route:cache
+docker exec cawe_blog_app php artisan view:cache
+
 
 echo -e "${GREEN}✅ Deploy finalizado com sucesso!${RESET}"
