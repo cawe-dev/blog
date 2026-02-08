@@ -20,8 +20,6 @@ fi
 if [ -f "run/.env" ]; then
     cp run/.env .env
 fi
-sed -i 's/DB_HOST=127.0.0.1/DB_HOST=postgres/g' .env
-if [ -f .env ]; then export $(grep -v '^#' .env | xargs); fi
 
 echo -e "${YELLOW}Subindo containers...${RESET}"
 $DOCKER_CMD -f run/docker-compose.prod.yml up -d --build
