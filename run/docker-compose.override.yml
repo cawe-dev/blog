@@ -1,12 +1,16 @@
 version: '3.9'
 services:
+  postgres:
+    ports:
+      - "${DB_PORT:-5432}:5432"
+
+  redis:
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+
   mailpit:
     image: axllent/mailpit
     container_name: cawe_blog_mailpit
     ports:
       - "${MAIL_DASHBOARD_PORT:-8025}:8025"
       - "${MAIL_PORT:-1025}:1025"
-
-  postgres:
-    ports:
-      - "${DB_PORT:-5432}:5432"

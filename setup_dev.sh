@@ -29,37 +29,31 @@ if [ ! -f ".env" ]; then
     if [ -f ".env.example" ]; then
         cp .env.example .env
         echo -e "${BLUE}- Arquivo .env criado a partir de .env.example.${RESET}"
-    elif [ -f "run/.env.example" ]; then
-        cp run/.env.example .env
-        echo -e "${BLUE}- Arquivo .env criado a partir de run/.env.example.${RESET}"
+    elif [ -f "run/.env.dev.example" ]; then
+        cp run/.env.dev.example .env
+        echo -e "${BLUE}- Arquivo .env criado a partir de run/.env.dev.example.${RESET}"
     else
         echo -e "${RED}ERRO: Nenhum arquivo .env.example encontrado.${RESET}"
         exit 1
     fi
 fi
 
-if [ -f "run/.env" ]; then
-    echo -e "${BLUE}- Atualizando e descomentando credenciais...${RESET}"
-    
-    grep -v '^#' run/.env | grep -v '^$' | while read -r line ; do
+if [ -f "run/.env.dev" ]; then
+    echo -e "${BLUE}- Sincronizando configurações...${RESET}"
+    grep -v '^#' run/.env.dev | grep -v '^$' | while read -r line ; do
         key=$(echo "$line" | cut -d '=' -f 1)
         value=$(echo "$line" | cut -d '=' -f 2-)
         
-        if grep -qE "^\s*#?\s*$key=" .env; then
-            
-            if [[ "$OSTYPE" == "darwin"* ]]; then
+        if [ ! -z "$value" ]; then
+             if [[ "$OSTYPE" == "darwin"* ]]; then
                 sed -i '' "s|^[#[:space:]]*$key=.*|$key=$value|" .env
             else
                 sed -i "s|^[#[:space:]]*$key=.*|$key=$value|" .env
             fi
-        else
-            echo "$key=$value" >> .env
         fi
     done
-    echo -e "${GREEN}Arquivo .env sincronizado!${RESET}\n"
-else
-    echo -e "${RED}AVISO: run/.env não encontrado. Usando .env existente.${RESET}\n"
 fi
+php artisan key:generate
 
 # ==============================================================================
 # 4. Infraestrutura Docker
@@ -67,7 +61,7 @@ fi
 echo -e "${YELLOW}2. Subindo containers...${RESET}"
 
 if [ -f "run/docker-compose.yml" ]; then
-    $DOCKER_CMD -f run/docker-compose.yml up -d --build
+    $DOCKER_CMD -f run/docker-compose.yml -f run/docker-compose.override.yml up -d postgres redis --build
 else
     echo -e "${RED}ERRO: run/docker-compose.yml não encontrado.${RESET}"
     exit 1
@@ -95,6 +89,9 @@ echo -e " ${GREEN}Pronto!${RESET}\n"
 # ==============================================================================
 if [ -f "artisan" ]; then
     echo -e "${YELLOW}3. Rodando migrações...${RESET}"
+    
+    php artisan config:clear
+    php artisan cache:clear
     php artisan migrate --force
     php artisan db:seed --force
     php artisan filament:assets
