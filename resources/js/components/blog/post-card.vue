@@ -48,9 +48,9 @@ const formattedDate = computed(() => {
             </template>
 
             <template #title>
-                <div class="flex items-center gap-2 flex-wrap mb-2"">
-                <h3 class=" text-xl font-bold text-default group-hover:text-primary transition-colors line-clamp-2">
-                    {{ post.title }}
+                <div class="flex items-center gap-2 flex-wrap mb-2">
+                    <h3 class=" text-xl font-bold text-default group-hover:text-primary transition-colors line-clamp-2">
+                        {{ post.title }}
                     </h3>
                     <UBadge v-for="category in post.categories" :key="category.id" :label="category.name"
                         variant="subtle" size="xs" />
@@ -58,7 +58,7 @@ const formattedDate = computed(() => {
             </template>
 
             <template #description>
-                <span class='block text-base leading-relaxed text-muted line-clamp-3'">
+                <span class='block text-base leading-relaxed text-muted line-clamp-3'>
                         {{ post.excerpt }}
                     </span>
             </template>
