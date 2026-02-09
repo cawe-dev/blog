@@ -24,7 +24,10 @@ class FilamentServiceProvider extends ServiceProvider
     {
         FilamentAsset::register([
             Css::make('reference-link-styles', resource_path('css/filament/plugins/reference-link.css')),
-            Js::make('reference-link-script', public_path('js/filament/plugins/reference-link.js'))
+            Js::make('reference-link-script', public_path('js/filament/plugins/marks/reference-link.js')),
+
+            Css::make('media-indexer-link-styles', resource_path('css/filament/plugins/media-indexer-link.css')),
+            Js::make('media-indexer-link-script', public_path('js/filament/plugins/marks/media-indexer-link.js'))
                 ->loadedOnRequest(),
         ]);
     }

@@ -144,7 +144,9 @@ const shareOnX = () => {
 
                     <section name="content-section">
                         <div class="relative">
-                            <div class="prose dark:prose-invert max-w-none [&>p>span[data-reference-id]]:text-primary-500 [&>p>span[data-reference-id]]:underline [&>p>span[data-reference-id]]:cursor-help"
+                            <div class="prose dark:prose-invert max-w-none [&>p>span[data-reference-id]]:text-[var(--ui-primary)]
+                                [&>p>span[data-reference-id]]:font-bold
+                                [&>p>span[data-reference-id]]:bg-primary/10 [&>p>span[data-reference-id]]:cursor-help"
                                 v-html="post.content_html" @mouseover="referencePopoverRef?.handleMouseOver($event)">
                             </div>
 
@@ -216,7 +218,7 @@ const shareOnX = () => {
 </template>
 
 <style scoped>
-.prose-content :deep(h2) {
+.prose :deep(h2) {
     font-size: 1.5rem;
     font-weight: 700;
     margin-top: 2rem;
@@ -224,7 +226,7 @@ const shareOnX = () => {
     color: var(--ui-text);
 }
 
-.prose-content :deep(h3) {
+.prose :deep(h3) {
     font-size: 1.25rem;
     font-weight: 600;
     margin-top: 1.5rem;
@@ -232,12 +234,12 @@ const shareOnX = () => {
     color: var(--ui-text);
 }
 
-.prose-content :deep(p) {
+.prose :deep(p) {
     margin-bottom: 1rem;
     line-height: 1.75;
 }
 
-.prose-content :deep(pre) {
+.prose :deep(pre) {
     background: var(--ui-bg-inverted);
     color: var(--ui-text-inverted);
     padding: 1rem;
@@ -246,30 +248,56 @@ const shareOnX = () => {
     margin: 1.5rem 0;
 }
 
-.prose-content :deep(code) {
+.prose :deep(code) {
     font-family: var(--font-mono, monospace);
     font-size: 0.875em;
 }
 
-.prose-content :deep(p code) {
+.prose :deep(p code) {
     background: var(--ui-bg-accented);
     padding: 0.125rem 0.375rem;
     border-radius: 0.25rem;
     color: var(--ui-primary);
 }
 
-.prose-content :deep(strong) {
+.prose :deep(strong) {
     font-weight: 600;
     color: var(--ui-text-highlighted);
 }
 
-.prose-content :deep(em) {
+.prose :deep(em) {
     font-style: italic;
 }
 
-.prose-content :deep(.reference-term) {
+.prose :deep(.reference-term) {
     border-bottom: 1px dashed var(--ui-primary);
     cursor: help;
-    color: var(--ui-primary);
+    color: white;
+}
+
+.prose :deep(p:has(img)) {
+    text-align: center;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: var(--ui-text-muted);
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.prose :deep(iframe) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-inline: auto;
+    border-radius: 0.5rem;
+}
+
+.prose :deep(img) {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+    border-radius: 0.5rem;
 }
 </style>
