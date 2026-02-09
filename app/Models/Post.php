@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PostType;
+use App\Filament\Plugins\MediaIndexerRichContentPlugin;
 use App\Filament\Plugins\ReferenceRichContentPlugin;
 use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -72,9 +73,8 @@ class Post extends Model
                 return RichContentRenderer::make($this->content)
                     ->plugins([
                         ReferenceRichContentPlugin::make(),
+                        MediaIndexerRichContentPlugin::make(),
                     ])
-                    ->fileAttachmentsDisk('public')
-                    ->fileAttachmentsVisibility('public')
                     ->toUnsafeHtml();
             } catch (\Throwable $e) {
                 report($e);

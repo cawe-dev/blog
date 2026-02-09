@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Posts\Schemas;
 
 use App\Enums\PostType;
 use App\Filament\Concerns\ExtractPlainTextFromRichEditor;
+use App\Filament\Plugins\MediaIndexerRichContentPlugin;
 use App\Filament\Plugins\ReferenceRichContentPlugin;
 use Filament\Actions\Action;
 use Filament\Forms\Components\ColorPicker;
@@ -84,18 +85,15 @@ class PostForm
                     ->multiple()
                     ->required(),
                 RichEditor::make('content')
-                    ->fileAttachmentsDisk('public')
-                    ->fileAttachmentsDirectory('blog/posts/attachments')
-                    ->fileAttachmentsVisibility('public')
                     ->json()
                     ->live(onBlur: true)
-                    ->plugins([ReferenceRichContentPlugin::make()])
+                    ->plugins([ReferenceRichContentPlugin::make(), MediaIndexerRichContentPlugin::make()])
                     ->toolbarButtons([
-                        ['bold', 'italic', 'underline', 'strike', 'subscript', 'superscript', 'link'],
+                        ['bold', 'italic', 'underline', 'strike', 'subscript', 'superscript'],
                         ['h2', 'h3', 'alignStart', 'alignCenter', 'alignEnd'],
                         ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
                         ['table', 'attachFiles'],
-                        ['undo', 'redo', 'reference-link']
+                        ['undo', 'redo', 'reference-link', 'media-indexer-link']
                     ])
                     ->afterStateUpdated(fn(Set $set, array | string $state) => $set('excerpt', Str::limit(self::extractPlainText($state), 200)))
                     ->columnSpanFull()
