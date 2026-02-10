@@ -33,6 +33,10 @@ class PostController extends Controller
     {
         $post = Post::with(['category', 'tags', 'contents.references'])->findOrFail($post->id);
 
+        if (is_null($post->published_at)) {
+            return abort(404, 'Post not found');
+        }
+
         return Inertia::render('blog/post', [
             'post' => $post->append('content_html', 'references'),
         ]);
