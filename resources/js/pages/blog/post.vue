@@ -3,6 +3,8 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import Layout from '@/layouts/blog.vue'
 import { Link } from '@inertiajs/vue3'
 import type { IPost } from '@/types/models/post'
+import type { IViewMode, ViewModeKeys } from '@/types/enums/contentPostViewMode'
+import { VIEW_MODE_CONFIG } from '@/types/enums/contentPostViewMode'
 import ReferencePopover from '@/components/blog/reference-popover.vue';
 
 const props = defineProps<{
@@ -13,6 +15,7 @@ defineOptions({ layout: Layout })
 
 const readingProgress = ref<number>(0)
 const referencePopoverRef = ref<InstanceType<typeof ReferencePopover>>()
+const viewMode = ref<ViewModeKeys>('concept')
 
 function updateReadingProgress() {
     const scrollTop = window.scrollY
@@ -67,6 +70,13 @@ function extractTextFromNode(node: any): string {
     return ''
 }
 
+const viewModeItems = computed<IViewMode[]>(() => {
+    return (Object.keys(props.post.content_html) as ViewModeKeys[]).map(key => ({
+        ...VIEW_MODE_CONFIG[key],
+        content: props.post.content_html[key]
+    }));
+});
+
 const estimatedReadTime = computed(() => {
     if (!props.post.content) {
         return 1
@@ -99,7 +109,6 @@ const shareOnX = () => {
                 <div class="h-full bg-primary transition-all duration-150" :style="{ width: `${readingProgress}%` }" />
             </div>
         </section>
-
         <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6">
             <div class="flex gap-8">
                 <article class="min-w-0 flex-1">
@@ -109,7 +118,6 @@ const shareOnX = () => {
                             <UIcon name="i-lucide-arrow-left" class="h-4 w-4" />
                             Voltar ao Blog
                         </Link>
-
                         <h1
                             class="mb-4 text-balance text-3xl font-bold tracking-tight text-default sm:text-4xl lg:text-5xl">
                             {{ post.title }}
@@ -144,10 +152,33 @@ const shareOnX = () => {
 
                     <section name="content-section">
                         <div class="relative">
-                            <div class="prose dark:prose-invert max-w-none [&>p>span[data-reference-id]]:text-[var(--ui-primary)]
+                            <div v-if="typeof post.content_html === 'string'" class="prose dark:prose-invert max-w-none [&>p>span[data-reference-id]]:text-(--ui-primary)
                                 [&>p>span[data-reference-id]]:font-bold
                                 [&>p>span[data-reference-id]]:bg-primary/10 [&>p>span[data-reference-id]]:cursor-help"
-                                v-html="post.content_html" @mouseover="referencePopoverRef?.handleMouseOver($event)">
+                                v-html="post.content_html" @mouseover="referencePopoverRef?.handleMouseOver($event)" />
+
+                            <div v-else
+                                class="sticky top-2 z-40 -mx-4 mb-8 bg-(--ui-bg)/95 px-4 py-3 backdrop-blur-sm sm:mx-0 sm:rounded-lg sm:border sm:border-default sm:px-4">
+                                <div class="flex items-center justify-between gap-4">
+                                    <div class="flex items-center gap-2">
+                                        <UIcon name="i-lucide-layers" class="h-4 w-4 text-muted" />
+                                        <span class="text-sm font-medium text-default">Modo de Visualização</span>
+                                    </div>
+                                </div>
+                                <UTabs v-model="viewMode" :items="viewModeItems" size="sm" class="mt-4">
+                                    <template #content="{ item }">
+                                        <div class="mt-4">
+                                            <h3 class="mb-2 text-sm font-bold uppercase text-muted">
+                                                {{ item.label }}
+                                            </h3>
+                                            <div class="prose dark:prose-invert max-w-none [&>p>span[data-reference-id]]:text-(--ui-primary)
+                                [&>p>span[data-reference-id]]:font-bold
+                                [&>p>span[data-reference-id]]:bg-primary/10 [&>p>span[data-reference-id]]:cursor-help"
+                                                v-html="item.content"
+                                                @mouseover="referencePopoverRef?.handleMouseOver($event)" />
+                                        </div>
+                                    </template>
+                                </UTabs>
                             </div>
 
                             <ReferencePopover ref="referencePopoverRef" :references="post.references" />

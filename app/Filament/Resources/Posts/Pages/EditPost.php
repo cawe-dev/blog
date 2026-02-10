@@ -26,10 +26,22 @@ class EditPost extends EditRecord
 
     protected function afterSave(): void
     {
+        $this->record->refresh();
+        $this->record->load('contents');
+
         $parser = app(PostReferenceParser::class);
 
-        $syncData = $parser->getSyncData($this->data['content'] ?? []);
+        foreach ($this->record->contents as $contentPost) {
+            $contentBody = $contentPost->body->data ?? [];
 
-        $this->record->references()->sync($syncData);
+            if (empty($contentBody)) {
+                $contentPost->references()->detach();
+                continue;
+            }
+
+            $syncData = $parser->getSyncData($contentBody);
+
+            $contentPost->references()->sync($syncData);
+        }
     }
 }

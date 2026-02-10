@@ -2,12 +2,15 @@
 
 namespace App\Filament\Resources\Posts\Schemas;
 
+use App\Enums\ContentPostViewMode;
 use App\Enums\PostType;
 use App\Filament\Concerns\ExtractPlainTextFromRichEditor;
 use App\Filament\Plugins\MediaIndexerRichContentPlugin;
 use App\Filament\Plugins\ReferenceRichContentPlugin;
+use App\Support\Post\Content;
 use Filament\Actions\Action;
 use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -84,20 +87,29 @@ class PostForm
                     ->loadingMessage('Loading tags...')
                     ->multiple()
                     ->required(),
-                RichEditor::make('content')
-                    ->json()
-                    ->live(onBlur: true)
-                    ->plugins([ReferenceRichContentPlugin::make(), MediaIndexerRichContentPlugin::make()])
-                    ->toolbarButtons([
-                        ['bold', 'italic', 'underline', 'strike', 'subscript', 'superscript'],
-                        ['h2', 'h3', 'alignStart', 'alignCenter', 'alignEnd'],
-                        ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
-                        ['table', 'attachFiles'],
-                        ['undo', 'redo', 'reference-link', 'media-indexer-link']
-                    ])
-                    ->afterStateUpdated(fn(Set $set, array | string $state) => $set('excerpt', Str::limit(self::extractPlainText($state), 200)))
-                    ->columnSpanFull()
-                    ->required(),
+                Repeater::make('contents')
+                    ->relationship('contents')
+                    ->schema([
+                        RichEditor::make('body')
+                            ->formatStateUsing(fn($state) => $state instanceof Content ? $state->toArray() : $state)
+                            ->json()
+                            ->live(onBlur: true)
+                            ->plugins([ReferenceRichContentPlugin::make(), MediaIndexerRichContentPlugin::make()])
+                            ->toolbarButtons([
+                                ['bold', 'italic', 'underline', 'strike', 'subscript', 'superscript'],
+                                ['h2', 'h3', 'alignStart', 'alignCenter', 'alignEnd'],
+                                ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
+                                ['table', 'attachFiles'],
+                                ['undo', 'redo', 'reference-link', 'media-indexer-link']
+                            ])
+                            ->afterStateUpdated(fn(Set $set, array | string $state) => $set('excerpt', Str::limit(self::extractPlainText($state), 200)))
+                            ->columnSpanFull()
+                            ->required(),
+                        Select::make('view_mode')
+                            ->options(ContentPostViewMode::class)
+                            ->default(ContentPostViewMode::CONCEPT)
+                            ->required()
+                    ]),
                 Textarea::make('excerpt')
                     ->required()
                     ->columnSpanFull(),
