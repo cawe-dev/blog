@@ -102,7 +102,7 @@ class PostForm
                                 ['table', 'attachFiles'],
                                 ['undo', 'redo', 'reference-link', 'media-indexer-link']
                             ])
-                            ->afterStateUpdated(fn(Set $set, array | string $state) => $set('excerpt', Str::limit(self::extractPlainText($state), 200)))
+                            ->afterStateUpdated(fn(Set $set, array | string $state) => $set('../../excerpt', Str::limit(self::extractPlainText($state), 200)))
                             ->columnSpanFull()
                             ->required(),
                         Select::make('view_mode')
