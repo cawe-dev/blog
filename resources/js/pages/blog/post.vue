@@ -71,7 +71,7 @@ function extractTextFromNode(node: any): string {
 }
 
 const viewModeItems = computed<IViewMode[]>(() => {
-    return (Object.keys(props.post.content_html) as ViewModeKeys[]).map(key => ({
+    return (Object.keys(props.post.content_html).sort() as ViewModeKeys[]).map(key => ({
         ...VIEW_MODE_CONFIG[key],
         content: props.post.content_html[key]
     }));
