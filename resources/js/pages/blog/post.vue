@@ -157,8 +157,7 @@ const shareOnX = () => {
                                 [&>p>span[data-reference-id]]:bg-primary/10 [&>p>span[data-reference-id]]:cursor-help"
                                 v-html="post.content_html" @mouseover="referencePopoverRef?.handleMouseOver($event)" />
 
-                            <div v-else
-                                class="sticky top-2 z-40 -mx-4 mb-8 bg-(--ui-bg)/95 px-4 py-3 backdrop-blur-sm sm:mx-0 sm:rounded-lg sm:border sm:border-default sm:px-4">
+                            <div v-else class="sticky top-2 z-40 -mx-4 mb-8 px-4 py-3 sm:mx-0 sm:px-4">
                                 <div class="flex items-center justify-between gap-4">
                                     <div class="flex items-center gap-2">
                                         <UIcon name="i-lucide-layers" class="h-4 w-4 text-muted" />
