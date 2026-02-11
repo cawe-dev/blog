@@ -3,6 +3,8 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import Layout from '@/layouts/blog.vue'
 import { Link } from '@inertiajs/vue3'
 import type { IPost } from '@/types/models/post'
+import type { IViewMode, ViewModeKeys } from '@/types/enums/contentPostViewMode'
+import { VIEW_MODE_CONFIG } from '@/types/enums/contentPostViewMode'
 import ReferencePopover from '@/components/blog/reference-popover.vue';
 
 const props = defineProps<{
@@ -11,8 +13,11 @@ const props = defineProps<{
 
 defineOptions({ layout: Layout })
 
+const toast = useToast()
+
 const readingProgress = ref<number>(0)
 const referencePopoverRef = ref<InstanceType<typeof ReferencePopover>>()
+const viewMode = ref<ViewModeKeys>('concept')
 
 function updateReadingProgress() {
     const scrollTop = window.scrollY
@@ -23,6 +28,12 @@ function updateReadingProgress() {
 onMounted(() => {
     window.addEventListener('scroll', updateReadingProgress)
     updateReadingProgress()
+
+    document.querySelectorAll('span[data-has-spoiler="true"]').forEach(el => {
+        el.addEventListener('click', () => {
+            el.classList.toggle('spoiler-revealed')
+        })
+    })
 })
 
 onUnmounted(() => {
@@ -67,6 +78,13 @@ function extractTextFromNode(node: any): string {
     return ''
 }
 
+const viewModeItems = computed<IViewMode[]>(() => {
+    return (Object.keys(props.post.content_html).sort() as ViewModeKeys[]).map(key => ({
+        ...VIEW_MODE_CONFIG[key],
+        content: props.post.content_html[key]
+    }));
+});
+
 const estimatedReadTime = computed(() => {
     if (!props.post.content) {
         return 1
@@ -83,12 +101,25 @@ const estimatedReadTime = computed(() => {
 
 const copyLink = async () => {
     await navigator.clipboard.writeText(window.location.href)
+
+    toast.add({
+        title: 'Link copiado!',
+        icon: 'i-lucide-copy-check'
+    })
 }
 
 const shareOnX = () => {
     const url = encodeURIComponent(window.location.href)
     const text = encodeURIComponent(props.post.title)
     window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank')
+}
+
+const handleSpoilerClick = (event: MouseEvent) => {
+    const target = event.target as HTMLElement
+    const spoiler = target.closest('span[data-has-spoiler="true"]')
+    if (spoiler) {
+        spoiler.classList.toggle('spoiler-revealed')
+    }
 }
 </script>
 
@@ -99,7 +130,6 @@ const shareOnX = () => {
                 <div class="h-full bg-primary transition-all duration-150" :style="{ width: `${readingProgress}%` }" />
             </div>
         </section>
-
         <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6">
             <div class="flex gap-8">
                 <article class="min-w-0 flex-1">
@@ -109,7 +139,6 @@ const shareOnX = () => {
                             <UIcon name="i-lucide-arrow-left" class="h-4 w-4" />
                             Voltar ao Blog
                         </Link>
-
                         <h1
                             class="mb-4 text-balance text-3xl font-bold tracking-tight text-default sm:text-4xl lg:text-5xl">
                             {{ post.title }}
@@ -144,10 +173,29 @@ const shareOnX = () => {
 
                     <section name="content-section">
                         <div class="relative">
-                            <div class="prose dark:prose-invert max-w-none [&>p>span[data-reference-id]]:text-[var(--ui-primary)]
-                                [&>p>span[data-reference-id]]:font-bold
-                                [&>p>span[data-reference-id]]:bg-primary/10 [&>p>span[data-reference-id]]:cursor-help"
-                                v-html="post.content_html" @mouseover="referencePopoverRef?.handleMouseOver($event)">
+                            <div v-if="typeof post.content_html === 'string'" class="prose dark:prose-invert max-w-none"
+                                v-html="post.content_html" @mouseover="referencePopoverRef?.handleMouseOver($event)"
+                                @click="handleSpoilerClick" />
+
+                            <div v-else class="sticky top-2 z-40 -mx-4 mb-8 px-4 py-3 sm:mx-0 sm:px-4">
+                                <div class="flex items-center justify-between gap-4">
+                                    <div class="flex items-center gap-2">
+                                        <UIcon name="i-lucide-layers" class="h-4 w-4 text-muted" />
+                                        <span class="text-sm font-medium text-default">Modo de Visualização</span>
+                                    </div>
+                                </div>
+                                <UTabs v-model="viewMode" :items="viewModeItems" size="sm" class="mt-4">
+                                    <template #content="{ item }">
+                                        <div class="mt-4">
+                                            <h3 class="mb-2 text-sm font-bold uppercase text-muted">
+                                                {{ item.label }}
+                                            </h3>
+                                            <div class="prose dark:prose-invert max-w-none" v-html="item.content"
+                                                @mouseover="referencePopoverRef?.handleMouseOver($event)"
+                                                @click="handleSpoilerClick" />
+                                        </div>
+                                    </template>
+                                </UTabs>
                             </div>
 
                             <ReferencePopover ref="referencePopoverRef" :references="post.references" />
@@ -202,7 +250,13 @@ const shareOnX = () => {
                                 <div class="flex justify-between text-xs">
                                     <span class="text-muted">Leitura:</span>
                                 </div>
-                                <UProgress v-model="readingProgress" status :max="100" size="xs" />
+                                <UProgress v-model="readingProgress" status :max="100" size="xs">
+                                    <template #status>
+                                        <span>{{ readingProgress }}% {{ readingProgress >= 100 ? 'Concluído' :
+                                            'Lendo...'
+                                            }}</span>
+                                    </template>
+                                </UProgress>
                             </div>
                         </UCard>
                     </div>
@@ -218,20 +272,29 @@ const shareOnX = () => {
 </template>
 
 <style scoped>
+.prose {
+    max-width: none;
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: var(--ui-text);
+}
+
 .prose :deep(h2) {
     font-size: 1.5rem;
     font-weight: 700;
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     margin-bottom: 1rem;
     color: var(--ui-text);
+    letter-spacing: -0.02em;
 }
 
 .prose :deep(h3) {
     font-size: 1.25rem;
     font-weight: 600;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     margin-bottom: 0.75rem;
     color: var(--ui-text);
+    letter-spacing: -0.01em;
 }
 
 .prose :deep(p) {
@@ -242,10 +305,13 @@ const shareOnX = () => {
 .prose :deep(pre) {
     background: var(--ui-bg-inverted);
     color: var(--ui-text-inverted);
-    padding: 1rem;
-    border-radius: 0.5rem;
+    padding: 1.25rem;
+    border-radius: 0.75rem;
     overflow-x: auto;
-    margin: 1.5rem 0;
+    margin: 1.75rem 0;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    border: 1px solid var(--ui-border);
 }
 
 .prose :deep(code) {
@@ -255,9 +321,11 @@ const shareOnX = () => {
 
 .prose :deep(p code) {
     background: var(--ui-bg-accented);
-    padding: 0.125rem 0.375rem;
-    border-radius: 0.25rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.375rem;
     color: var(--ui-primary);
+    font-size: 0.85em;
+    border: 1px solid var(--ui-border);
 }
 
 .prose :deep(strong) {
@@ -272,14 +340,23 @@ const shareOnX = () => {
 .prose :deep(.reference-term) {
     border-bottom: 1px dashed var(--ui-primary);
     cursor: help;
-    color: white;
+    color: var(--ui-primary);
+}
+
+.prose :deep(span[data-reference-id]) {
+    color: var(--ui-primary);
+    font-weight: 600;
+    background: color-mix(in srgb, var(--ui-primary) 10%, transparent);
+    cursor: help;
+    padding: 0.05rem 0.15rem;
+    border-radius: 0.2rem;
 }
 
 .prose :deep(p:has(img)) {
     text-align: center;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    color: var(--ui-text-muted);
+    font-size: 0.85rem;
+    line-height: 1.3;
+    color: var(--ui-text-dimmed);
     margin-top: 0.5rem;
     display: flex;
     flex-direction: column;
@@ -291,13 +368,50 @@ const shareOnX = () => {
     width: 100%;
     aspect-ratio: 16 / 9;
     margin-inline: auto;
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--ui-border);
 }
 
 .prose :deep(img) {
     max-width: 100%;
     height: auto;
     display: inline-block;
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--ui-border);
+}
+
+/* Definição base - Simplificada */
+.prose :deep(span[data-has-spoiler="true"]) {
+    position: relative;
+    display: inline;
+    cursor: pointer;
+    user-select: none;
+    color: var(--ui-text);
+    transition: all 0.4s ease;
+    padding: 0 2px;
+    /* Padronizado */
+}
+
+.prose :deep(span[data-has-spoiler="true"]::before) {
+    content: '';
+    position: absolute;
+    inset: -2px -1px;
+    z-index: 1;
+    border-radius: 4px;
+    background-color: color-mix(in srgb, var(--ui-text-muted) 18%, transparent);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: inherit;
+}
+
+.prose :deep(span[data-has-spoiler="true"]:hover::before) {
+    background-color: color-mix(in srgb, var(--ui-primary) 14%, transparent);
+}
+
+.prose :deep(span[data-has-spoiler="true"].spoiler-revealed::before),
+.prose :deep(span[data-has-spoiler="true"].spoiler-revealed::after) {
+    opacity: 0;
+    pointer-events: none;
+    backdrop-filter: blur(0);
 }
 </style>

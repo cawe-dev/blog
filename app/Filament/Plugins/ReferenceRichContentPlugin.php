@@ -69,13 +69,13 @@ class ReferenceRichContentPlugin implements RichContentPlugin
                     ColorPicker::make('color'),
                     Select::make('reference_id')
                         ->hidden(fn(Get $get): bool => $get('is_new'))
-                        ->relationship(name: 'references', titleAttribute: 'title')
+                        ->options(fn() => Reference::pluck('title', 'id'))
                         ->searchable()
                         ->preload()
                         ->required(),
                     Select::make('parent_id')
                         ->label('Parente')
-                        ->relationship(name: 'references', titleAttribute: 'title')
+                        ->options(fn() => Reference::pluck('title', 'id'))
                         ->searchable()
                         ->preload()
                         ->hidden(fn(Get $get): bool => !$get('is_new')),

@@ -3,14 +3,12 @@
 namespace App\Models;
 
 use App\Enums\PostType;
-use App\Filament\Plugins\MediaIndexerRichContentPlugin;
-use App\Filament\Plugins\ReferenceRichContentPlugin;
-use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Post extends Model
 {
@@ -20,7 +18,6 @@ class Post extends Model
     protected $fillable = [
         'title',
         'slug',
-        'content',
         'type',
         'excerpt',
         'is_featured',
@@ -32,7 +29,6 @@ class Post extends Model
     protected function casts(): array
     {
         return [
-            'content' => 'array',
             'is_featured' => 'boolean',
             'published_at' => 'datetime',
             'type' => PostType::class,
@@ -49,37 +45,45 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function references(): BelongsToMany
-    {
-        return $this->belongsToMany(Reference::class, 'post_reference')
-            ->withPivot('context', 'term')
-            ->withTimestamps();
-    }
-
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'post_tag')
             ->withTimestamps();
     }
 
+    public function contents(): HasMany
+    {
+        return $this->hasMany(ContentPost::class);
+    }
+
     protected function contentHtml(): Attribute
     {
         return Attribute::get(function () {
-            if (empty($this->content)) {
-                return '';
+            $groupedByViewMode = $this->contents
+                ->groupBy('view_mode')
+                ->map(fn($group) => $group->implode('content_html', ''));
+
+            if ($groupedByViewMode->count() === 1) {
+                return $groupedByViewMode->first();
             }
 
-            try {
-                return RichContentRenderer::make($this->content)
-                    ->plugins([
-                        ReferenceRichContentPlugin::make(),
-                        MediaIndexerRichContentPlugin::make(),
-                    ])
-                    ->toUnsafeHtml();
-            } catch (\Throwable $e) {
-                report($e);
-                return '';
-            }
+            return $groupedByViewMode->toArray();
+        });
+    }
+
+    public function references(): Attribute
+    {
+        return Attribute::get(function () {
+            return $this->contents->pluck('references')->flatten()->unique('id')->values();
+        });
+    }
+
+    public function hasSpoiler(): Attribute
+    {
+        return Attribute::get(function () {
+            return $this->contents->some(function (ContentPost $content) {
+                return $content->body->hasSpoiler();
+            });
         });
     }
 }

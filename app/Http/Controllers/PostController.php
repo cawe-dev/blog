@@ -10,7 +10,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with(['category', 'tags'])->orderBy("created_at", "desc")->get();
+        $posts = Post::with(['category', 'tags', 'contents'])->whereNotNull('published_at')->orderBy("created_at", "desc")->get();
 
         $posts->transform(function (Post $post) {
             $post->type_label = $post->type->label();
@@ -25,21 +25,20 @@ class PostController extends Controller
         });
 
         return Inertia::render('blog/index', [
-            'posts' => $posts,
+            'posts' => $posts->append('has_spoiler'),
         ]);
     }
 
     public function show(Post $post)
     {
-        $post = Post::with(['category', 'tags', 'references'])->findOrFail($post->id);
+        $post = Post::with(['category', 'tags', 'contents.references'])->findOrFail($post->id);
+
+        if (is_null($post->published_at)) {
+            return abort(404, 'Post not found');
+        }
 
         return Inertia::render('blog/post', [
-            'post' => $post->append('content_html'),
+            'post' => $post->append('content_html', 'references'),
         ]);
-    }
-
-    public function edit(Post $post)
-    {
-        //
     }
 }

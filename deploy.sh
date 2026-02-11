@@ -65,11 +65,11 @@ docker exec cawe_blog_app composer install --no-dev --optimize-autoloader
 docker exec cawe_blog_app php artisan migrate --force
 
 docker exec cawe_blog_app php artisan key:generate
+docker exec cawe_blog_app php artisan optimize:clear
+docker exec cawe_blog_app php artisan filament:optimize-clear
 docker exec cawe_blog_app php artisan filament:assets
 docker exec cawe_blog_app php artisan optimize
-docker exec cawe_blog_app php artisan optimize:clear
 docker exec cawe_blog_app php artisan filament:optimize
-docker exec cawe_blog_app php artisan filament:optimize-clear
 docker exec cawe_blog_app php artisan view:clear
 docker exec cawe_blog_app php artisan config:clear
 docker exec cawe_blog_app php artisan config:cache

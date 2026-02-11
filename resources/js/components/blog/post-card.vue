@@ -7,6 +7,8 @@ const props = defineProps<{
     viewMode?: 'grid' | 'list'
 }>()
 
+const isSpoilerRevealed = ref(false)
+
 const computedPath = computed(() => `/blog/post/${props.post.slug}`)
 
 const formattedDate = computed(() => {
@@ -15,6 +17,10 @@ const formattedDate = computed(() => {
         hour: '2-digit', minute: '2-digit'
     })
 })
+
+const toggleSpoiler = () => {
+    isSpoilerRevealed.value = !isSpoilerRevealed.value
+}
 </script>
 
 <template>
@@ -51,6 +57,11 @@ const formattedDate = computed(() => {
                 <div class="flex items-center gap-2 flex-wrap mb-2">
                     <h3 class=" text-xl font-bold text-default group-hover:text-primary transition-colors line-clamp-2">
                         {{ post.title }}
+                        <span v-if="post.has_spoiler" class="text-xs text-accented">
+
+                            <UBadge label="Alerta de Spoiler" color="warning" variant="subtle"
+                                icon="i-heroicons-exclamation-triangle" />
+                        </span>
                     </h3>
                     <UBadge v-for="category in post.categories" :key="category.id" :label="category.name"
                         variant="subtle" size="xs" />
@@ -58,12 +69,24 @@ const formattedDate = computed(() => {
             </template>
 
             <template #description>
-                <span class='block text-base leading-relaxed text-muted line-clamp-3'>
+                <span @click.prevent="post.has_spoiler && toggleSpoiler()">
+
+                    <span :class="[
+                        'block text-base leading-relaxed text-muted line-clamp-3',
+                        post.has_spoiler && !isSpoilerRevealed ? 'blur-sm select-none my-10' : ''
+                    ]">
                         {{ post.excerpt }}
                     </span>
+
+                    <span v-if="post.has_spoiler && !isSpoilerRevealed"
+                        class="absolute inset-0 flex items-center justify-center hover:scale-105 transition-transform">
+                        <UBadge label="Esse post contém spoiler(s)" color="neutral" variant="solid"
+                            icon="i-heroicons-eye-slash" />
+                    </span>
+                </span>
             </template>
 
-<template #footer>
+            <template #footer>
                 <div class=" flex items-center justify-between w-full pt-4">
                     <div class="flex-1"></div>
                     <UButton size="md"
@@ -75,7 +98,7 @@ const formattedDate = computed(() => {
                                 class="w-4 h-4 transform transition-transform duration-200 group-hover:translate-x-1 text-primary" />
                         </span>
                     </UButton>
-                    </div>
+                </div>
             </template>
         </UBlogPost>
     </UBlogPosts>

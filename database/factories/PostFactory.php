@@ -22,27 +22,10 @@ class PostFactory extends Factory
     {
 
         $title = $this->faker->unique()->sentence();
-        $content = [
-            'type' => 'doc',
-            'content' => [
-                [
-                    'type' => 'paragraph',
-                    'attrs' => [
-                        'textAlign' => 'start',
-                    ],
-                    'content' =>
-                    [
-                        'type' => 'text',
-                        'text' => $this->faker->unique()->paragraph(),
-                    ],
-                ],
-            ],
-        ];
 
         return [
             "title" => $title,
             "slug" => Str::slug($title),
-            "content" => collect($content),
             "type" => PostType::BOTH,
             "excerpt" => Str::limit($title, 200),
             "is_featured" => $this->faker->boolean(),

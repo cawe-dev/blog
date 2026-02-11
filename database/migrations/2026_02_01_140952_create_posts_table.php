@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
-            $table->json('content');
             $table->string('type')->default('both');
             $table->text('excerpt');
             $table->boolean('is_featured')->default(false);

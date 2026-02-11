@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('post_reference', function (Blueprint $table) {
+        Schema::create('content_post_reference', function (Blueprint $table) {
             $table->id();
             $table->text('context')->nullable();
             $table->string('term');
             $table->timestamps();
 
-            $table->foreignId('post_id')->constrained()->onDelete('cascade');
+
+            $table->foreignId('content_post_id')->constrained()->onDelete('cascade');
             $table->foreignId('reference_id')->constrained();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('post_reference');
+        Schema::dropIfExists('content_post_reference');
     }
 };
