@@ -11,6 +11,7 @@ export interface IPost {
     content_html: string | object;
     excerpt: string;
     featured_image?: string;
+    has_spoiler?: boolean;
     type: 'personal' | 'professeonal' | 'both';
     type_label: string;
     author: User;

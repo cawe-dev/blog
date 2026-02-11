@@ -77,4 +77,13 @@ class Post extends Model
             return $this->contents->pluck('references')->flatten()->unique('id')->values();
         });
     }
+
+    public function hasSpoiler(): Attribute
+    {
+        return Attribute::get(function () {
+            return $this->contents->some(function (ContentPost $content) {
+                return $content->body->hasSpoiler();
+            });
+        });
+    }
 }

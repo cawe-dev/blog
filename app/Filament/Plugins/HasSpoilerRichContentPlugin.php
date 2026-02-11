@@ -55,7 +55,7 @@ class HasSpoilerRichContentPlugin implements RichContentPlugin
                                 'setHasSpoilerLink',
                                 [
                                     [
-                                        'spoiler' => 'yes',
+                                        'spoiler' => 'true',
                                     ]
                                 ],
                             ),

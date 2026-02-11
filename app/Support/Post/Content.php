@@ -47,4 +47,17 @@ class Content implements Arrayable, JsonSerializable
 
         return new self(is_array($data) ? $data : []);
     }
+
+    public function hasSpoiler(): bool
+    {
+        $spoiler = false;
+
+        array_walk_recursive($this->data, function ($value, $key) use (&$spoiler) {
+            if ($key === 'type' && $value === 'hasSpoilerLink') {
+                $spoiler = true;
+            }
+        });
+
+        return $spoiler;
+    }
 }
