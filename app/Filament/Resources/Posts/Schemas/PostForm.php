@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Posts\Schemas;
 use App\Enums\ContentPostViewMode;
 use App\Enums\PostType;
 use App\Filament\Concerns\ExtractPlainTextFromRichEditor;
+use App\Filament\Plugins\HasSpoilerRichContentPlugin;
 use App\Filament\Plugins\MediaIndexerRichContentPlugin;
 use App\Filament\Plugins\ReferenceRichContentPlugin;
 use App\Support\Post\Content;
@@ -94,13 +95,17 @@ class PostForm
                             ->formatStateUsing(fn($state) => $state instanceof Content ? $state->toArray() : $state)
                             ->json()
                             ->live(onBlur: true)
-                            ->plugins([ReferenceRichContentPlugin::make(), MediaIndexerRichContentPlugin::make()])
+                            ->plugins([
+                                ReferenceRichContentPlugin::make(),
+                                MediaIndexerRichContentPlugin::make(),
+                                HasSpoilerRichContentPlugin::make()
+                            ])
                             ->toolbarButtons([
                                 ['bold', 'italic', 'underline', 'strike', 'subscript', 'superscript'],
                                 ['h2', 'h3', 'alignStart', 'alignCenter', 'alignEnd'],
                                 ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
-                                ['table', 'attachFiles'],
-                                ['undo', 'redo', 'reference-link', 'media-indexer-link']
+                                ['table', 'attachFiles', 'undo', 'redo'],
+                                ['reference-link', 'media-indexer-link', 'has-spoiler-link']
                             ])
                             ->afterStateUpdated(fn(Set $set, array | string $state) => $set('../../excerpt', Str::limit(self::extractPlainText($state), 200)))
                             ->columnSpanFull()

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Casts\TipTapCast;
 use App\Enums\ContentPostViewMode;
+use App\Filament\Plugins\HasSpoilerRichContentPlugin;
 use App\Filament\Plugins\MediaIndexerRichContentPlugin;
 use App\Filament\Plugins\ReferenceRichContentPlugin;
 use Filament\Forms\Components\RichEditor\RichContentRenderer;
@@ -51,6 +52,7 @@ class ContentPost extends Model
                     ->plugins([
                         ReferenceRichContentPlugin::make(),
                         MediaIndexerRichContentPlugin::make(),
+                        HasSpoilerRichContentPlugin::make(),
                     ])
                     ->toUnsafeHtml();
             } catch (\Throwable $e) {
