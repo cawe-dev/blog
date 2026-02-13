@@ -21,7 +21,7 @@ class Post extends Model
         'type',
         'excerpt',
         'thumbnail',
-        'is_featured',
+        'pinned_at',
         'published_at',
         'category_id',
         'user_id',
@@ -30,7 +30,7 @@ class Post extends Model
     protected function casts(): array
     {
         return [
-            'is_featured' => 'boolean',
+            'pinned_at' => 'datetime',
             'published_at' => 'datetime',
             'type' => PostType::class,
         ];

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Posts\Pages;
 
+use App\Filament\Concerns\PinAction;
 use App\Filament\Concerns\PublishAction;
 use App\Filament\Resources\Posts\PostResource;
 use App\Services\PostReferenceParser;
@@ -11,7 +12,7 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditPost extends EditRecord
 {
-    use PublishAction;
+    use PublishAction, PinAction;
 
     protected static string $resource = PostResource::class;
 
@@ -21,6 +22,7 @@ class EditPost extends EditRecord
             ViewAction::make(),
             DeleteAction::make(),
             self::publish(),
+            self::pin(),
         ];
     }
 
