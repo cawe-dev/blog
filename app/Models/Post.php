@@ -36,6 +36,14 @@ class Post extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::addGlobalScope('pinneds_first', function ($builder) {
+            $builder->orderBy('pinned_at', 'asc')
+                ->orderBy('published_at', 'desc');
+        });
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
@@ -72,14 +80,14 @@ class Post extends Model
         });
     }
 
-    public function references(): Attribute
+    protected function references(): Attribute
     {
         return Attribute::get(function () {
             return $this->contents->pluck('references')->flatten()->unique('id')->values();
         });
     }
 
-    public function hasSpoiler(): Attribute
+    protected function hasSpoiler(): Attribute
     {
         return Attribute::get(function () {
             return $this->contents->some(function (ContentPost $content) {

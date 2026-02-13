@@ -12,8 +12,6 @@ class PostController extends Controller
     {
         $posts = Post::with(['category', 'tags', 'contents'])
             ->whereNotNull('published_at')
-            ->orderBy('pinned_at', 'asc')
-            ->orderBy("published_at", "desc")
             ->get();
 
         $posts->transform(function (Post $post) {
