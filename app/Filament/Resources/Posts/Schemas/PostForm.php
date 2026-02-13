@@ -10,7 +10,6 @@ use App\Filament\Plugins\MediaIndexerRichContentPlugin;
 use App\Filament\Plugins\ReferenceRichContentPlugin;
 use App\Support\Post\Content;
 use Filament\Actions\Action;
-use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -53,9 +52,6 @@ class PostForm
                         TextInput::make('slug')
                             ->copyable(copyMessage: 'Copied!', copyMessageDuration: 1500)
                             ->required(),
-                        ColorPicker::make('color')
-                            ->default('#ebe2e2')
-                            ->required(),
                     ])
                     ->createOptionAction(function (Action $action) {
                         return $action
@@ -75,9 +71,6 @@ class PostForm
                             ->required(),
                         TextInput::make('slug')
                             ->copyable(copyMessage: 'Copied!', copyMessageDuration: 1500)
-                            ->required(),
-                        ColorPicker::make('color')
-                            ->default('#ebe2e2')
                             ->required(),
                     ])
                     ->createOptionAction(function (Action $action) {

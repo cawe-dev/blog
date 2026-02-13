@@ -66,7 +66,6 @@ class ReferenceRichContentPlugin implements RichContentPlugin
                         ->live(onBlur: true)
                         ->default(false)
                         ->required(),
-                    ColorPicker::make('color'),
                     Select::make('reference_id')
                         ->hidden(fn(Get $get): bool => $get('is_new'))
                         ->options(fn() => Reference::pluck('title', 'id'))
