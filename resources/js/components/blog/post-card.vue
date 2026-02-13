@@ -34,6 +34,11 @@ const toggleSpoiler = () => {
         }">
             <template #badge>
                 <UBadge :label="post.type_label" color="primary" variant="solid" />
+                <div name="category-post" class="flex items-center">
+                    <UBadge :key="post.category.id" variant="subtle" color="primary">
+                        {{ post.category.name }}
+                    </UBadge>
+                </div>
             </template>
 
             <template #date>
