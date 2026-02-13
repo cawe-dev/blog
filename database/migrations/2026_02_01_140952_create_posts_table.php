@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('type')->default('both');
             $table->text('excerpt');
+            $table->mediumText('thumbnail');
             $table->boolean('is_featured')->default(false);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();

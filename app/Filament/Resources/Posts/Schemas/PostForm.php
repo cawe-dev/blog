@@ -88,6 +88,8 @@ class PostForm
                     ->loadingMessage('Loading tags...')
                     ->multiple()
                     ->required(),
+                TextInput::make('thumbnail')
+                    ->required(),
                 Repeater::make('contents')
                     ->relationship('contents')
                     ->schema([
@@ -114,7 +116,8 @@ class PostForm
                             ->options(ContentPostViewMode::class)
                             ->default(ContentPostViewMode::CONCEPT)
                             ->required()
-                    ]),
+                    ])
+                    ->columnSpanFull(),
                 Textarea::make('excerpt')
                     ->required()
                     ->columnSpanFull(),
