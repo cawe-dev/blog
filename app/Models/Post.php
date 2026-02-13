@@ -20,6 +20,7 @@ class Post extends Model
         'slug',
         'type',
         'excerpt',
+        'thumbnail',
         'is_featured',
         'published_at',
         'category_id',
