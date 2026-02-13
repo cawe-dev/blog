@@ -10,7 +10,11 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with(['category', 'tags', 'contents'])->whereNotNull('published_at')->orderBy("created_at", "desc")->get();
+        $posts = Post::with(['category', 'tags', 'contents'])
+            ->whereNotNull('published_at')
+            ->orderBy('pinned_at', 'asc')
+            ->orderBy("published_at", "desc")
+            ->get();
 
         $posts->transform(function (Post $post) {
             $post->type_label = $post->type->label();

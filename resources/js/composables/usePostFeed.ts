@@ -82,7 +82,7 @@ export const usePostFeed = (postsProp: Ref<IPostGroup>) => {
             )
         }
 
-        return posts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+        return posts
     })
 
     return {
