@@ -25,7 +25,8 @@ const toggleSpoiler = () => {
 
 <template>
     <UBlogPosts :orientation="viewMode === 'list' ? 'vertical' : 'vertical'">
-        <UBlogPost :to="computedPath" :class="viewMode === 'list' ? 'px-4' : ''" :ui="{
+        <UBlogPost :to="computedPath" :image="post.thumbnail" :class="viewMode === 'list' ? 'px-4' : ''" :ui="{
+            image: 'object-cover',
             title: 'text-xl font-bold text-default mb-2 group-hover:text-primary transition-colors',
             description: 'text-muted text-base',
             date: 'text-xs text-muted mt-4',
