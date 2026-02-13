@@ -10,7 +10,7 @@ export interface IPost {
     content: IContentPost;
     content_html: string | object;
     excerpt: string;
-    featured_image?: string;
+    pinned_at?: string;
     has_spoiler?: boolean;
     type: 'personal' | 'professeonal' | 'both';
     type_label: string;
@@ -18,7 +18,7 @@ export interface IPost {
     category: ICategory[];
     tags: ITag[];
     references?: IReference[];
-    published_at: string | null;
+    published_at?: string;
     created_at: string;
     updated_at: string;
     [key: string]: unknown;
