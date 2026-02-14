@@ -21,7 +21,7 @@ class Post extends Model
         'type',
         'excerpt',
         'thumbnail',
-        'is_featured',
+        'pinned_at',
         'published_at',
         'category_id',
         'user_id',
@@ -30,10 +30,18 @@ class Post extends Model
     protected function casts(): array
     {
         return [
-            'is_featured' => 'boolean',
+            'pinned_at' => 'datetime',
             'published_at' => 'datetime',
             'type' => PostType::class,
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('pinneds_first', function ($builder) {
+            $builder->orderBy('pinned_at', 'asc')
+                ->orderBy('published_at', 'desc');
+        });
     }
 
     public function category(): BelongsTo
@@ -72,14 +80,14 @@ class Post extends Model
         });
     }
 
-    public function references(): Attribute
+    protected function references(): Attribute
     {
         return Attribute::get(function () {
-            return $this->contents->pluck('references')->flatten()->unique('id')->values();
+            return $this->contents->flatMap->references->values();
         });
     }
 
-    public function hasSpoiler(): Attribute
+    protected function hasSpoiler(): Attribute
     {
         return Attribute::get(function () {
             return $this->contents->some(function (ContentPost $content) {

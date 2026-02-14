@@ -54,6 +54,6 @@ class BlogAdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])->databaseTransactions();
     }
 }

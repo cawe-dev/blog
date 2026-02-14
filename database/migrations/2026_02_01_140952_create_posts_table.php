@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('type')->default('both');
             $table->text('excerpt');
             $table->mediumText('thumbnail');
-            $table->boolean('is_featured')->default(false);
+            $table->timestamp('pinned_at')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
 

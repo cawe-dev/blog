@@ -36,9 +36,10 @@ class PostReferenceParser
         $referenceId = $attributes['referenceId'] ?? null;
 
         if ($referenceId) {
-            $references[$referenceId] = [
-                'term' => $text,
-                'context' => $attributes['context'] ?? null,
+            $references[] = [
+                'reference_id' => $referenceId,
+                'term'         => $text,
+                'context'      => $attributes['context'] ?? null,
             ];
         }
     }

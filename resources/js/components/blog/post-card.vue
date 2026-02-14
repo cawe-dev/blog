@@ -33,6 +33,9 @@ const toggleSpoiler = () => {
             authors: 'hidden',
         }">
             <template #badge>
+                <UBadge v-if="post.pinned_at" color="secundary" variant="subtle">
+                    <UIcon name="i-lucide-pin" class="w-4 h-4 text-toned" />
+                </UBadge>
                 <UBadge :label="post.type_label" color="primary" variant="solid" />
                 <div name="category-post" class="flex items-center">
                     <UBadge :key="post.category.id" variant="subtle" color="primary">
@@ -100,8 +103,7 @@ const toggleSpoiler = () => {
                         aria-label="Ler mais">
                         <span class="flex items-center gap-2">
                             <span class="font-medium text-muted">ler mais</span>
-                            <UIcon name="i-heroicons-arrow-right"
-                                class="w-4 h-4 transform transition-transform duration-200 group-hover:translate-x-1 text-primary" />
+                            <UIcon name="i-heroicons-arrow-right" class="w-4 h-4 text-primary" />
                         </span>
                     </UButton>
                 </div>
