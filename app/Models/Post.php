@@ -83,7 +83,7 @@ class Post extends Model
     protected function references(): Attribute
     {
         return Attribute::get(function () {
-            return $this->contents->pluck('references')->flatten()->unique('id')->values();
+            return $this->contents->flatMap->references->values();
         });
     }
 

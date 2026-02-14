@@ -12,12 +12,13 @@ defineExpose({
 
 const isOpen = ref(false)
 const activeReferenceId = ref<number | null>(null)
+const activeTerm = ref<string | null>(null)
 const triggerElement = ref<HTMLElement | null>(null)
 let closeTimeout: ReturnType<typeof setTimeout> | null = null
 
 const activeReferenceData = computed(() => {
     if (!activeReferenceId.value) return null
-    return props.references?.find(r => r.id == activeReferenceId.value)
+    return props.references?.find(r => r.id == activeReferenceId.value && r.pivot.term == activeTerm.value)
 })
 
 const virtualReference = computed(() => {
@@ -37,6 +38,7 @@ function handleMouseOver(event: MouseEvent) {
         if (closeTimeout) clearTimeout(closeTimeout)
 
         activeReferenceId.value = Number(referenceSpan.dataset.referenceId)
+        activeTerm.value = referenceSpan.dataset.term
         triggerElement.value = referenceSpan
         isOpen.value = true
     } else {
@@ -106,7 +108,7 @@ function onPopoverLeave() {
                             <UIcon name="i-lucide-calendar" class="h-3.5 w-3.5" />
                             <span>{{ new
                                 Date(activeReferenceData.pivot.created_at).toLocaleDateString('pt-BR')
-                            }}</span>
+                                }}</span>
                         </div>
                     </div>
                 </section>
