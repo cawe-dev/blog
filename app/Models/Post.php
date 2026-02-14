@@ -95,4 +95,9 @@ class Post extends Model
             });
         });
     }
+
+    protected function changeLogs(): HasMany
+    {
+        return $this->hasMany(ChangeLog::class);
+    }
 }

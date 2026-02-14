@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Models;
+
+use App\Enums\ChangeLogType;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class ChangeLog extends Model
+{
+    /** @use HasFactory<\Database\Factories\ChangeLogFactory> */
+    use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'type',
+        'version',
+        'commit',
+        'pull_request',
+        'post_id',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'type' => ChangeLogType::class,
+        ];
+    }
+
+    public function post(): BelongsTo
+    {
+        return $this->belongsTo(Post::class);
+    }
+}
