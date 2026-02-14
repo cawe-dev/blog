@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'github' => [
+        'token' => env('GITHUB_TOKEN'),
+        'version' => env('GITHUB_API_VERSION', '2022-11-28'),
+    ],
 ];
