@@ -4,12 +4,14 @@ namespace App\Services\Github;
 
 use App\Exceptions\GithubRequestException;
 use App\Facade\GithubServiceFacade as GitHub;
+use App\Filament\Concerns\InteractsWithFilament;
 use App\Support\Github\GithubCommit;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 class GitHubService
 {
+    use InteractsWithFilament;
 
     public function getCommitsByBranch(string $branch, int $page = 1, int $perPage = 10): Collection
     {
