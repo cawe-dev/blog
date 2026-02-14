@@ -18,6 +18,7 @@ class ChangeLog extends Model
         'version',
         'commit',
         'pull_request',
+        'published_at',
         'post_id',
     ];
 

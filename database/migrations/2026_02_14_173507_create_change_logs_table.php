@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('type');
             $table->string('version');
             $table->string('commit');
-            $table->string('pull_request');
+            $table->string('pull_request')->nullable();
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
 
             $table
