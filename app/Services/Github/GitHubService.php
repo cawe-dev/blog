@@ -2,13 +2,28 @@
 
 namespace App\Services\Github;
 
+use App\Exceptions\GithubRequestException;
 use App\Facade\GithubServiceFacade as GitHub;
-use Illuminate\Http\Client\Response;
+use App\Support\Github\GithubCommit;
+use Illuminate\Support\Collection;
 
 class GitHubService
 {
-    public static function getCommitsByBranch(string $branch, int $page = 1, int $perPage = 10): Response
+    public static function getCommitsByBranch(string $branch, int $page = 1, int $perPage = 10): Collection
     {
-        return Github::get('commits?sha=' . $branch . '&page=' . $page . '&per_page=' . $perPage);
+        $response =  Github::get('commits', [
+            'sha' => $branch,
+            '&page' => $page,
+            '&per_page' => $perPage
+        ]);
+
+        if ($response->failed()) {
+            throw GithubRequestException::fromResponse($response);
+        }
+
+        return collect($response->json())->map(
+            fn(array $commit) =>
+            GithubCommit::fromArray($commit)
+        );
     }
 }
