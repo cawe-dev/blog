@@ -14,11 +14,11 @@ class GitHubServiceProvider  extends ServiceProvider
             $config = config('services.github');
 
             return Http::withOptions([
-                'base_uri' => 'https://api.github.com'
+                'base_uri' => 'https://api.github.com/repos/cawe-dev/blog/'
             ])->withHeaders([
                 'X-GitHub-Api-Version' => $config['version'],
                 'Accept' => 'application/vnd.github+json',
-                'Authorization' => 'Bearer' . $config['token'],
+                'Authorization' => 'Bearer ' . $config['token'],
             ]);
         });
     }
