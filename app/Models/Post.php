@@ -60,6 +60,11 @@ class Post extends Model
             ->withTimestamps();
     }
 
+    public function changeLogs(): HasMany
+    {
+        return $this->hasMany(ChangeLog::class);
+    }
+
     public function contents(): HasMany
     {
         return $this->hasMany(ContentPost::class);

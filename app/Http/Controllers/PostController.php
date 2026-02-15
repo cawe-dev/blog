@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ChangeLogType;
 use App\Enums\PostType;
+use App\Models\ChangeLog;
 use App\Models\Post;
 use Inertia\Inertia;
 
@@ -10,7 +12,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with(['category', 'tags', 'contents'])
+        $posts = Post::with(['category', 'tags', 'contents', 'changeLogs'])
             ->whereNotNull('published_at')
             ->get();
 
@@ -34,6 +36,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         $post = Post::with(['category', 'tags', 'contents.references'])->findOrFail($post->id);
+        $changelogs = ChangeLog::where('type', ChangeLogType::FEATURE)->orderByDesc('published_at')->get();
 
         if (is_null($post->published_at)) {
             return abort(404, 'Post not found');
@@ -41,6 +44,7 @@ class PostController extends Controller
 
         return Inertia::render('blog/post', [
             'post' => $post->append('content_html', 'references'),
+            'changelogs' => $changelogs,
         ]);
     }
 }

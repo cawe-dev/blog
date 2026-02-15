@@ -37,11 +37,12 @@ const toggleSpoiler = () => {
                     <UIcon name="i-lucide-pin" class="w-4 h-4 text-toned" />
                 </UBadge>
                 <UBadge :label="post.type_label" color="primary" variant="solid" />
-                <div name="category-post" class="flex items-center">
-                    <UBadge :key="post.category.id" variant="subtle" color="primary">
-                        {{ post.category.name }}
-                    </UBadge>
-                </div>
+                <UBadge v-if="post.change_logs" v-for="changeLog in post.change_logs" :key="changeLog.id"
+                    :label="changeLog.type"
+                    class="bg-(--brand-secondary) ring-1 ring-inset ring-(--ui-foreground) font-mono font-semibold" />
+                <UBadge :key="post.category.id" variant="subtle" color="primary">
+                    {{ post.category.name }}
+                </UBadge>
             </template>
 
             <template #date>

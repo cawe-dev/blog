@@ -6,9 +6,13 @@ import type { IPost } from '@/types/models/post'
 import type { IViewMode, ViewModeKeys } from '@/types/enums/contentPostViewMode'
 import { VIEW_MODE_CONFIG } from '@/types/enums/contentPostViewMode'
 import ReferencePopover from '@/components/blog/reference-popover.vue';
+import { IChangelogs, IChangelogItem } from '@/types/models/changeLog'
+import PostFeaturesBagde from '@/components/blog/PostFeaturesBagde.vue'
+
 
 const props = defineProps<{
-    post: IPost
+    post: IPost,
+    changelogs: IChangelogs
 }>()
 
 defineOptions({ layout: Layout })
@@ -99,6 +103,13 @@ const estimatedReadTime = computed(() => {
     }
 })
 
+const featuresAfterPost = computed(() => {
+    return props.changelogs.filter((changelog: IChangelogItem) => {
+        console.log(changelog.published_at)
+        return new Date(changelog.published_at) >= new Date(props.post.published_at!)
+    })
+})
+
 const copyLink = async () => {
     await navigator.clipboard.writeText(window.location.href)
 
@@ -162,10 +173,14 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                     <span>{{ estimatedReadTime }} min de leitura</span>
                                 </div>
 
-                                <div name="category-post" class="flex items-center gap-2">
+                                <div name="category-post">
                                     <UBadge :key="post.category.id" variant="subtle" color="primary">
                                         {{ post.category.name }}
                                     </UBadge>
+                                </div>
+
+                                <div name="features-after-post">
+                                    <PostFeaturesBagde :features="featuresAfterPost" />
                                 </div>
                             </div>
                         </section>
