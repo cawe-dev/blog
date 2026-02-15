@@ -10,7 +10,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with(['category', 'tags', 'contents'])
+        $posts = Post::with(['category', 'tags', 'contents', 'changeLogs'])
             ->whereNotNull('published_at')
             ->get();
 
