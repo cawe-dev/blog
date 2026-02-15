@@ -11,4 +11,15 @@ const formatRelativeTime = (date: Date | string): string => {
     return target.toLocaleDateString('pt-BR')
 }
 
-export { formatRelativeTime }
+function formatDate(dateString: string | null) {
+    if (!dateString) {
+        return 'Data não disponível'
+    }
+    return new Date(dateString).toLocaleDateString('pt-BR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    })
+}
+
+export { formatRelativeTime, formatDate }
