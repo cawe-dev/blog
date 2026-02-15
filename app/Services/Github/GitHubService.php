@@ -15,11 +15,11 @@ class GitHubService
 
     public function getCommitsByBranch(string $branch, int $page = 1, int $perPage = 10): Collection
     {
-        return Cache::remember("github_commits_{$branch}", 300, function () use ($branch, $page, $perPage) {
+        return Cache::remember("github_commits_{$branch}-{$page}-{$perPage}", 180, function () use ($branch, $page, $perPage) {
             $response =  Github::get('commits', [
                 'sha' => $branch,
-                '&page' => $page,
-                '&per_page' => $perPage
+                'page' => $page,
+                'per_page' => $perPage
             ]);
 
             if ($response->failed()) {
