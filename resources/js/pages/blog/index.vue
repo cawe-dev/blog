@@ -59,7 +59,7 @@ const {
                             label-key="name" searchable placeholder="Selecione categoria(s)..." />
                     </div>
 
-                    <div class="flex border border-default rounded-md gap-0.5 p-1">
+                    <div class="hidden sm:flex border border-default rounded-md gap-0.5 p-1">
                         <UButton :variant="viewMode === 'grid' ? 'solid' : 'ghost'" color="primary"
                             icon="i-lucide-layout-grid" @click="viewMode = 'grid'" size="sm" />
                         <UButton :variant="viewMode === 'list' ? 'solid' : 'ghost'" color="primary" icon="i-lucide-list"
