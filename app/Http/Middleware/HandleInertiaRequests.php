@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\ChangeLog;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -42,6 +44,9 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'context' => $request->session()->get('blog-context', 'professional'),
+            'notifications' => [
+                'changelogs' => Inertia::once(fn() => ChangeLog::notificable()->get()),
+            ],
         ];
     }
 }
