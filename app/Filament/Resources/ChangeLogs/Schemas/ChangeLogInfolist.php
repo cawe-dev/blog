@@ -16,7 +16,8 @@ class ChangeLogInfolist
                     ->badge(),
                 TextEntry::make('version'),
                 TextEntry::make('commit'),
-                TextEntry::make('pull_request'),
+                TextEntry::make('pull_request')
+                    ->placeholder('-'),
                 TextEntry::make('created_at')
                     ->dateTime()
                     ->placeholder('-'),
