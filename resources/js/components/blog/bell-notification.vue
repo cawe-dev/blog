@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { IChangelogItem } from '@/types/models/changeLog'
+import { getChangelogIcon, getChangelogIconColor } from '@/utils/changelog'
 
 const props = defineProps<{
     items: IChangelogItem[]
@@ -35,24 +36,6 @@ const groupedItems = computed(() => {
 
     return result
 })
-
-const getChangelogIcon = (type: string) => {
-    switch (type) {
-        case 'feature': return 'i-lucide-sparkles'
-        case 'fix': return 'i-lucide-wrench'
-        case 'improvement': return 'i-lucide-trending-up'
-        default: return 'i-lucide-dot'
-    }
-}
-
-const getChangelogIconColor = (type: string) => {
-    switch (type) {
-        case 'feature': return 'text-[var(--ui-primary)]'
-        case 'fix': return 'text-[var(--ui-error)]'
-        case 'improvement': return 'text-[var(--ui-success)]'
-        default: return 'text-[var(--ui-text-muted)]'
-    }
-}
 </script>
 
 <template>
@@ -77,7 +60,7 @@ const getChangelogIconColor = (type: string) => {
                 <div class="flex items-center gap-2">
                     <UIcon :name="getChangelogIcon(item.type)"
                         :class="['h-3.5 w-3.5', getChangelogIconColor(item.type)]" />
-                    <span class="text-sm font-medium text-default">{{ item.label }}</span>
+                    <span class="text-sm font-medium text-default">{{ item.title }}</span>
                 </div>
                 <span class="text-xs text-muted">{{ item.formattedDate }}</span>
             </div>

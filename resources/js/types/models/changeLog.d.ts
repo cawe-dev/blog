@@ -1,7 +1,10 @@
 interface IChangelogItem {
-    label: string
+    id: number
+    title: string
     date: Date
     type: string
+    version: strinf
+    slot?: string
     formattedDate?: string
 }
 

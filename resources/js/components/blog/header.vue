@@ -17,7 +17,7 @@ const changelogs = computed(() => page.props.notifications.changelogs as IChange
 
 const changelogItems = computed((): IChangelogItem[] =>
     changelogs.value.map(item => ({
-        label: item.title,
+        title: item.title,
         slot: 'changelog-item' as const,
         type: item.type,
         version: item.version,
