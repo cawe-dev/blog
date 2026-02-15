@@ -5,7 +5,7 @@ namespace App\Enums;
 enum ChangeLogType: string
 {
     case FEATURE = 'feature';
-    case IMPROVEMENT = 'improviment';
+    case IMPROVEMENT = 'improvement';
     case FIX = 'fix';
 
     public function label(): string
