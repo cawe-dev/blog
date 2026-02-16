@@ -55,13 +55,13 @@ const {
             <main class="flex-1 min-w-0">
                 <section name="filters">
                     <div class="mb-6 flex flex-wrap gap-3 items-center justify-between">
-                        <div name="category-filter" class="flex flex-col sm:flex-row gap-4">
+                        <div name="category-filter" class="flex flex-row gap-1 sm:gap-4">
                             <div name="search-filter" class="">
                                 <UInput v-model="searchQuery" icon="i-lucide-search" placeholder="Buscar..."
-                                    class="w-48" />
+                                    class="sm:w-48" />
                             </div>
 
-                            <div name="category-filter" class="">
+                            <div name="category-filter">
                                 <USelectMenu multiple v-model="selectedCategories" :items="allCategories"
                                     value-key="slug" label-key="name" searchable
                                     placeholder="Selecione categoria(s)..." />
