@@ -25,6 +25,7 @@ class PostController extends Controller
         });
 
         $posts = $posts->groupBy(function (Post $post) {
+            if (isset($post->pinned_at) && $post->type === PostType::BOTH) return 'bothPinnedsPosts';
             if ($post->type === PostType::PERSONAL) return 'personalPosts';
             if ($post->type === PostType::PROFESSIONAL) return 'professionalPosts';
             return 'bothPosts';

@@ -49,15 +49,16 @@ export const usePostFeed = (postsProp: Ref<IPostGroup>) => {
     })
 
     const filteredPosts = computed(() => {
+        const bothPinnedsPosts = postsProp.value.bothPinnedsPosts || []
         const professionalPosts = postsProp.value.professionalPosts || []
         const personalPosts = postsProp.value.personalPosts || []
         const bothPosts = postsProp.value.bothPosts || []
 
         let basePosts: IPost[] = []
         if (context.value === 'professional') {
-            basePosts = [...professionalPosts, ...bothPosts]
+            basePosts = [...bothPinnedsPosts, ...professionalPosts, ...bothPosts]
         } else {
-            basePosts = [...personalPosts, ...bothPosts]
+            basePosts = [...bothPinnedsPosts, ...personalPosts, ...bothPosts]
         }
 
         let posts = basePosts;
