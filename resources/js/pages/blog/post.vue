@@ -8,7 +8,7 @@ import { VIEW_MODE_CONFIG } from '@/types/enums/contentPostViewMode'
 import ReferencePopover from '@/components/blog/reference-popover.vue';
 import { IChangelogs, IChangelogItem } from '@/types/models/changeLog'
 import PostFeaturesBagde from '@/components/blog/PostFeaturesBagde.vue'
-
+import extractTextFromNode from "@/utils/post";
 
 const props = defineProps<{
     post: IPost,
@@ -66,21 +66,7 @@ const wasEdited = computed(() => {
     return updated - created > 3600000
 })
 
-function extractTextFromNode(node: any): string {
-    if (node.type === 'text' && node.text) {
-        return node.text + ' '
-    }
 
-    if (node.content && Array.isArray(node.content)) {
-        return node.content.map(extractTextFromNode).join('')
-    }
-
-    if (node.content && typeof node.content === 'object' && node.content !== null) {
-        return extractTextFromNode(node.content)
-    }
-
-    return ''
-}
 
 const viewModeItems = computed<IViewMode[]>(() => {
     return (Object.keys(props.post.content_html).sort() as ViewModeKeys[]).map(key => ({
@@ -90,16 +76,22 @@ const viewModeItems = computed<IViewMode[]>(() => {
 });
 
 const estimatedReadTime = computed(() => {
-    if (!props.post.content) {
+    if (!props.post.contents || props.post.contents.length === 0) {
         return 1
     }
     try {
-        const contentDoc = typeof props.post.content === 'string' ? JSON.parse(props.post.content) : props.post.content;
-        const text = extractTextFromNode(contentDoc);
-        const words = text.trim().split(/\s+/).filter(Boolean).length;
-        return Math.max(1, Math.ceil(words / 200));
+        let totalWords = 0
+
+        props.post.contents.forEach((content) => {
+            const contentDoc = typeof content.body === 'string' ? JSON.parse(content.body) : content.body
+
+            const text = extractTextFromNode(contentDoc)
+            const words = text.trim().split(/\s+/).filter(Boolean).length
+            totalWords += words
+        })
+        return Math.max(1, Math.ceil(totalWords / 200))
     } catch (e) {
-        return 1;
+        return 1
     }
 })
 
@@ -268,7 +260,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                     <template #status>
                                         <span>{{ readingProgress }}% {{ readingProgress >= 100 ? 'Concluído' :
                                             'Lendo...'
-                                        }}</span>
+                                            }}</span>
                                     </template>
                                 </UProgress>
                             </div>
