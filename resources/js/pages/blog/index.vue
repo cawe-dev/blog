@@ -52,28 +52,41 @@ const {
         <div class="flex gap-6 items-start">
 
             <main class="flex-1 min-w-0">
-                <div class="mb-6 flex flex-wrap gap-3 items-center justify-between">
-                    <div class="flex gap-2">
-                        <UInput v-model="searchQuery" icon="i-lucide-search" placeholder="Buscar..." class="w-48" />
-                        <USelectMenu multiple v-model="selectedCategories" :items="allCategories" value-key="slug"
-                            label-key="name" searchable placeholder="Selecione categoria(s)..." />
+                <section name="filters">
+                    <div class="mb-6 flex flex-wrap gap-3 items-center justify-between">
+                        <div name="category-filter" class="flex flex-col sm:flex-row gap-4">
+                            <div name="search-filter" class="">
+                                <UInput v-model="searchQuery" icon="i-lucide-search" placeholder="Buscar..."
+                                    class="w-48" />
+                            </div>
+
+                            <div name="category-filter" class="">
+                                <USelectMenu multiple v-model="selectedCategories" :items="allCategories"
+                                    value-key="slug" label-key="name" searchable
+                                    placeholder="Selecione categoria(s)..." />
+                            </div>
+                        </div>
+
+                        <div class="hidden sm:flex border border-default rounded-md gap-0.5 p-1">
+                            <UButton :variant="viewMode === 'grid' ? 'solid' : 'ghost'" color="primary"
+                                icon="i-lucide-layout-grid" @click="viewMode = 'grid'" size="sm" />
+                            <UButton :variant="viewMode === 'list' ? 'solid' : 'ghost'" color="primary"
+                                icon="i-lucide-list" @click="viewMode = 'list'" size="sm" />
+                        </div>
                     </div>
+                </section>
 
-                    <div class="hidden sm:flex border border-default rounded-md gap-0.5 p-1">
-                        <UButton :variant="viewMode === 'grid' ? 'solid' : 'ghost'" color="primary"
-                            icon="i-lucide-layout-grid" @click="viewMode = 'grid'" size="sm" />
-                        <UButton :variant="viewMode === 'list' ? 'solid' : 'ghost'" color="primary" icon="i-lucide-list"
-                            @click="viewMode = 'list'" size="sm" />
+                <section name="posts">
+                    <div :class="viewMode === 'grid' ? 'grid gap-4 sm:grid-cols-2' : 'flex flex-col gap-4'">
+                        <PostCard v-for="post in filteredPosts" :key="post.id" :post="post" :view-mode="viewMode" />
                     </div>
-                </div>
+                </section>
 
-                <div :class="viewMode === 'grid' ? 'grid gap-4 sm:grid-cols-2' : 'flex flex-col gap-4'">
-                    <PostCard v-for="post in filteredPosts" :key="post.id" :post="post" :view-mode="viewMode" />
-                </div>
-
-                <div v-if="!filteredPosts.length" class="py-12 text-center text-muted">
-                    Nenhum post encontrado para os filtros atuais.
-                </div>
+                <section name="posts-not-found">
+                    <div v-if="!filteredPosts.length" class="py-12 text-center text-muted">
+                        Nenhum post encontrado para os filtros atuais.
+                    </div>
+                </section>
             </main>
         </div>
     </div>
