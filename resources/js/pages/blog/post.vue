@@ -340,19 +340,9 @@ const handleSpoilerClick = (event: MouseEvent) => {
     font-style: italic;
 }
 
-.prose :deep(.reference-term) {
-    border-bottom: 1px dashed var(--ui-primary);
-    cursor: help;
-    color: var(--ui-primary);
-}
-
 .prose :deep(span[data-reference-id]) {
-    color: var(--ui-primary);
-    font-weight: 600;
-    background: color-mix(in srgb, var(--ui-primary) 10%, transparent);
+    border-bottom: 1px solid var(--ui-primary);
     cursor: help;
-    padding: 0.05rem 0.15rem;
-    border-radius: 0.2rem;
 }
 
 .prose :deep(p:has(img)) {
