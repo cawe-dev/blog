@@ -65,8 +65,6 @@ const wasEdited = computed(() => {
     return updated - created > 3600000
 })
 
-
-
 const viewModeItems = computed<IViewMode[]>(() => {
     return (Object.keys(props.post.content_html).sort() as ViewModeKeys[]).map(key => ({
         ...VIEW_MODE_CONFIG[key],
@@ -223,7 +221,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                 </article>
 
                 <aside class="hidden w-64 shrink-0 lg:block">
-                    <div class="sticky top-16 space-y-6">
+                    <div name="reading-progress" class="sticky top-20 space-y-6">
                         <UCard name="reading-progress-widget">
                             <template #header>
                                 <div class="flex items-center gap-2">
@@ -243,6 +241,26 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                     </template>
                                 </UProgress>
                             </div>
+                        </UCard>
+                    </div>
+                    <div name="subtopics-navigator" class="sticky top-64 mt-7 space-y-4">
+                        <UCard v-if="post.sub_topics && post.sub_topics.length > 0">
+                            <template #header>
+                                <div class="flex items-center gap-2">
+                                    <UIcon name="i-lucide-list" class="h-4 w-4 text-primary" />
+                                    <span class="text-sm font-medium text-default">Índice</span>
+                                </div>
+                            </template>
+                            <nav>
+                                <ul class="space-y-1.5 text-sm">
+                                    <li v-for="(topic, index) in post.sub_topics" :key="index">
+                                        <a :href="`#${topic}`"
+                                            class="block px-2.5 py-1.5 text-muted hover:text-default hover:bg-accented transition-colors duration-150 border-l-2 border-transparent hover:border-primary">
+                                            {{ topic }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </UCard>
                     </div>
                 </aside>
@@ -365,7 +383,6 @@ const handleSpoilerClick = (event: MouseEvent) => {
     border: 1px solid var(--ui-border);
 }
 
-/* Definição base - Simplificada */
 .prose :deep(span[data-has-spoiler="true"]) {
     position: relative;
     display: inline;
@@ -374,7 +391,6 @@ const handleSpoilerClick = (event: MouseEvent) => {
     color: var(--ui-text);
     transition: all 0.4s ease;
     padding: 0 2px;
-    /* Padronizado */
 }
 
 .prose :deep(span[data-has-spoiler="true"]::before) {
