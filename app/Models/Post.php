@@ -108,4 +108,12 @@ class Post extends Model
                 ->sum(fn(ContentPost $content) => $content->body->estimatedReadTime());
         });
     }
+
+    protected function subTopics(): Attribute
+    {
+        return Attribute::get(function () {
+            return $this->contents
+                ->flatMap(fn(ContentPost $content) => $content->body->subTopics()->toArray());
+        });
+    }
 }

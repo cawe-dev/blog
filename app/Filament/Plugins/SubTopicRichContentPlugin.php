@@ -2,7 +2,7 @@
 
 namespace App\Filament\Plugins;
 
-use App\TiptapExtensions\HasSpoilerLink;
+use App\TiptapExtensions\SubTopicLink;
 use Filament\Actions\Action;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\RichEditor\EditorCommand;
@@ -10,8 +10,9 @@ use Filament\Forms\Components\RichEditor\Plugins\Contracts\RichContentPlugin;
 use Filament\Forms\Components\RichEditor\RichEditorTool;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Str;
 
-class HasSpoilerRichContentPlugin implements RichContentPlugin
+class SubTopicRichContentPlugin implements RichContentPlugin
 {
     public static function make(): static
     {
@@ -21,23 +22,23 @@ class HasSpoilerRichContentPlugin implements RichContentPlugin
     public function getTipTapPhpExtensions(): array
     {
         return [
-            app(HasSpoilerLink::class)
+            app(SubTopicLink::class)
         ];
     }
 
     public function getTipTapJsExtensions(): array
     {
         return [
-            FilamentAsset::getScriptSrc('has-spoiler-link-script'),
+            FilamentAsset::getScriptSrc('sub-topic-link-script'),
         ];
     }
 
     public function getEditorTools(): array
     {
         return [
-            RichEditorTool::make('has-spoiler-link')
-                ->icon(Heroicon::EyeSlash)
-                ->action('has-spoiler-link'),
+            RichEditorTool::make('sub-topic-link')
+                ->icon(Heroicon::DocumentText)
+                ->action('sub-topic-link', arguments: '{ subTopicId: $getEditor().state.doc.textBetween($getEditor().state.selection.from, $getEditor().state.selection.to) }'),
         ];
     }
 
@@ -47,20 +48,20 @@ class HasSpoilerRichContentPlugin implements RichContentPlugin
     public function getEditorActions(): array
     {
         return [
-            Action::make('has-spoiler-link')
+            Action::make('sub-topic-link')
                 ->action(function (array $arguments, RichEditor $component): void {
                     $component->runCommands(
                         [
                             EditorCommand::make(
-                                'setHasSpoilerLink',
+                                'setSubTopicLink',
                                 [
                                     [
-                                        'spoiler' => 'true',
-                                    ]
+                                        'subTopicId' => (string) Str::slug($arguments['subTopicId'])
+                                    ],
                                 ],
                             ),
                             EditorCommand::make('focus', ['end']),
-                            EditorCommand::make('unsetHasSpoilerLink'),
+                            EditorCommand::make('unsetSubTopicLink'),
                         ],
                         editorSelection: $arguments['editorSelection'],
                     );

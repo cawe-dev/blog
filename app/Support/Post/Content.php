@@ -3,6 +3,7 @@
 namespace App\Support\Post;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Collection;
 use JsonSerializable;
 
 class Content implements Arrayable, JsonSerializable
@@ -64,5 +65,16 @@ class Content implements Arrayable, JsonSerializable
         });
 
         return $spoiler;
+    }
+
+    public function subTopics(): Collection
+    {
+        $subTopics = collect($this->data['content'])
+            ->pluck('content.*.marks.*.attrs.subTopicId')
+            ->flatten()
+            ->filter()
+            ->values();
+
+        return $subTopics;
     }
 }

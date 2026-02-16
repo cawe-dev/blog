@@ -46,7 +46,7 @@ class PostController extends Controller
         }
 
         return Inertia::render('blog/post', [
-            'post' => $post->append('content_html', 'references', 'estimated_read_time'),
+            'post' => $post->append('content_html', 'references', 'estimated_read_time', 'sub_topics'),
             'changelogs' => $changelogs,
         ]);
     }

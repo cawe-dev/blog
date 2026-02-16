@@ -8,6 +8,7 @@ use App\Filament\Concerns\ExtractPlainTextFromRichEditor;
 use App\Filament\Plugins\HasSpoilerRichContentPlugin;
 use App\Filament\Plugins\MediaIndexerRichContentPlugin;
 use App\Filament\Plugins\ReferenceRichContentPlugin;
+use App\Filament\Plugins\SubTopicRichContentPlugin;
 use App\Support\Post\Content;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Repeater;
@@ -92,14 +93,15 @@ class PostForm
                             ->plugins([
                                 ReferenceRichContentPlugin::make(),
                                 MediaIndexerRichContentPlugin::make(),
-                                HasSpoilerRichContentPlugin::make()
+                                HasSpoilerRichContentPlugin::make(),
+                                SubTopicRichContentPlugin::make(),
                             ])
                             ->toolbarButtons([
                                 ['bold', 'italic', 'underline', 'strike', 'subscript', 'superscript'],
                                 ['h2', 'h3', 'alignStart', 'alignCenter', 'alignEnd'],
                                 ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
                                 ['table', 'attachFiles', 'undo', 'redo'],
-                                ['reference-link', 'media-indexer-link', 'has-spoiler-link']
+                                ['reference-link', 'media-indexer-link', 'has-spoiler-link', 'sub-topic-link']
                             ])
                             ->afterStateUpdated(fn(Set $set, array | string $state) => $set('../../excerpt', Str::limit(self::extractPlainText($state), 200)))
                             ->columnSpanFull()
