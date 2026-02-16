@@ -45,6 +45,8 @@
     --color-neutral-sub: #666666;
 
     --ui-primary: oklch(0.5 0.1 230);
+
+    --ui-dichotomous: oklch(0.75 0.18 85);
     
     --ui-secondary: oklch(0.95 0.01 250);
     
@@ -77,6 +79,8 @@
     --ui-text-inverted: oklch(0.15 0.02 60);
     
     --ui-primary: oklch(0.75 0.18 85);
+
+    --ui-dichotomous: oklch(0.5 0.1 230);
     
     --ui-secondary: oklch(0.95 0.02 85);
     
