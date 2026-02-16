@@ -88,7 +88,8 @@ const toggleSpoiler = () => {
                         {{ post.excerpt }}
                     </span>
 
-                    <span v-if="post.has_spoiler && !isSpoilerRevealed" class="absolute inset-y-9/12 inset-x-1/4 sm:inset-y-9/12 sm:inset-x-1/3">
+                    <span v-if="post.has_spoiler && !isSpoilerRevealed" class="absolute"
+                        :class="viewMode === 'list' ? 'inset-y-9/12 inset-x-1/4 sm:inset-y-10/12 sm:inset-x-4/9' : 'inset-y-9/12 inset-x-1/4 sm:inset-y-9/12 sm:inset-x-1/3'">
                         <UBadge label="Esse post contém spoiler(s)" color="neutral" variant="solid"
                             icon="i-heroicons-eye-slash" />
                     </span>
