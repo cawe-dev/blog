@@ -105,7 +105,6 @@ const estimatedReadTime = computed(() => {
 
 const featuresAfterPost = computed(() => {
     return props.changelogs.filter((changelog: IChangelogItem) => {
-        console.log(changelog.published_at)
         return new Date(changelog.published_at) >= new Date(props.post.published_at!)
     })
 })
@@ -269,7 +268,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                     <template #status>
                                         <span>{{ readingProgress }}% {{ readingProgress >= 100 ? 'Concluído' :
                                             'Lendo...'
-                                            }}</span>
+                                        }}</span>
                                     </template>
                                 </UProgress>
                             </div>
