@@ -32,11 +32,30 @@ const toggleSpoiler = () => {
             date: 'text-xs text-muted mt-4',
             authors: 'hidden',
         }">
+            <template #header>
+                <img :src="post.thumbnail" :alt="post.title"
+                    class="object-cover object-center w-full h-full transition-transform duration-300 group-hover/blog-post:scale-105" />
+
+                <div name="gradient-overlay"
+                    class="absolute inset-0 bg-linear-to-b from-black/40 via-transparent to-transparent pointer-events-none"
+                    aria-hidden="true" />
+
+                <div name="left-badges-overlay" class="absolute top-3 left-3 z-10 flex flex-wrap gap-1.5">
+                    <UBadge :label="post.type_label" color="primary" variant="solid" />
+
+                    <UBadge v-if="post.has_spoiler" color="warning" variant="solid" size="sm"
+                        icon="i-lucide-alert-triangle" label="Spoiler" />
+                </div>
+
+                <div name="right-badges-overlay" class="absolute top-3 right-3 z-10">
+                    <UBadge color="neutral" variant="solid" size="sm" icon="i-lucide-clock"
+                        :label="`${post.estimated_read_time} min de leitura`" />
+                </div>
+            </template>
             <template #badge>
                 <UBadge v-if="post.pinned_at" color="secundary" variant="subtle">
                     <UIcon name="i-lucide-pin" class="w-4 h-4 text-toned" />
                 </UBadge>
-                <UBadge :label="post.type_label" color="primary" variant="solid" />
                 <UBadge v-if="post.change_logs" v-for="changeLog in post.change_logs" :key="changeLog.id"
                     :label="changeLog.type"
                     class="bg-(--brand-secondary) ring-1 ring-inset ring-(--ui-foreground) font-mono font-semibold" />
@@ -67,11 +86,6 @@ const toggleSpoiler = () => {
                 <div class="flex items-center gap-2 flex-wrap mb-2">
                     <h3 class=" text-xl font-bold text-default group-hover:text-primary transition-colors line-clamp-2">
                         {{ post.title }}
-                        <span v-if="post.has_spoiler" class="text-xs text-accented">
-
-                            <UBadge label="Alerta de Spoiler" color="warning" variant="subtle"
-                                icon="i-heroicons-exclamation-triangle" />
-                        </span>
                     </h3>
                     <UBadge v-for="category in post.categories" :key="category.id" :label="category.name"
                         variant="subtle" size="xs" />
