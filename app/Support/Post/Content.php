@@ -27,11 +27,16 @@ class Content implements Arrayable, JsonSerializable
 
         array_walk_recursive($this->data, function ($value, $key) use (&$text) {
             if ($key === 'text') {
-                $text .= $value;
+                $text .= $value . ' ';
             }
         });
 
-        return $text;
+        return trim($text);
+    }
+
+    public function estimatedReadTime(): int
+    {
+        return str_word_count($this->toPlainText()) / 200 > 1 ? str_word_count($this->toPlainText()) / 200 : 1;
     }
 
     public static function from(mixed $data): self

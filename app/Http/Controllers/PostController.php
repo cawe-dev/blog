@@ -19,17 +19,19 @@ class PostController extends Controller
         $posts->transform(function (Post $post) {
             $post->type_label = $post->type->label();
 
+            $post->append('has_spoiler', 'estimated_read_time');
+
             return $post;
         });
 
         $posts = $posts->groupBy(function (Post $post) {
             if ($post->type === PostType::PERSONAL) return 'personalPosts';
-            if ($post->type === PostType::PROFESSEONAL) return 'professionalPosts';
+            if ($post->type === PostType::PROFESSIONAL) return 'professionalPosts';
             return 'bothPosts';
         });
 
         return Inertia::render('blog/index', [
-            'posts' => $posts->append('has_spoiler'),
+            'posts' => $posts,
         ]);
     }
 
@@ -43,7 +45,7 @@ class PostController extends Controller
         }
 
         return Inertia::render('blog/post', [
-            'post' => $post->append('content_html', 'references'),
+            'post' => $post->append('content_html', 'references', 'estimated_read_time'),
             'changelogs' => $changelogs,
         ]);
     }

@@ -8,7 +8,6 @@ import { VIEW_MODE_CONFIG } from '@/types/enums/contentPostViewMode'
 import ReferencePopover from '@/components/blog/reference-popover.vue';
 import { IChangelogs, IChangelogItem } from '@/types/models/changeLog'
 import PostFeaturesBagde from '@/components/blog/PostFeaturesBagde.vue'
-import extractTextFromNode from "@/utils/post";
 
 const props = defineProps<{
     post: IPost,
@@ -74,26 +73,6 @@ const viewModeItems = computed<IViewMode[]>(() => {
         content: props.post.content_html[key]
     }));
 });
-
-const estimatedReadTime = computed(() => {
-    if (!props.post.contents || props.post.contents.length === 0) {
-        return 1
-    }
-    try {
-        let totalWords = 0
-
-        props.post.contents.forEach((content) => {
-            const contentDoc = typeof content.body === 'string' ? JSON.parse(content.body) : content.body
-
-            const text = extractTextFromNode(contentDoc)
-            const words = text.trim().split(/\s+/).filter(Boolean).length
-            totalWords += words
-        })
-        return Math.max(1, Math.ceil(totalWords / 200))
-    } catch (e) {
-        return 1
-    }
-})
 
 const featuresAfterPost = computed(() => {
     return props.changelogs.filter((changelog: IChangelogItem) => {
@@ -161,7 +140,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
 
                                 <div name="esmative-read-time" class="flex items-center gap-1.5 text-muted">
                                     <UIcon name="i-lucide-clock" class="h-4 w-4" />
-                                    <span>{{ estimatedReadTime }} min de leitura</span>
+                                    <span>{{ post.estimated_read_time }} min de leitura</span>
                                 </div>
 
                                 <div name="category-post">

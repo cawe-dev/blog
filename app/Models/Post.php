@@ -100,4 +100,12 @@ class Post extends Model
             });
         });
     }
+
+    protected function estimatedReadTime(): Attribute
+    {
+        return Attribute::get(function () {
+            return (int) $this->contents
+                ->sum(fn(ContentPost $content) => $content->body->estimatedReadTime());
+        });
+    }
 }
