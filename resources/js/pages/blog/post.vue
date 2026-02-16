@@ -8,6 +8,7 @@ import { VIEW_MODE_CONFIG } from '@/types/enums/contentPostViewMode'
 import ReferencePopover from '@/components/blog/reference-popover.vue';
 import { IChangelogs, IChangelogItem } from '@/types/models/changeLog'
 import PostFeaturesBagde from '@/components/blog/PostFeaturesBagde.vue'
+import { defaultDocument } from '@vueuse/core'
 
 const props = defineProps<{
     post: IPost,
@@ -73,8 +74,8 @@ const viewModeItems = computed<IViewMode[]>(() => {
 });
 
 const featuresAfterPost = computed(() => {
-    return props.changelogs.filter((changelog: IChangelogItem) => {
-        return new Date(changelog.published_at) >= new Date(props.post.published_at!)
+    return props.changelogs.map((changelog: IChangelogItem) => {
+        return changelog
     })
 })
 
@@ -147,7 +148,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                     </UBadge>
                                 </div>
 
-                                <div name="features-after-post">
+                                <div v-if="featuresAfterPost.length > 0" name="features-after-post">
                                     <PostFeaturesBagde :features="featuresAfterPost" />
                                 </div>
                             </div>
@@ -237,7 +238,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                     <template #status>
                                         <span>{{ readingProgress }}% {{ readingProgress >= 100 ? 'Concluído' :
                                             'Lendo...'
-                                            }}</span>
+                                        }}</span>
                                     </template>
                                 </UProgress>
                             </div>

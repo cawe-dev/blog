@@ -39,7 +39,9 @@ class PostController extends Controller
     public function show(Post $post)
     {
         $post = Post::with(['category', 'tags', 'contents.references'])->findOrFail($post->id);
-        $changelogs = ChangeLog::where('type', ChangeLogType::FEATURE)->orderByDesc('published_at')->get();
+        $changelogs = ChangeLog::where('type', ChangeLogType::FEATURE)
+            ->where('published_at', '>', $post->published_at)
+            ->orderByDesc('published_at')->get();
 
         if (is_null($post->published_at)) {
             return abort(404, 'Post not found');
