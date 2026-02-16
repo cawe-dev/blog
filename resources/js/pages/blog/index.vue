@@ -24,26 +24,27 @@ const {
     selectedCategories,
     viewMode,
 } = usePostFeed(postsProp)
-
 </script>
 
 <template>
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6">
-        <section class="mb-8 rounded-xl border border-default bg-elevated p-6 sm:p-8 transition-colors duration-300">
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <section name="first-contact-text">
+            <div
+                class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:bg-primary/5 sm:p-10 rounded-xl mt-10 mb-20">
                 <div>
                     <h1 class="text-3xl font-bold tracking-tight text-default">
                         <template v-if="context === 'professional'">
-                            Código, Arquitetura & <span class="text-(--color-pro-500)">Engenharia</span>
+                            Perfil <span class="text-primary">Profissional</span>
                         </template>
                         <template v-else>
-                            Vida, Hobbies & <span class="text-(--color-life-500)">Descobertas</span>
+                            Perfil <span class="text-primary">Pessoal</span>
                         </template>
                     </h1>
                     <p class="mt-2 text-muted">
                         {{ context === 'professional'
-                            ? 'Explorando o universo do desenvolvimento de software de alta performance.'
-                            : 'Um olhar pessoal sobre música, jogos e o equilíbrio da vida.' }}
+                            ? 'Explorando features, padrões, design, e outros aspectos do desenvolvimento de software de forma incremental neste site.'
+                            : 'Falando sobre tudo o que não é profissional.'
+                        }}
                     </p>
                 </div>
             </div>
