@@ -76,8 +76,9 @@
     --ui-text-dimmed: oklch(0.6 0.025 60);
     --ui-text-toned: oklch(0.4 0.03 60);
     --ui-text-highlighted: oklch(0.15 0.02 60);
-    --ui-text-inverted: oklch(0.15 0.02 60);
-    
+    --ui-text-inverted: oklch(0.98 0 0);
+
+
     --ui-primary: oklch(0.75 0.18 85);
 
     --ui-dichotomous: oklch(0.5 0.1 230);
