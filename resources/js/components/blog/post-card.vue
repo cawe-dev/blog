@@ -24,7 +24,7 @@ const toggleSpoiler = () => {
 </script>
 
 <template>
-    <UBlogPost class="h-full" :to="computedPath" :ui="{
+    <UBlogPost class="h-full" :to="computedPath" :orientation="viewMode === 'grid' ? 'vertical' : 'horizontal'" :ui="{
         title: 'text-xl font-bold text-default mb-2 group-hover:text-primary transition-colors',
         description: 'text-muted text-base',
         date: 'text-xs text-muted mt-4',
@@ -101,14 +101,14 @@ const toggleSpoiler = () => {
                 </span>
 
                 <span v-if="post.has_spoiler && !isSpoilerRevealed" class="absolute"
-                    :class="viewMode === 'list' ? 'inset-y-9/12 inset-x-1/4 sm:inset-y-10/12 sm:inset-x-4/9' : 'inset-y-9/12 inset-x-1/4 sm:inset-y-9/12 sm:inset-x-1/3'">
+                    :class="viewMode === 'list' ? 'inset-y-9/12 inset-x-1/4 sm:inset-y-10/19 sm:inset-x-6/9' : 'inset-y-9/12 inset-x-1/4 sm:inset-y-9/12 sm:inset-x-1/3'">
                     <UBadge label="Esse post contém spoiler(s)" color="neutral" variant="solid"
                         icon="i-heroicons-eye-slash" />
                 </span>
             </div>
         </template>
 
-        <template #footer>
+        <template v-if="viewMode === 'grid'" #footer>
             <div class=" flex items-center justify-between w-full pt-4">
                 <div class="flex-1"></div>
                 <UButton size="md"
