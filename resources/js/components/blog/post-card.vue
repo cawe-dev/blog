@@ -25,14 +25,13 @@ const toggleSpoiler = () => {
 
 <template>
     <UBlogPosts :orientation="viewMode === 'list' ? 'vertical' : 'vertical'">
-        <UBlogPost class="h-full" :to="computedPath" :image="post.thumbnail" :ui="{
-            image: 'object-cover',
+        <UBlogPost class="h-full" :to="computedPath" :ui="{
             title: 'text-xl font-bold text-default mb-2 group-hover:text-primary transition-colors',
             description: 'text-muted text-base',
             date: 'text-xs text-muted mt-4',
             authors: 'hidden',
         }">
-            <template #header>
+            <template v-if="post.thumbnail" #header>
                 <img :src="post.thumbnail" :alt="post.title"
                     class="object-cover object-center w-full h-full transition-transform duration-300 group-hover/blog-post:scale-105" />
 
