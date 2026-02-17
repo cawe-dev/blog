@@ -40,7 +40,7 @@ const groupedItems = computed(() => {
 
 <template>
     <UDropdownMenu :items="groupedItems">
-        <UButton variant="ghost" size="sm" class="relative" square>
+        <UButton variant="ghost" size="sm" class="relative cursor-pointer" square>
             <UIcon name="i-lucide-bell" class="h-4 w-4" />
             <span
                 class="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-inverted">

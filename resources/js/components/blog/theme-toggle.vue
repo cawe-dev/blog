@@ -6,7 +6,7 @@ const { context, toggleContext } = useContext()
 
 <template>
     <button @click="toggleContext"
-        class="relative flex h-9 items-center gap-1 rounded-full border border-default bg-accented p-1 transition-colors"
+        class="relative flex h-9 items-center gap-1 rounded-full border border-default bg-accented p-1 transition-colors cursor-pointer"
         :aria-label="`Alternar para contexto ${context === 'professional' ? 'personal' : 'profissional'}`">
         <span :class="[
             'flex h-7 w-full items-center justify-center rounded-full transition-all',
