@@ -33,7 +33,6 @@ const changelogItems = computed((): IChangelogItem[] =>
         class="sticky top-0 z-50 w-full border-b border-default bg-(--ui-bg)/95 backdrop-blur supports-backdrop-filter:bg-(--ui-bg)/80">
         <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
             <Logo />
-            <Navbar />
             <div class="flex items-center gap-2">
                 <GlobalSearch v-model:searchOpen="searchOpen" v-model:searchQuery="searchQuery" />
                 <BellNotification :items="changelogItems" />
