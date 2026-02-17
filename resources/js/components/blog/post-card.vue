@@ -38,7 +38,7 @@ const toggleSpoiler = () => {
                 class="absolute inset-0 bg-linear-to-b from-black/40 via-transparent to-transparent pointer-events-none"
                 aria-hidden="true" />
 
-            <div name="left-badges-overlay" class="absolute top-3 left-3 z-10 flex flex-wrap gap-1.5">
+            <div name="left-badges-overlay" class="absolute top-3 left-3 z-10 flex flex-wrap gap-1.5 font-mono">
                 <UBadge :label="post.type_label" color="primary" variant="solid" />
 
                 <UBadge v-if="post.has_spoiler" color="warning" variant="solid" size="sm" icon="i-lucide-alert-triangle"
