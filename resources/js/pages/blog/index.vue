@@ -29,21 +29,21 @@ const {
 <template>
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6">
         <section name="first-contact-text">
-            <div
-                class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:bg-primary/5 sm:p-10 rounded-xl mt-10 mb-20">
+            <div class="my-10">
                 <div>
-                    <h1 class="text-3xl font-bold tracking-tight text-default">
-                        <template v-if="context === 'professional'">
-                            Perfil <span class="text-primary">Profissional</span>
-                        </template>
-                        <template v-else>
-                            Perfil <span class="text-primary">Pessoal</span>
-                        </template>
-                    </h1>
-                    <p class="mt-2 text-muted">
+                    <template v-if="context === 'professional'">
+                        <img src="/images/blog-profissional-intro.svg" alt="Logo do Blog Profissional">
+
+                    </template>
+                    <template v-else>
+                        <img src="/images/blog-personal-intro.svg" alt="Logo do Blog Pessoal">
+                    </template>
+                    <p class="text-muted">
                         {{ context === 'professional'
-                            ? 'Explorando features, padrões, design, e outros aspectos do desenvolvimento de software de forma incremental neste site.'
-                            : 'Falando sobre tudo o que não é profissional.'
+                            ? `Explorando features, padrões, design, e outros aspectos do desenvolvimento de software de
+                        forma incremental neste
+                        site.`
+                            : `Falando sobre tudo o que não é profissional.`
                         }}
                     </p>
                 </div>
