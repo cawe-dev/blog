@@ -13,7 +13,7 @@ enum PostType: string
         return match ($this) {
             PostType::PERSONAL => 'Pessoal',
             PostType::PROFESSIONAL => 'Profissional',
-            PostType::BOTH => 'Ambos',
+            PostType::BOTH => 'Profissional/Pessoal',
         };
     }
 }
