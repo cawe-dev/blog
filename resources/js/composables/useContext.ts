@@ -15,9 +15,13 @@ export const useContext = () => {
         });
     };
 
+    const logoUrl = computed(() =>
+        context.value === 'professional' ? '/images/blog-profissional-logo.svg' : '/images/blog-personal-logo.svg'
+    );
+
     const toggleContext = () => {
         setContext(context.value === 'professional' ? 'personal' : 'professional');
     };
 
-    return { context, setContext, toggleContext };
+    return { context, logoUrl, setContext, toggleContext };
 };
