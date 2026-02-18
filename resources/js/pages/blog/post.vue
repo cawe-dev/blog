@@ -110,7 +110,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
             </div>
         </section>
 
-        <div class="sm:grid sm:grid-cols-[700px_minmax(500px,_1fr)_700px]">
+        <div class="sm:grid sm:grid-cols-[700px_minmax(500px,1fr)_700px]">
             <aside class="hidden w-full shrink-0 lg:block">
             </aside>
 
@@ -160,23 +160,25 @@ const handleSpoilerClick = (event: MouseEvent) => {
                         </header>
 
                         <section name="content-section">
-                            <div class="relative max-w-3xl">
-                                <div v-if="typeof post.content_html === 'string'"
-                                    class="prose dark:prose-invert max-w-none" v-html="post.content_html"
-                                    @mouseover="referencePopoverRef?.handleMouseOver($event)"
-                                    @click="handleSpoilerClick" />
+                            <div class="relative">
+                                <div v-if="typeof post.content_html === 'string'" class="mx-auto max-w-3xl">
+                                    <div class="prose dark:prose-invert max-w-none" v-html="post.content_html"
+                                        @mouseover="referencePopoverRef?.handleMouseOver($event)"
+                                        @click="handleSpoilerClick" />
+                                </div>
 
-                                <div v-else class="sticky top-2 z-40 -mx-4 mb-8 px-4 py-3 sm:mx-0 sm:px-4">
-                                    <div class="flex items-center justify-between gap-4">
+                                <div v-else class="mx-auto max-w-4xl">
+                                    <div class="mb-4 px-4 py-3">
                                         <div class="flex items-center gap-2">
                                             <UIcon name="i-lucide-layers" class="h-4 w-4 text-muted" />
                                             <span class="text-sm font-medium text-default">Modo de Visualização</span>
                                         </div>
                                     </div>
+
                                     <UTabs v-model="viewMode" :items="viewModeItems" size="sm" class="mt-4">
                                         <template #content="{ item }">
-                                            <div class="mt-4">
-                                                <h3 class="mb-2 text-sm font-bold uppercase text-muted">
+                                            <div class="mt-6">
+                                                <h3 class="mb-4 text-sm font-bold uppercase tracking-widest text-muted">
                                                     {{ item.label }}
                                                 </h3>
                                                 <div class="prose dark:prose-invert max-w-none" v-html="item.content"
@@ -284,10 +286,12 @@ const handleSpoilerClick = (event: MouseEvent) => {
 
 <style scoped>
 .prose {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
     max-width: none;
-    font-size: 1.0625rem;
+    font-size: 1.125rem;
     line-height: 1.8;
     color: var(--ui-text);
+    -webkit-font-smoothing: antialiased;
 }
 
 .prose :deep(h2) {
