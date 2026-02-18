@@ -8,7 +8,7 @@ export const usePostFeed = (postsProp: Ref<IPostGroup>) => {
     const searchQuery = ref('')
     const selectedCategories = ref<string[]>([])
     const selectedTags = ref<string[]>([])
-    const viewMode = ref<'grid' | 'list'>('grid')
+    const viewMode = ref<'grid' | 'list'>('list')
 
     const { context } = useContext()
 
