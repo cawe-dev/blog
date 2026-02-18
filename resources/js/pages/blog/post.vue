@@ -8,7 +8,6 @@ import { VIEW_MODE_CONFIG } from '@/types/enums/contentPostViewMode'
 import ReferencePopover from '@/components/blog/reference-popover.vue';
 import { IChangelogs, IChangelogItem } from '@/types/models/changeLog'
 import PostFeaturesBagde from '@/components/blog/PostFeaturesBagde.vue'
-import { defaultDocument } from '@vueuse/core'
 
 const props = defineProps<{
     post: IPost,
@@ -110,163 +109,171 @@ const handleSpoilerClick = (event: MouseEvent) => {
                 <div class="h-full bg-primary transition-all duration-150" :style="{ width: `${readingProgress}%` }" />
             </div>
         </section>
-        <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-            <div class="flex gap-8">
-                <article class="min-w-0 flex-1">
-                    <header class="mb-8">
-                        <Link href="/"
-                            class="mb-4 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-default">
-                            <UIcon name="i-lucide-arrow-left" class="h-4 w-4" />
-                            Voltar ao Blog
-                        </Link>
-                        <h1
-                            class="mb-4 text-balance text-3xl font-bold tracking-tight text-default sm:text-4xl lg:text-5xl">
-                            {{ post.title }}
-                        </h1>
 
-                        <section name="metadata-section">
-                            <div class="mb-6 flex flex-wrap items-center gap-3 text-sm">
-                                <div name="create-date" class="flex items-center gap-1.5 text-muted">
-                                    <UIcon name="i-lucide-calendar" class="h-4 w-4" />
-                                    <time :datetime="post.created_at">{{ formattedDate }}</time>
-                                </div>
+        <div class="sm:grid sm:grid-cols-[700px_minmax(500px,_1fr)_700px]">
+            <aside class="hidden w-full shrink-0 lg:block">
+            </aside>
 
-                                <UBadge name="edited-post-indicator" v-if="wasEdited" variant="subtle" color="primary"
-                                    size="sm">
-                                    <UIcon name="i-lucide-pencil" class="mr-1 h-3 w-3" />
-                                    Editado em {{ formattedUpdateDate }}
-                                </UBadge>
+            <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6">
+                <div class="flex gap-8">
+                    <article class="min-w-0 flex-1">
+                        <header class="mb-8">
+                            <Link href="/"
+                                class="mb-4 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-default">
+                                <UIcon name="i-lucide-arrow-left" class="h-4 w-4" />
+                                Voltar ao Blog
+                            </Link>
+                            <h1
+                                class="mb-4 text-balance text-3xl font-bold tracking-tight text-default sm:text-4xl lg:text-5xl">
+                                {{ post.title }}
+                            </h1>
 
-                                <div name="esmative-read-time" class="flex items-center gap-1.5 text-muted">
-                                    <UIcon name="i-lucide-clock" class="h-4 w-4" />
-                                    <span>{{ post.estimated_read_time }} min de leitura</span>
-                                </div>
+                            <section name="metadata-section">
+                                <div class="mb-6 flex flex-wrap items-center gap-3 text-sm">
+                                    <div name="create-date" class="flex items-center gap-1.5 text-muted">
+                                        <UIcon name="i-lucide-calendar" class="h-4 w-4" />
+                                        <time :datetime="post.created_at">{{ formattedDate }}</time>
+                                    </div>
 
-                                <div name="category-post">
-                                    <UBadge :key="post.category.id" variant="subtle" color="primary">
-                                        {{ post.category.name }}
+                                    <UBadge name="edited-post-indicator" v-if="wasEdited" variant="subtle"
+                                        color="primary" size="sm">
+                                        <UIcon name="i-lucide-pencil" class="mr-1 h-3 w-3" />
+                                        Editado em {{ formattedUpdateDate }}
                                     </UBadge>
-                                </div>
 
-                                <div v-if="featuresAfterPost.length > 0" name="features-after-post">
-                                    <PostFeaturesBagde :features="featuresAfterPost" />
-                                </div>
-                            </div>
-                        </section>
-                    </header>
+                                    <div name="esmative-read-time" class="flex items-center gap-1.5 text-muted">
+                                        <UIcon name="i-lucide-clock" class="h-4 w-4" />
+                                        <span>{{ post.estimated_read_time }} min de leitura</span>
+                                    </div>
 
-                    <section name="content-section">
-                        <div class="relative">
-                            <div v-if="typeof post.content_html === 'string'" class="prose dark:prose-invert max-w-none"
-                                v-html="post.content_html" @mouseover="referencePopoverRef?.handleMouseOver($event)"
-                                @click="handleSpoilerClick" />
+                                    <div name="category-post">
+                                        <UBadge :key="post.category.id" variant="subtle" color="primary">
+                                            {{ post.category.name }}
+                                        </UBadge>
+                                    </div>
 
-                            <div v-else class="sticky top-2 z-40 -mx-4 mb-8 px-4 py-3 sm:mx-0 sm:px-4">
-                                <div class="flex items-center justify-between gap-4">
-                                    <div class="flex items-center gap-2">
-                                        <UIcon name="i-lucide-layers" class="h-4 w-4 text-muted" />
-                                        <span class="text-sm font-medium text-default">Modo de Visualização</span>
+                                    <div v-if="featuresAfterPost.length > 0" name="features-after-post">
+                                        <PostFeaturesBagde :features="featuresAfterPost" />
                                     </div>
                                 </div>
-                                <UTabs v-model="viewMode" :items="viewModeItems" size="sm" class="mt-4">
-                                    <template #content="{ item }">
-                                        <div class="mt-4">
-                                            <h3 class="mb-2 text-sm font-bold uppercase text-muted">
-                                                {{ item.label }}
-                                            </h3>
-                                            <div class="prose dark:prose-invert max-w-none" v-html="item.content"
-                                                @mouseover="referencePopoverRef?.handleMouseOver($event)"
-                                                @click="handleSpoilerClick" />
+                            </section>
+                        </header>
+
+                        <section name="content-section">
+                            <div class="relative">
+                                <div v-if="typeof post.content_html === 'string'"
+                                    class="prose dark:prose-invert max-w-none" v-html="post.content_html"
+                                    @mouseover="referencePopoverRef?.handleMouseOver($event)"
+                                    @click="handleSpoilerClick" />
+
+                                <div v-else class="sticky top-2 z-40 -mx-4 mb-8 px-4 py-3 sm:mx-0 sm:px-4">
+                                    <div class="flex items-center justify-between gap-4">
+                                        <div class="flex items-center gap-2">
+                                            <UIcon name="i-lucide-layers" class="h-4 w-4 text-muted" />
+                                            <span class="text-sm font-medium text-default">Modo de Visualização</span>
                                         </div>
-                                    </template>
-                                </UTabs>
-                            </div>
-
-                            <ReferencePopover ref="referencePopoverRef" :references="post.references" />
-                        </div>
-                    </section>
-
-                    <USeparator class="my-8" />
-
-                    <footer class="space-y-8">
-                        <section name="tags-section">
-                            <div>
-                                <h3 class="mb-3 text-sm font-semibold text-default">Tags</h3>
-                                <div class="flex flex-wrap gap-2">
-                                    <UBadge v-for="tag in post.tags" :key="tag.id" variant="soft" color="neutral"
-                                        size="sm">
-                                        #{{ tag.name }}
-                                    </UBadge>
+                                    </div>
+                                    <UTabs v-model="viewMode" :items="viewModeItems" size="sm" class="mt-4">
+                                        <template #content="{ item }">
+                                            <div class="mt-4">
+                                                <h3 class="mb-2 text-sm font-bold uppercase text-muted">
+                                                    {{ item.label }}
+                                                </h3>
+                                                <div class="prose dark:prose-invert max-w-none" v-html="item.content"
+                                                    @mouseover="referencePopoverRef?.handleMouseOver($event)"
+                                                    @click="handleSpoilerClick" />
+                                            </div>
+                                        </template>
+                                    </UTabs>
                                 </div>
+
+                                <ReferencePopover ref="referencePopoverRef" :references="post.references" />
                             </div>
                         </section>
 
-                        <section name="share-section">
-                            <div>
-                                <h3 class="mb-3 text-sm font-semibold text-default">Compartilhar </h3>
-                                <div class="flex gap-2">
-                                    <UButton variant="outline" color="neutral" size="sm" icon="i-lucide-link"
-                                        @click="copyLink">
-                                        Copiar Link
-                                    </UButton>
-                                    <UButton variant="outline" color="neutral" size="sm" icon="i-lucide-twitter"
-                                        @click="shareOnX">
-                                        Compartilhar no X
-                                    </UButton>
-                                </div>
-                            </div>
-                        </section>
+                        <USeparator class="my-8" />
 
-                        <USeparator />
-                    </footer>
-                </article>
+                        <footer class="space-y-8">
+                            <section name="tags-section">
+                                <div>
+                                    <h3 class="mb-3 text-sm font-semibold text-default">Tags</h3>
+                                    <div class="flex flex-wrap gap-2">
+                                        <UBadge v-for="tag in post.tags" :key="tag.id" variant="soft" color="neutral"
+                                            size="sm">
+                                            #{{ tag.name }}
+                                        </UBadge>
+                                    </div>
+                                </div>
+                            </section>
 
-                <aside class="hidden w-64 shrink-0 lg:block">
-                    <div name="reading-progress" class="sticky top-20 space-y-6">
-                        <UCard name="reading-progress-widget">
-                            <template #header>
-                                <div class="flex items-center gap-2">
-                                    <UIcon name="i-lucide-book-open" class="h-4 w-4 text-primary" />
-                                    <span class="text-sm font-medium text-default">Progresso</span>
+                            <section name="share-section">
+                                <div>
+                                    <h3 class="mb-3 text-sm font-semibold text-default">Compartilhar </h3>
+                                    <div class="flex gap-2">
+                                        <UButton variant="outline" color="neutral" size="sm" icon="i-lucide-link"
+                                            @click="copyLink">
+                                            Copiar Link
+                                        </UButton>
+                                        <UButton variant="outline" color="neutral" size="sm" icon="i-lucide-twitter"
+                                            @click="shareOnX">
+                                            Compartilhar no X
+                                        </UButton>
+                                    </div>
                                 </div>
-                            </template>
-                            <div class="space-y-2">
-                                <div class="flex justify-between text-xs">
-                                    <span class="text-muted">Leitura:</span>
-                                </div>
-                                <UProgress v-model="readingProgress" status :max="100" size="xs">
-                                    <template #status>
-                                        <span>{{ readingProgress }}% {{ readingProgress >= 100 ? 'Concluído' :
-                                            'Lendo...'
-                                        }}</span>
-                                    </template>
-                                </UProgress>
-                            </div>
-                        </UCard>
-                    </div>
-                    <div name="subtopics-navigator" class="sticky top-64 mt-7 space-y-4">
-                        <UCard v-if="post.sub_topics && post.sub_topics.length > 0">
-                            <template #header>
-                                <div class="flex items-center gap-2">
-                                    <UIcon name="i-lucide-list" class="h-4 w-4 text-primary" />
-                                    <span class="text-sm font-medium text-default">Índice</span>
-                                </div>
-                            </template>
-                            <nav>
-                                <ul class="space-y-1.5 text-sm">
-                                    <li v-for="(topic, index) in post.sub_topics" :key="index">
-                                        <a :href="`#${topic}`"
-                                            class="block px-2.5 py-1.5 text-muted hover:text-default hover:bg-accented transition-colors duration-150 border-l-2 border-transparent hover:border-primary">
-                                            {{ topic }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </UCard>
-                    </div>
-                </aside>
+                            </section>
+
+                            <USeparator />
+                        </footer>
+                    </article>
+                </div>
             </div>
+
+            <aside class="hidden w-64 shrink-0 lg:block mt-18">
+                <div name="reading-progress" class="sticky top-20 space-y-6">
+                    <UCard name="reading-progress-widget">
+                        <template #header>
+                            <div class="flex items-center gap-2">
+                                <UIcon name="i-lucide-book-open" class="h-4 w-4 text-primary" />
+                                <span class="text-sm font-medium text-default">Progresso</span>
+                            </div>
+                        </template>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-muted">Leitura:</span>
+                            </div>
+                            <UProgress v-model="readingProgress" status :max="100" size="xs">
+                                <template #status>
+                                    <span>{{ readingProgress }}% {{ readingProgress >= 100 ? 'Concluído' :
+                                        'Lendo...'
+                                    }}</span>
+                                </template>
+                            </UProgress>
+                        </div>
+                    </UCard>
+                </div>
+                <div name="subtopics-navigator" class="sticky top-64 mt-7 space-y-4">
+                    <UCard v-if="post.sub_topics && post.sub_topics.length > 0">
+                        <template #header>
+                            <div class="flex items-center gap-2">
+                                <UIcon name="i-lucide-list" class="h-4 w-4 text-primary" />
+                                <span class="text-sm font-medium text-default">Índice</span>
+                            </div>
+                        </template>
+                        <nav>
+                            <ul class="space-y-1.5 text-sm">
+                                <li v-for="(topic, index) in post.sub_topics" :key="index">
+                                    <a :href="`#${topic}`"
+                                        class="block px-2.5 py-1.5 text-muted hover:text-default hover:bg-accented transition-colors duration-150 border-l-2 border-transparent hover:border-primary">
+                                        {{ topic }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </UCard>
+                </div>
+            </aside>
         </div>
+
     </div>
     <section v-else name="loading-post-section">
         <div class="flex items-center justify-center min-h-screen">
