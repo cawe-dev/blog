@@ -116,7 +116,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
 
             <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6">
                 <div class="flex gap-8">
-                    <article class="min-w-0 flex-1">
+                    <article>
                         <header class="mb-8">
                             <Link href="/"
                                 class="mb-4 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-default">
@@ -160,7 +160,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                         </header>
 
                         <section name="content-section">
-                            <div class="relative">
+                            <div class="relative max-w-3xl">
                                 <div v-if="typeof post.content_html === 'string'"
                                     class="prose dark:prose-invert max-w-none" v-html="post.content_html"
                                     @mouseover="referencePopoverRef?.handleMouseOver($event)"
@@ -245,7 +245,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                 <template #status>
                                     <span>{{ readingProgress }}% {{ readingProgress >= 100 ? 'Concluído' :
                                         'Lendo...'
-                                    }}</span>
+                                        }}</span>
                                 </template>
                             </UProgress>
                         </div>
