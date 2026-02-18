@@ -19,9 +19,13 @@ export const useContext = () => {
         context.value === 'professional' ? '/images/blog-profissional-logo.svg' : '/images/blog-personal-logo.svg'
     );
 
+    const font = computed(() =>
+        context.value === 'professional' ? 'font-professional' : 'font-personal'
+    );
+
     const toggleContext = () => {
         setContext(context.value === 'professional' ? 'personal' : 'professional');
     };
 
-    return { context, logoUrl, setContext, toggleContext };
+    return { context, logoUrl, font, setContext, toggleContext };
 };

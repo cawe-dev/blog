@@ -5,9 +5,10 @@ import { Link } from '@inertiajs/vue3'
 import type { IPost } from '@/types/models/post'
 import type { IViewMode, ViewModeKeys } from '@/types/enums/contentPostViewMode'
 import { VIEW_MODE_CONFIG } from '@/types/enums/contentPostViewMode'
-import ReferencePopover from '@/components/blog/reference-popover.vue';
+import ReferencePopover from '@/components/blog/reference-popover.vue'
 import { IChangelogs, IChangelogItem } from '@/types/models/changeLog'
 import PostFeaturesBagde from '@/components/blog/PostFeaturesBagde.vue'
+import { useContext } from '@/composables/useContext'
 
 const props = defineProps<{
     post: IPost,
@@ -17,6 +18,7 @@ const props = defineProps<{
 defineOptions({ layout: Layout })
 
 const toast = useToast()
+const { font } = useContext()
 
 const readingProgress = ref<number>(0)
 const referencePopoverRef = ref<InstanceType<typeof ReferencePopover>>()
@@ -162,7 +164,8 @@ const handleSpoilerClick = (event: MouseEvent) => {
                         <section name="content-section">
                             <div class="relative">
                                 <div v-if="typeof post.content_html === 'string'" class="mx-auto max-w-3xl">
-                                    <div class="prose dark:prose-invert max-w-none" v-html="post.content_html"
+                                    <div class="prose dark:prose-invert max-w-none" :class="font"
+                                        v-html="post.content_html"
                                         @mouseover="referencePopoverRef?.handleMouseOver($event)"
                                         @click="handleSpoilerClick" />
                                 </div>
@@ -181,7 +184,8 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                                 <h3 class="mb-4 text-sm font-bold uppercase tracking-widest text-muted">
                                                     {{ item.label }}
                                                 </h3>
-                                                <div class="prose dark:prose-invert max-w-none" v-html="item.content"
+                                                <div class="prose dark:prose-invert max-w-none" :class="font"
+                                                    v-html="item.content"
                                                     @mouseover="referencePopoverRef?.handleMouseOver($event)"
                                                     @click="handleSpoilerClick" />
                                             </div>
@@ -286,12 +290,29 @@ const handleSpoilerClick = (event: MouseEvent) => {
 
 <style scoped>
 .prose {
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
     max-width: none;
     font-size: 1.125rem;
     line-height: 1.8;
     color: var(--ui-text);
     -webkit-font-smoothing: antialiased;
+}
+
+.prose.font-professional {
+    font-family: 'Inter', ui-sans-serif, system-ui;
+    letter-spacing: -0.01em;
+}
+
+.prose.font-personal {
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
+    font-size: 1.15rem;
+    line-height: 1.85;
+}
+
+.font-personal h1,
+.font-personal h2,
+.font-personal h3 {
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.02em;
 }
 
 .prose :deep(h2) {
