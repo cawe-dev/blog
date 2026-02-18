@@ -116,7 +116,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
 
             <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6">
                 <div class="flex gap-8">
-                    <article>
+                    <article class="text-pretty">
                         <header class="mb-8">
                             <Link href="/"
                                 class="mb-4 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-default">
@@ -245,7 +245,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                 <template #status>
                                     <span>{{ readingProgress }}% {{ readingProgress >= 100 ? 'Concluído' :
                                         'Lendo...'
-                                        }}</span>
+                                    }}</span>
                                 </template>
                             </UProgress>
                         </div>
@@ -349,8 +349,23 @@ const handleSpoilerClick = (event: MouseEvent) => {
 }
 
 .prose :deep(span[data-reference-id]) {
-    border-bottom: 1px solid var(--ui-primary);
+    font-weight: 500 !important;
+    text-decoration-line: underline;
+    text-decoration-style: dashed;
+    text-decoration-color: var(--ui-primary);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
     cursor: help;
+
+    border-radius: 4px;
+    padding: 0 2px;
+    transition: all 0.2s ease;
+}
+
+.prose :deep(span[data-reference-id]:hover) {
+    color: var(--ui-primary);
+    text-decoration-style: solid;
+    text-decoration-color: var(--ui-primary);
 }
 
 .prose :deep(p:has(img)) {
