@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { IPost } from '@/types/models/post'
 import { computed, ref } from 'vue'
+import { formatDate } from '@/utils/date'
 
 const props = defineProps<{
     post: IPost,
@@ -12,10 +13,7 @@ const isSpoilerRevealed = ref(false)
 const computedPath = computed(() => `/blog/post/${props.post.slug}`)
 
 const formattedDate = computed(() => {
-    return new Date(props.post.created_at).toLocaleDateString('pt-BR', {
-        day: '2-digit', month: 'long', year: 'numeric',
-        hour: '2-digit', minute: '2-digit'
-    })
+    return formatDate(props.post.created_at)
 })
 
 const toggleSpoiler = () => {

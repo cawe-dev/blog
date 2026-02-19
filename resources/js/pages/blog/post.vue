@@ -9,6 +9,7 @@ import ReferencePopover from '@/components/blog/reference-popover.vue'
 import { IChangelogs, IChangelogItem } from '@/types/models/changeLog'
 import PostFeaturesBagde from '@/components/blog/PostFeaturesBagde.vue'
 import { useContext } from '@/composables/useContext'
+import { formatDate } from '@/utils/date'
 
 const props = defineProps<{
     post: IPost,
@@ -46,11 +47,7 @@ onUnmounted(() => {
 })
 
 const formattedDate = computed(() => {
-    return new Date(props.post.created_at).toLocaleDateString('pt-BR', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-    })
+    return formatDate(props.post.created_at)
 })
 
 const formattedUpdateDate = computed(() => {
