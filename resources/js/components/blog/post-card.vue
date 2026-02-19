@@ -54,8 +54,8 @@ const toggleSpoiler = () => {
             </UBadge>
             <UBadge v-if="post.change_logs" v-for="changeLog in post.change_logs" :key="changeLog.id"
                 :label="changeLog.type"
-                class="bg-(--brand-secondary) ring-1 ring-inset ring-(--ui-foreground) font-mono font-semibold" />
-            <UBadge :key="post.category.id" variant="subtle" color="primary">
+                class="bg-(--brand-secondary) ring-1 ring-inset ring-(--ui-foreground)  font-mono font-semibold" />
+            <UBadge :key="post.category.id" variant="solid" color="primary" class="font-(--font-family-prose)">
                 {{ post.category.name }}
             </UBadge>
         </template>
@@ -66,48 +66,57 @@ const toggleSpoiler = () => {
                     <UIcon name="i-heroicons-calendar" class="w-3.5 h-3.5" />
                     {{ formattedDate }}
                 </time>
-                <div class="w-px h-4 bg-primary mx-2"></div>
-
-                <div class="flex gap-1.5" v-if="post.tags && post.tags.length">
-                    <UBadge v-for="tag in post.tags.slice(0, 2)" :key="tag.id" :label="`#${tag.name}`" variant="soft"
-                        size="xs" />
-                    <span v-if="post.tags.length > 2" class="text-xs text-muted self-center">
-                        +{{ post.tags.length - 2 }}
-                    </span>
-                </div>
             </div>
         </template>
 
         <template #title>
             <div class="flex items-center gap-2 flex-wrap mb-2">
-                <h3 class=" text-xl font-bold text-default group-hover:text-primary transition-colors line-clamp-2">
+                <h1 class=" text-xl font-bold text-default group-hover:text-primary transition-colors line-clamp-2">
                     {{ post.title }}
-                </h3>
-                <UBadge v-for="category in post.categories" :key="category.id" :label="category.name" variant="subtle"
-                    size="xs" />
+                </h1>
             </div>
         </template>
 
         <template #description>
             <div class="cursor-pointer" @click.prevent="post.has_spoiler && toggleSpoiler()">
 
-                <span :class="[
-                    'block text-base leading-relaxed text-muted line-clamp-3',
-                    post.has_spoiler && !isSpoilerRevealed ? 'blur-sm select-none my-10' : ''
-                ]">
-                    {{ post.excerpt }}
+                <span :class="post.has_spoiler && !isSpoilerRevealed ? 'blur-sm select-none my-10' : ''
+                    ">
+                    <p class="text-base leading-relaxed text-muted text-balance line-clamp-3">{{ post.excerpt }}</p>
                 </span>
 
                 <span v-if="post.has_spoiler && !isSpoilerRevealed" class="absolute"
-                    :class="viewMode === 'list' ? 'inset-y-9/12 inset-x-1/4 sm:inset-y-10/19 sm:inset-x-6/9' : 'inset-y-9/12 inset-x-1/4 sm:inset-y-9/12 sm:inset-x-1/3'">
+                    :class="viewMode === 'list' ? 'inset-y-12/16 inset-x-1/4 sm:inset-y-12/22 sm:inset-x-6/9' : 'inset-y-9/12 inset-x-1/4 sm:inset-y-12/15 sm:inset-x-1/3'">
                     <UBadge label="Esse post contém spoiler(s)" color="neutral" variant="solid"
                         icon="i-heroicons-eye-slash" />
                 </span>
             </div>
+
+            <section name="tags-grid-mode">
+                <div class="hidden sm:block" v-if="viewMode === 'list'">
+                    <div class="absolute bottom-2" v-if="post.tags && post.tags.length">
+                        <UBadge v-for="tag in post.tags.slice(0, 2)" :key="tag.id" :label="`#${tag.name}`"
+                            variant="soft" size="md" class="mx-0.5" />
+                        <span v-if="post.tags.length > 2" class="text-xs text-muted self-center">
+                            +{{ post.tags.length - 2 }}
+                        </span>
+                    </div>
+                </div>
+            </section>
         </template>
 
-        <template v-if="viewMode === 'grid'" #footer>
-            <div class=" flex items-center justify-between w-full pt-4">
+        <template #footer>
+            <section :class="viewMode === 'list' ? 'sm:hidden' : ''" name="tags-list-mode">
+                <div class="absolute ml-0.5 bottom-2" v-if="post.tags && post.tags.length">
+                    <UBadge v-for="tag in post.tags.slice(0, 2)" :key="tag.id" :label="`#${tag.name}`" variant="soft"
+                        size="md" class="ml-1" />
+                    <span v-if="post.tags.length > 2" class="text-xs text-muted self-center">
+                        +{{ post.tags.length - 2 }}
+                    </span>
+                </div>
+            </section>
+
+            <div :class="viewMode === 'list' ? 'sm:hidden' : ''" class=" flex items-center justify-between w-full pt-4">
                 <div class="flex-1"></div>
                 <UButton size="md"
                     class="group transform transition-all duration-200 bg-transparent hover:bg-transparent hover:scale-105 active:scale-95 px-4 py-2"
