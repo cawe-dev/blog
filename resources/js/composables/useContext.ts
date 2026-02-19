@@ -20,12 +20,16 @@ export const useContext = () => {
     );
 
     const font = computed(() =>
-        context.value === 'professional' ? 'font-professional' : 'font-personal'
+        context.value === 'professional' ? 'font-professional text-[1.04rem] sm:text-[1.15rem]' : 'font-personal  text-[1.04rem] sm:text-[1.15rem]'
+    );
+    
+    const lineLength = computed(() =>
+        context.value === 'professional' ? 'max-w-3xl' : 'max-w-prose'
     );
 
     const toggleContext = () => {
         setContext(context.value === 'professional' ? 'personal' : 'professional');
     };
 
-    return { context, logoUrl, font, setContext, toggleContext };
+    return { context, logoUrl, font, lineLength, setContext, toggleContext };
 };

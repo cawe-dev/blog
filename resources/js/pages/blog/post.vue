@@ -19,7 +19,7 @@ const props = defineProps<{
 defineOptions({ layout: Layout })
 
 const toast = useToast()
-const { font } = useContext()
+const { font, lineLength } = useContext()
 
 const readingProgress = ref<number>(0)
 const referencePopoverRef = ref<InstanceType<typeof ReferencePopover>>()
@@ -118,12 +118,12 @@ const handleSpoilerClick = (event: MouseEvent) => {
                     <article class="text-pretty">
                         <header class="mb-8">
                             <Link href="/"
-                                class="mb-4 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-default">
+                                class="mb-4 inline-flex items-center gap-1.5 text-sm text-default hover:text-accented">
                                 <UIcon name="i-lucide-arrow-left" class="h-4 w-4" />
                                 Voltar ao Blog
                             </Link>
                             <h1
-                                class="mb-4 text-balance text-3xl font-bold tracking-tight text-default sm:text-4xl lg:text-5xl">
+                                class="mt-4 mb-4 text-balance text-3xl font-bold tracking-tight text-highlighted sm:text-4xl lg:text-5xl">
                                 {{ post.title }}
                             </h1>
 
@@ -135,7 +135,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                     </div>
 
                                     <UBadge name="edited-post-indicator" v-if="wasEdited" variant="subtle"
-                                        color="primary" size="sm">
+                                        color="secondary" size="sm">
                                         <UIcon name="i-lucide-pencil" class="mr-1 h-3 w-3" />
                                         Editado em {{ formattedUpdateDate }}
                                     </UBadge>
@@ -146,7 +146,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                     </div>
 
                                     <div name="category-post">
-                                        <UBadge :key="post.category.id" variant="subtle" color="primary">
+                                        <UBadge :key="post.category.id" variant="subtle" color="secondary">
                                             {{ post.category.name }}
                                         </UBadge>
                                     </div>
@@ -159,37 +159,43 @@ const handleSpoilerClick = (event: MouseEvent) => {
                         </header>
 
                         <section name="content-section">
-                            <div class="relative">
-                                <div v-if="typeof post.content_html === 'string'" class="mx-auto max-w-3xl">
-                                    <div class="prose dark:prose-invert max-w-none" :class="font"
+                            <div>
+                                <div v-if="typeof post.content_html === 'string'" class="mx-auto px-3 sm:px-0"
+                                    :class="lineLength">
+                                    <div class="prose dark:prose-invert" :class="font"
                                         v-html="post.content_html"
                                         @mouseover="referencePopoverRef?.handleMouseOver($event)"
                                         @click="handleSpoilerClick" />
                                 </div>
 
-                                <div v-else class="mx-auto max-w-4xl">
-                                    <div class="mb-4 px-4 py-3">
-                                        <div class="flex items-center gap-2">
-                                            <UIcon name="i-lucide-layers" class="h-4 w-4 text-muted" />
-                                            <span class="text-sm font-medium text-default">Modo de Visualização</span>
-                                        </div>
-                                    </div>
-
-                                    <UTabs v-model="viewMode" :items="viewModeItems" size="sm" class="mt-4">
+                                <div v-else class="mx-auto" :class="lineLength">
+                                    <UTabs v-model="viewMode" :items="viewModeItems" size="sm" class="mt-4 lg:hidden">
                                         <template #content="{ item }">
                                             <div class="mt-6">
                                                 <h3 class="mb-4 text-sm font-bold uppercase tracking-widest text-muted">
                                                     {{ item.label }}
                                                 </h3>
-                                                <div class="prose dark:prose-invert max-w-none" :class="font"
-                                                    v-html="item.content"
+                                                <div class="prose dark:prose-invert" :class="font" v-html="item.content"
                                                     @mouseover="referencePopoverRef?.handleMouseOver($event)"
                                                     @click="handleSpoilerClick" />
                                             </div>
                                         </template>
                                     </UTabs>
-                                </div>
 
+                                    <div class="hidden lg:block">
+                                        <template v-for="item in viewModeItems" :key="item.value">
+                                            <div v-show="viewMode === item.value">
+                                                <h3 class="mb-4 text-sm font-bold uppercase tracking-widest text-muted">
+                                                    {{ item.label }}
+                                                </h3>
+                                                <div class="prose max-w-none dark:prose-invert" :class="font"
+                                                    v-html="item.content"
+                                                    @mouseover="referencePopoverRef?.handleMouseOver($event)"
+                                                    @click="handleSpoilerClick" />
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
                                 <ReferencePopover ref="referencePopoverRef" :references="post.references" />
                             </div>
                         </section>
@@ -232,7 +238,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
             </div>
 
             <aside class="hidden w-64 shrink-0 lg:block mt-18">
-                <div name="reading-progress" class="sticky top-20 space-y-6">
+                <div class="sticky top-24 space-y-6">
                     <UCard name="reading-progress-widget">
                         <template #header>
                             <div class="flex items-center gap-2">
@@ -253,9 +259,19 @@ const handleSpoilerClick = (event: MouseEvent) => {
                             </UProgress>
                         </div>
                     </UCard>
-                </div>
-                <div name="subtopics-navigator" class="sticky top-64 mt-7 space-y-4">
-                    <UCard v-if="post.sub_topics && post.sub_topics.length > 0">
+
+                    <UCard v-if="typeof post.content_html !== 'string'" name="view-mode-widget">
+                        <template #header>
+                            <div class="flex items-center gap-2">
+                                <UIcon name="i-lucide-layers" class="h-4 w-4 text-primary" />
+                                <span class="text-sm font-medium text-default">Modo de Visualização</span>
+                            </div>
+                        </template>
+                        <UTabs v-model="viewMode" :items="viewModeItems" orientation="vertical" :content="false"
+                            variant="link" class="w-full" />
+                    </UCard>
+
+                    <UCard v-if="post.sub_topics && post.sub_topics.length > 0" name="subtopics-widget">
                         <template #header>
                             <div class="flex items-center gap-2">
                                 <UIcon name="i-lucide-list" class="h-4 w-4 text-primary" />
@@ -288,8 +304,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
 <style scoped>
 .prose {
     max-width: none;
-    font-size: 1.125rem;
-    line-height: 1.8;
+    line-height: 1.6;
     color: var(--ui-text);
     -webkit-font-smoothing: antialiased;
 }
@@ -297,12 +312,11 @@ const handleSpoilerClick = (event: MouseEvent) => {
 .prose.font-professional {
     font-family: 'Inter', ui-sans-serif, system-ui;
     letter-spacing: -0.01em;
+    line-height: 1.7;
 }
 
 .prose.font-personal {
     font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
-    font-size: 1.15rem;
-    line-height: 1.85;
 }
 
 .font-personal h1,
@@ -314,11 +328,10 @@ const handleSpoilerClick = (event: MouseEvent) => {
 
 .prose :deep(h2) {
     font-size: 1.5rem;
-    font-weight: 700;
-    margin-top: 2.5rem;
     margin-bottom: 1rem;
     color: var(--ui-text);
     letter-spacing: -0.02em;
+    line-height: 1.5;
 }
 
 .prose :deep(h3) {
@@ -331,8 +344,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
 }
 
 .prose :deep(p) {
-    margin-bottom: 1rem;
-    line-height: 1.75;
+    margin-bottom: 1.5rem;
 }
 
 .prose :deep(pre) {
@@ -394,7 +406,8 @@ const handleSpoilerClick = (event: MouseEvent) => {
     text-align: center;
     font-size: 0.85rem;
     line-height: 1.3;
-    color: var(--ui-text-dimmed);
+    color: var(--ui-text-toned);
+    font-style: italic;
     margin-top: 0.5rem;
     display: flex;
     flex-direction: column;
