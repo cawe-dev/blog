@@ -64,7 +64,7 @@
 }
 
 [data-context="personal"] {
-    --ui-bg: oklch(0.98 0.015 85);
+    --ui-bg: oklch(0.95 0.02 85);
     --ui-foreground: oklch(0.2 0.03 60);
     --ui-bg-elevated: oklch(1 0.005 85);
     --ui-bg-accented: oklch(0.93 0.02 85);
@@ -72,7 +72,7 @@
     --ui-border: oklch(0.88 0.03 85);
     --ui-border-accented: oklch(53.699% 0.11139 77.693);
     --ui-border-inverted: oklch(0.3 0.03 60);
-    --ui-text: oklch(0.25 0.02 85);
+    --ui-text: oklch(0.35 0.02 85);
     --ui-text-muted: oklch(0.5 0.03 60);
     --ui-text-dimmed: oklch(0.6 0.025 60);
     --ui-text-toned: oklch(0.4 0.03 60);

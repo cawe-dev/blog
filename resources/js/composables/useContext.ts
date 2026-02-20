@@ -20,11 +20,11 @@ export const useContext = () => {
     );
 
     const font = computed(() =>
-        context.value === 'professional' ? 'font-professional text-[1.04rem] sm:text-[1.15rem]' : 'font-personal  text-[1.04rem] sm:text-[1.15rem]'
+        context.value === 'professional' ? 'font-professional text-[1.04rem] sm:text-[1.15rem]' : 'font-personal [&_p]:mb-7! [&_p]:sm:mb-6! text-[1.0625rem] leading-relaxed! sm:text-[1.15rem]'
     );
     
     const lineLength = computed(() =>
-        context.value === 'professional' ? 'max-w-3xl' : 'max-w-prose'
+        context.value === 'professional' ? 'max-w-3xl' : 'max-w-[80ch]'
     );
 
     const toggleContext = () => {
