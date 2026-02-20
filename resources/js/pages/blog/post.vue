@@ -162,8 +162,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                             <div>
                                 <div v-if="typeof post.content_html === 'string'" class="mx-auto px-3 sm:px-0"
                                     :class="lineLength">
-                                    <div class="prose dark:prose-invert" :class="font"
-                                        v-html="post.content_html"
+                                    <div class="prose dark:prose-invert" :class="font" v-html="post.content_html"
                                         @mouseover="referencePopoverRef?.handleMouseOver($event)"
                                         @click="handleSpoilerClick" />
                                 </div>
@@ -402,18 +401,6 @@ const handleSpoilerClick = (event: MouseEvent) => {
     text-decoration-color: var(--ui-primary);
 }
 
-.prose :deep(p:has(img)) {
-    text-align: center;
-    font-size: 0.85rem;
-    line-height: 1.3;
-    color: var(--ui-text-toned);
-    font-style: italic;
-    margin-top: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .prose :deep(iframe) {
     display: block;
     width: 100%;
@@ -423,12 +410,26 @@ const handleSpoilerClick = (event: MouseEvent) => {
     border: 1px solid var(--ui-border);
 }
 
-.prose :deep(img) {
+.prose :deep(p:has(img[data-type="img"])) {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    color: var(--ui-text-toned);
+    font-style: italic;
+}
+
+.prose :deep(img[data-type="img"]) {
     max-width: 100%;
     height: auto;
-    display: inline-block;
+    display: block;
     border-radius: 0.75rem;
     border: 1px solid var(--ui-border);
+    margin-bottom: 0.7rem;
+    font-style: normal;
 }
 
 .prose :deep(span[data-has-spoiler="true"]) {
