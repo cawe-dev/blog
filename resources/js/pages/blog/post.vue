@@ -123,7 +123,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                 Voltar ao Blog
                             </Link>
                             <h1
-                                class="mt-4 mb-4 text-balance text-3xl font-bold tracking-tight text-highlighted sm:text-4xl lg:text-5xl">
+                                class="mt-4 mb-4 text-balance text-2xl font-bold leading-tight text-highlighted sm:text-4xl lg:text-5xl">
                                 {{ post.title }}
                             </h1>
 
@@ -167,13 +167,10 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                         @click="handleSpoilerClick" />
                                 </div>
 
-                                <div v-else class="mx-auto" :class="lineLength">
-                                    <UTabs v-model="viewMode" :items="viewModeItems" size="sm" class="mt-4 lg:hidden">
+                                <div v-else class="mx-auto px-3" :class="lineLength">
+                                    <UTabs v-model="viewMode" :items="viewModeItems" size="sm" class="lg:hidden mt-12" variant="pill" color="secondary">
                                         <template #content="{ item }">
-                                            <div class="mt-6">
-                                                <h3 class="mb-4 text-sm font-bold uppercase tracking-widest text-muted">
-                                                    {{ item.label }}
-                                                </h3>
+                                            <div class="mt-8">
                                                 <div class="prose dark:prose-invert" :class="font" v-html="item.content"
                                                     @mouseover="referencePopoverRef?.handleMouseOver($event)"
                                                     @click="handleSpoilerClick" />
@@ -253,7 +250,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                 <template #status>
                                     <span>{{ readingProgress }}% {{ readingProgress >= 100 ? 'Concluído' :
                                         'Lendo...'
-                                    }}</span>
+                                        }}</span>
                                 </template>
                             </UProgress>
                         </div>
