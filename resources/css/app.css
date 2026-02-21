@@ -23,7 +23,7 @@
 }
 
 [data-context = "professional"] {
-    --ui-bg: oklch(0.98 0.002 250);
+    --ui-bg: oklch(0.96 0.005 250);
     --ui-foreground: oklch(0.2 0.02 250);
     --ui-bg-elevated: oklch(1 0 0);
     --ui-bg-accented: oklch(0.94 0.01 250);
@@ -31,7 +31,7 @@
     --ui-border: oklch(0.9 0.01 250);
     --ui-border-accented: oklch(0.75 0.02 250);
     --ui-border-inverted: oklch(0.3 0.02 250);
-    --ui-text: oklch(0.20 0.01 250);
+    --ui-text: oklch(0.32 0.015 250);
     --ui-text-muted: oklch(0.5 0.02 250);
     --ui-text-dimmed: oklch(0.6 0.015 250);
     --ui-text-toned: oklch(0.4 0.02 250);
