@@ -6,11 +6,13 @@ use App\Enums\ChangeLogType;
 use App\Enums\PostType;
 use App\Models\ChangeLog;
 use App\Models\Post;
+use App\Services\InviteService;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
         $posts = Post::with(['category', 'tags', 'contents', 'changeLogs'])
             ->whereNotNull('published_at')
@@ -36,7 +38,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function show(Post $post)
+    public function show(Post $post): Response
     {
         $post = Post::with(['category', 'tags', 'contents.references'])->findOrFail($post->id);
         $changelogs = ChangeLog::where('type', ChangeLogType::FEATURE)
@@ -50,6 +52,22 @@ class PostController extends Controller
         return Inertia::render('blog/post', [
             'post' => $post->append('content_html', 'references', 'estimated_read_time', 'sub_topics'),
             'changelogs' => $changelogs,
+        ]);
+    }
+
+    public function showByInvite($token): Response
+    {
+        $postId = InviteService::show($token);
+
+        if (!$postId) {
+            return abort(404, 'Post invite expired');
+        }
+
+        $post = Post::with(['category', 'tags', 'contents.references'])->findOrFail($postId);
+
+        return Inertia::render('blog/post', [
+            'post' => $post->append('content_html', 'references', 'estimated_read_time', 'sub_topics'),
+            'changelogs' => [],
         ]);
     }
 }
