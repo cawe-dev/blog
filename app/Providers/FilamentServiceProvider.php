@@ -32,7 +32,10 @@ class FilamentServiceProvider extends ServiceProvider
             Js::make('media-indexer-link-script', public_path('js/filament/plugins/marks/media-indexer-link.js')),
 
             Css::make('has-spoiler-link-styles', resource_path('css/filament/plugins/has-spoiler-link.css')),
-            Js::make('has-spoiler-link-script', public_path('js/filament/plugins/marks/has-spoiler-link.js'))
+            Js::make('has-spoiler-link-script', public_path('js/filament/plugins/marks/has-spoiler-link.js')),
+
+            Css::make('sub-topic-link-styles', resource_path('css/filament/plugins/sub-topic-link.css')),
+            Js::make('sub-topic-link-script', public_path('js/filament/plugins/marks/sub-topic-link.js'))
                 ->loadedOnRequest(),
         ]);
 

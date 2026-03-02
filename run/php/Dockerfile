@@ -25,7 +25,8 @@ RUN chmod +x /usr/local/bin/install-php-extensions && \
     gd \
     intl \
     bcmath \
-    opcache
+    opcache \
+    redis
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 

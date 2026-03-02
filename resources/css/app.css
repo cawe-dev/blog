@@ -23,7 +23,7 @@
 }
 
 [data-context = "professional"] {
-    --ui-bg: oklch(0.98 0.002 250);
+    --ui-bg: oklch(0.96 0.005 250);
     --ui-foreground: oklch(0.2 0.02 250);
     --ui-bg-elevated: oklch(1 0 0);
     --ui-bg-accented: oklch(0.94 0.01 250);
@@ -31,12 +31,13 @@
     --ui-border: oklch(0.9 0.01 250);
     --ui-border-accented: oklch(0.75 0.02 250);
     --ui-border-inverted: oklch(0.3 0.02 250);
-    --ui-text: oklch(0.2 0.02 250);
+    --ui-text: oklch(0.32 0.015 250);
     --ui-text-muted: oklch(0.5 0.02 250);
     --ui-text-dimmed: oklch(0.6 0.015 250);
     --ui-text-toned: oklch(0.4 0.02 250);
     --ui-text-highlighted: oklch(0.15 0.02 250);
     --ui-text-inverted: oklch(0.98 0 0);
+
     
     --color-neutral-white: #ffffff;
     --color-neutral-bg: #fbfbfb; 
@@ -45,8 +46,10 @@
     --color-neutral-sub: #666666;
 
     --ui-primary: oklch(0.5 0.1 230);
+
+    --ui-dichotomous: oklch(0.75 0.18 85);
     
-    --ui-secondary: oklch(0.95 0.01 250);
+    --ui-secondary: oklch(0.25 0.01 250);
     
     --ui-success: oklch(0.65 0.2 145);
     
@@ -61,7 +64,7 @@
 }
 
 [data-context="personal"] {
-    --ui-bg: oklch(0.98 0.015 85);
+    --ui-bg: oklch(0.95 0.02 85);
     --ui-foreground: oklch(0.2 0.03 60);
     --ui-bg-elevated: oklch(1 0.005 85);
     --ui-bg-accented: oklch(0.93 0.02 85);
@@ -69,16 +72,18 @@
     --ui-border: oklch(0.88 0.03 85);
     --ui-border-accented: oklch(53.699% 0.11139 77.693);
     --ui-border-inverted: oklch(0.3 0.03 60);
-    --ui-text: oklch(0.2 0.03 60);
+    --ui-text: oklch(0.35 0.02 85);
     --ui-text-muted: oklch(0.5 0.03 60);
     --ui-text-dimmed: oklch(0.6 0.025 60);
     --ui-text-toned: oklch(0.4 0.03 60);
     --ui-text-highlighted: oklch(0.15 0.02 60);
-    --ui-text-inverted: oklch(0.15 0.02 60);
-    
+    --ui-text-inverted: oklch(0.98 0 0);
+
     --ui-primary: oklch(0.75 0.18 85);
+
+    --ui-dichotomous: oklch(0.5 0.1 230);
     
-    --ui-secondary: oklch(0.95 0.02 85);
+    --ui-secondary: oklch(0.25 0.02 85);
     
     --brand-primary: oklch(0.75 0.18 85);
     --brand-secondary: oklch(0.85 0.15 85);

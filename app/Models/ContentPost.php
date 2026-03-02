@@ -7,6 +7,7 @@ use App\Enums\ContentPostViewMode;
 use App\Filament\Plugins\HasSpoilerRichContentPlugin;
 use App\Filament\Plugins\MediaIndexerRichContentPlugin;
 use App\Filament\Plugins\ReferenceRichContentPlugin;
+use App\Filament\Plugins\SubTopicRichContentPlugin;
 use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -53,6 +54,7 @@ class ContentPost extends Model
                         ReferenceRichContentPlugin::make(),
                         MediaIndexerRichContentPlugin::make(),
                         HasSpoilerRichContentPlugin::make(),
+                        SubTopicRichContentPlugin::make(),
                     ])
                     ->toUnsafeHtml();
             } catch (\Throwable $e) {
