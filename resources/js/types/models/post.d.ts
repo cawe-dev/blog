@@ -9,6 +9,7 @@ export interface IPost {
     slug: string;
     content: IContentPost;
     content_html: string | object;
+    sub_topics?: string[];
     excerpt: string;
     pinned_at?: string;
     has_spoiler?: boolean;
