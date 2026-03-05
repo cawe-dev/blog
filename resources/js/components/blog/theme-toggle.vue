@@ -11,20 +11,20 @@ const { context, toggleContext } = useContext()
         <span :class="[
             'flex h-7 w-full items-center justify-center rounded-full transition-all',
             context === 'professional'
-                ? 'bg-primary text-inverted'
+                ? 'bg-primary text-inverted p-2'
                 : 'text-muted'
         ]">
             <UIcon name="i-lucide-briefcase" class="h-4 w-4 mx-0.5" /><span v-if="context === 'professional'"
-                class="ml-0.5 mr-1 text-xs">profissional</span>
+                class="ml-0.5 mr-1 text-xs">Profissional</span>
         </span>
         <span :class="[
             'flex h-7 w-full items-center justify-center rounded-full transition-all',
             context === 'personal'
-                ? 'bg-primary text-inverted'
+                ? 'bg-primary text-inverted p-2'
                 : 'text-muted'
         ]">
             <UIcon name="i-lucide-coffee" class="h-4 w-4 mx-0.5" /><span v-if="context === 'personal'"
-                class="ml-0.5 mr-1 text-xs">pessoal</span>
+                class="ml-0.5 mr-1 text-xs">Pessoal</span>
         </span>
     </button>
 </template>
