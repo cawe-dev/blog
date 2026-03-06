@@ -147,7 +147,8 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                     </div>
 
                                     <div name="category-post">
-                                        <UBadge :key="post.category.id" variant="subtle" color="secondary">
+                                        <UBadge :key="post.category.id" variant="subtle" color="secondary"
+                                            class="capitalize">
                                             {{ post.category.name }}
                                         </UBadge>
                                     </div>
@@ -252,7 +253,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                 <template #status>
                                     <span>{{ readingProgress }}% {{ readingProgress >= 100 ? 'Concluído' :
                                         'Lendo...'
-                                    }}</span>
+                                        }}</span>
                                 </template>
                             </UProgress>
                         </div>
