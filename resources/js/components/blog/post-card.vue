@@ -2,6 +2,7 @@
 import type { IPost } from '@/types/models/post'
 import { computed, ref } from 'vue'
 import { formatDate } from '@/utils/date'
+import CategoryBadge from './category-badge.vue';
 
 const props = defineProps<{
     post: IPost,
@@ -55,9 +56,7 @@ const toggleSpoiler = () => {
             <UBadge v-if="post.change_logs" v-for="changeLog in post.change_logs" :key="changeLog.id"
                 :label="changeLog.type"
                 class="bg-(--brand-secondary) ring-1 ring-inset ring-(--ui-foreground)  font-mono font-semibold" />
-            <UBadge :key="post.category.id" variant="solid" color="primary" class="font-(--font-family-prose)">
-                {{ post.category.name }}
-            </UBadge>
+            <CategoryBadge :category="post.category" :variant="solid" :color="primary" />
         </template>
 
         <template #date>
