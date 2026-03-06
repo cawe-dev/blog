@@ -11,6 +11,7 @@ import PostFeaturesBagde from '@/components/blog/PostFeaturesBagde.vue'
 import { useContext } from '@/composables/useContext'
 import { formatDate } from '@/utils/date'
 import Topics from '@/components/blog/topics.vue'
+import CategoryBadge from '@/components/blog/category-badge.vue'
 
 const props = defineProps<{
     post: IPost,
@@ -146,12 +147,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                         <span>{{ post.estimated_read_time }} min de leitura</span>
                                     </div>
 
-                                    <div name="category-post">
-                                        <UBadge :key="post.category.id" variant="subtle" color="secondary"
-                                            class="capitalize">
-                                            {{ post.category.name }}
-                                        </UBadge>
-                                    </div>
+                                    <CategoryBadge :category="post.category" variant="subtle" color="secondary" />
 
                                     <div v-if="featuresAfterPost.length > 0" name="features-after-post">
                                         <PostFeaturesBagde :features="featuresAfterPost" />
