@@ -10,7 +10,7 @@ import { IChangelogs, IChangelogItem } from '@/types/models/changeLog'
 import PostFeaturesBagde from '@/components/blog/PostFeaturesBagde.vue'
 import { useContext } from '@/composables/useContext'
 import { formatDate } from '@/utils/date'
-import Indice from '@/components/blog/topics.vue'
+import Topics from '@/components/blog/topics.vue'
 
 const props = defineProps<{
     post: IPost,
@@ -252,7 +252,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                 <template #status>
                                     <span>{{ readingProgress }}% {{ readingProgress >= 100 ? 'Concluído' :
                                         'Lendo...'
-                                        }}</span>
+                                    }}</span>
                                 </template>
                             </UProgress>
                         </div>
