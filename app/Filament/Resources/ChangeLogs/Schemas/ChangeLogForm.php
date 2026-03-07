@@ -18,7 +18,6 @@ use Filament\Schemas\Schema;
 
 class ChangeLogForm
 {
-
     public static function configure(Schema $schema): Schema
     {
         return $schema
@@ -30,28 +29,27 @@ class ChangeLogForm
                                 ->default(1)
                                 ->live()
                                 ->readOnly(),
-                            CheckboxList::make("commits")
+                            CheckboxList::make('commits')
                                 ->options(function (Get $get, GitHubService $service) {
                                     $page = (int) ($get('current_commit_page') ?? 1);
 
                                     return $service->commitsToOptions(
-                                        $service->getCommitsByBranch("development", $page)
+                                        $service->getCommitsByBranch('development', $page)
                                     );
                                 })
                                 ->searchable()
                                 ->live()
                                 ->afterStateUpdated(
-                                    fn(Set $set, $state, GitHubService $service) =>
-                                    self::updateFromCommit($set, $state, $service)
+                                    fn (Set $set, $state, GitHubService $service) => self::updateFromCommit($set, $state, $service)
                                 ),
                             Flex::make([
-                                Action::make("previous-page")
+                                Action::make('previous-page')
                                     ->action(function (Set $set, Get $get) {
                                         $page = (int) $get('current_commit_page');
                                         $page > 1 ? $set('current_commit_page', $page - 1) : $set('current_commit_page', 1);
                                     })
                                     ->color('secondary'),
-                                Action::make("next-page")
+                                Action::make('next-page')
                                     ->action(
                                         function (Set $set, Get $get) {
                                             $page = (int) $get('current_commit_page');
@@ -75,19 +73,21 @@ class ChangeLogForm
                             TextInput::make('pull_request'),
                             Select::make('post_id')
                                 ->relationship('post', 'slug'),
-                            DateTimePicker::make('published_at')
+                            DateTimePicker::make('published_at'),
                         ]),
                 ])
-                    ->columnSpanFull()
+                    ->columnSpanFull(),
             ]);
     }
 
     public static function updateFromCommit(Set $set, ?array $state, GitHubService $service): void
     {
         $lastSha = collect($state)->last();
-        if (! $lastSha) return;
+        if (! $lastSha) {
+            return;
+        }
 
-        $commit = $service->getCommitsByBranch("development")->firstWhere('sha', $lastSha);
+        $commit = $service->getCommitsByBranch('development')->firstWhere('sha', $lastSha);
 
         if ($commit) {
             $set('title', $commit->message);

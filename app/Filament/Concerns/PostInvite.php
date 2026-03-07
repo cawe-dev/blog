@@ -10,7 +10,7 @@ trait PostInvite
 {
     protected static function createInvite(): Action
     {
-        return  Action::make(name: 'createInvite')
+        return Action::make(name: 'createInvite')
             ->color('info')
             ->icon('heroicon-o-link')
             ->action(function ($record, $livewire) {
@@ -18,7 +18,7 @@ trait PostInvite
                 $inviteUrl = route('blog.post.invite', ['invite' => $token]);
 
                 $livewire->js(
-                    'window.navigator.clipboard.writeText("' . $inviteUrl . '");'
+                    'window.navigator.clipboard.writeText("'.$inviteUrl.'");'
                 );
 
                 Notification::make()

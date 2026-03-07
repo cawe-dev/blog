@@ -27,9 +27,16 @@ class PostController extends Controller
         });
 
         $posts = $posts->groupBy(function (Post $post) {
-            if (isset($post->pinned_at) && $post->type === PostType::BOTH) return 'bothPinnedsPosts';
-            if ($post->type === PostType::PERSONAL) return 'personalPosts';
-            if ($post->type === PostType::PROFESSIONAL) return 'professionalPosts';
+            if (isset($post->pinned_at) && $post->type === PostType::BOTH) {
+                return 'bothPinnedsPosts';
+            }
+            if ($post->type === PostType::PERSONAL) {
+                return 'personalPosts';
+            }
+            if ($post->type === PostType::PROFESSIONAL) {
+                return 'professionalPosts';
+            }
+
             return 'bothPosts';
         });
 
@@ -59,7 +66,7 @@ class PostController extends Controller
     {
         $postId = InviteService::show($token);
 
-        if (!$postId) {
+        if (! $postId) {
             return abort(404, 'Post invite expired');
         }
 

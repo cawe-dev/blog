@@ -24,14 +24,14 @@ class PostFactory extends Factory
         $title = $this->faker->unique()->sentence();
 
         return [
-            "title" => $title,
-            "slug" => Str::slug($title),
-            "type" => PostType::BOTH,
-            "excerpt" => Str::limit($title, 200),
-            "is_featured" => $this->faker->boolean(),
-            "published_at" => $this->faker->dateTime(),
-            "category_id" => Category::factory(),
-            "user_id" => User::factory(),
+            'title' => $title,
+            'slug' => Str::slug($title),
+            'type' => PostType::BOTH,
+            'excerpt' => Str::limit($title, 200),
+            'is_featured' => $this->faker->boolean(),
+            'published_at' => $this->faker->dateTime(),
+            'category_id' => Category::factory(),
+            'user_id' => User::factory(),
         ];
     }
 }

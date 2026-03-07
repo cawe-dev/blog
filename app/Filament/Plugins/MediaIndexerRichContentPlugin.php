@@ -24,7 +24,7 @@ class MediaIndexerRichContentPlugin implements RichContentPlugin
     public function getTipTapPhpExtensions(): array
     {
         return [
-            app(MediaIndexerLink::class)
+            app(MediaIndexerLink::class),
         ];
     }
 
@@ -72,7 +72,7 @@ class MediaIndexerRichContentPlugin implements RichContentPlugin
                                     [
                                         'type' => (string) ($data['is_image'] ? 'img' : 'iframe'),
                                         'url' => (string) ($data['url'] ?? ''),
-                                    ]
+                                    ],
                                 ],
                             ),
                             EditorCommand::make('focus', ['end']),
@@ -80,7 +80,7 @@ class MediaIndexerRichContentPlugin implements RichContentPlugin
                         ],
                         editorSelection: $arguments['editorSelection'],
                     );
-                })
+                }),
         ];
     }
 }

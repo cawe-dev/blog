@@ -22,7 +22,7 @@ class SubTopicRichContentPlugin implements RichContentPlugin
     public function getTipTapPhpExtensions(): array
     {
         return [
-            app(SubTopicLink::class)
+            app(SubTopicLink::class),
         ];
     }
 
@@ -56,7 +56,7 @@ class SubTopicRichContentPlugin implements RichContentPlugin
                                 'setSubTopicLink',
                                 [
                                     [
-                                        'subTopicId' => (string) Str::slug($arguments['subTopicId'])
+                                        'subTopicId' => (string) Str::slug($arguments['subTopicId']),
                                     ],
                                 ],
                             ),
@@ -65,7 +65,7 @@ class SubTopicRichContentPlugin implements RichContentPlugin
                         ],
                         editorSelection: $arguments['editorSelection'],
                     );
-                })
+                }),
         ];
     }
 }

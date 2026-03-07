@@ -75,7 +75,7 @@ class Post extends Model
         return Attribute::get(function () {
             $groupedByViewMode = $this->contents
                 ->groupBy('view_mode')
-                ->map(fn($group) => $group->implode('content_html', ''));
+                ->map(fn ($group) => $group->implode('content_html', ''));
 
             if ($groupedByViewMode->count() === 1) {
                 return $groupedByViewMode->first();
@@ -105,7 +105,7 @@ class Post extends Model
     {
         return Attribute::get(function () {
             return (int) $this->contents
-                ->sum(fn(ContentPost $content) => $content->body->estimatedReadTime());
+                ->sum(fn (ContentPost $content) => $content->body->estimatedReadTime());
         });
     }
 
@@ -113,7 +113,7 @@ class Post extends Model
     {
         return Attribute::get(function () {
             return $this->contents
-                ->flatMap(fn(ContentPost $content) => $content->body->subTopics()->toArray());
+                ->flatMap(fn (ContentPost $content) => $content->body->subTopics()->toArray());
         });
     }
 }

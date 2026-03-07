@@ -12,7 +12,7 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditPost extends EditRecord
 {
-    use PublishAction, PinAction, SyncsPostReferences;
+    use PinAction, PublishAction, SyncsPostReferences;
 
     protected static string $resource = PostResource::class;
 

@@ -9,16 +9,16 @@ use App\Filament\Plugins\MediaIndexerRichContentPlugin;
 use App\Filament\Plugins\ReferenceRichContentPlugin;
 use App\Filament\Plugins\SubTopicRichContentPlugin;
 use Filament\Forms\Components\RichEditor\RichContentRenderer;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ContentPost extends Model
 {
     protected $fillable = [
         'body',
-        'view_mode'
+        'view_mode',
     ];
 
     protected $appends = ['content_html'];
@@ -32,7 +32,6 @@ class ContentPost extends Model
     {
         return $this->belongsTo(Post::class);
     }
-
 
     public function references(): BelongsToMany
     {
@@ -59,6 +58,7 @@ class ContentPost extends Model
                     ->toUnsafeHtml();
             } catch (\Throwable $e) {
                 report($e);
+
                 return '';
             }
         });

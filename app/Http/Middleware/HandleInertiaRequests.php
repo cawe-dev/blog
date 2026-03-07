@@ -45,7 +45,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'context' => $request->session()->get('blog-context', 'professional'),
             'notifications' => [
-                'changelogs' => Inertia::once(fn() => ChangeLog::notificable()->get()),
+                'changelogs' => Inertia::once(fn () => ChangeLog::notificable()->get()),
             ],
         ];
     }

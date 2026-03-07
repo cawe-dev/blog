@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 
 class InviteService
 {
-
     public static function create(int $postId): string
     {
         $token = Str::random(32);
