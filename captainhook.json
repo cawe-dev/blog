@@ -15,6 +15,9 @@
             },
             {
                 "action": "\\GitHooks\\PHPStan"
+            },
+            {
+                "action": "\\GitHooks\\FrontendLint"
             }
         ]
     },
