@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 import { usePage } from '@inertiajs/vue3';
+import { ref, computed } from 'vue'
 import type { IChangelogs, IChangelogItem } from '@/types/models/changeLog'
 import { formatRelativeTime } from '@/utils/date';
 import BellNotification from './bell-notification.vue'
-import Logo from './logo.vue';
-import Navbar from './navbar.vue';
 import GlobalSearch from './global-search.vue';
+import Logo from './logo.vue';
 import ThemeToggle from './theme-toggle.vue';
 
 const searchOpen = ref(false)

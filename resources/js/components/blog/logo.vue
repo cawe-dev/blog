@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import { home } from '@/routes';
 import { useContext } from '@/composables/useContext'
+import { home } from '@/routes';
 
 const { logoUrl } = useContext()
 </script>

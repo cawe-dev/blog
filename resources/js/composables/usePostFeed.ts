@@ -1,8 +1,8 @@
-import type { IPost, IPostGroup } from '@/types/models/post'
-import type { ICategory } from '@/types/models/category'
-import type { ITag } from '@/types/models/tag'
-import { useContext } from '@/composables/useContext'
 import { computed, ref, type Ref } from 'vue'
+import { useContext } from '@/composables/useContext'
+import type { ICategory } from '@/types/models/category'
+import type { IPost, IPostGroup } from '@/types/models/post'
+import type { ITag } from '@/types/models/tag'
 
 export const usePostFeed = (postsProp: Ref<IPostGroup>) => {
     const searchQuery = ref('')

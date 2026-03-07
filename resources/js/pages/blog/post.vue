@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import Layout from '@/layouts/blog.vue'
 import { Link } from '@inertiajs/vue3'
-import type { IPost } from '@/types/models/post'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import CategoryBadge from '@/components/blog/category-badge.vue'
+import PostFeaturesBagde from '@/components/blog/PostFeaturesBagde.vue'
+import ReferencePopover from '@/components/blog/reference-popover.vue'
+import Topics from '@/components/blog/topics.vue'
+import { useContext } from '@/composables/useContext'
+import Layout from '@/layouts/blog.vue'
 import type { IViewMode, ViewModeKeys } from '@/types/enums/contentPostViewMode'
 import { VIEW_MODE_CONFIG } from '@/types/enums/contentPostViewMode'
-import ReferencePopover from '@/components/blog/reference-popover.vue'
-import { IChangelogs, IChangelogItem } from '@/types/models/changeLog'
-import PostFeaturesBagde from '@/components/blog/PostFeaturesBagde.vue'
-import { useContext } from '@/composables/useContext'
+import type { IChangelogs, IChangelogItem } from '@/types/models/changeLog'
+import type { IPost } from '@/types/models/post'
 import { formatDate } from '@/utils/date'
-import Topics from '@/components/blog/topics.vue'
-import CategoryBadge from '@/components/blog/category-badge.vue'
 
 const props = defineProps<{
     post: IPost,

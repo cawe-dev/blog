@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { IPost } from '@/types/models/post'
 import { computed, ref } from 'vue'
+import type { IPost } from '@/types/models/post'
 import { formatDate } from '@/utils/date'
 import CategoryBadge from './category-badge.vue';
 
@@ -53,9 +53,12 @@ const toggleSpoiler = () => {
             <UBadge v-if="post.pinned_at" color="secundary" variant="subtle">
                 <UIcon name="i-lucide-pin" class="w-4 h-4 text-toned" />
             </UBadge>
-            <UBadge v-if="post.change_logs" v-for="changeLog in post.change_logs" :key="changeLog.id"
-                :label="changeLog.type"
-                class="bg-(--brand-secondary) ring-1 ring-inset ring-(--ui-foreground)  font-mono font-semibold" />
+
+            <template v-for="changeLog in post.change_logs" :key="changeLog.id">
+                <UBadge v-if="post.change_logs" :label="changeLog.type"
+                    class="bg-(--brand-secondary) ring-1 ring-inset ring-(--ui-foreground) font-mono font-semibold" />
+            </template>
+
             <CategoryBadge :category="post.category" :variant="solid" :color="primary" />
         </template>
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { toRefs } from 'vue'
-import Layout from '@/layouts/blog.vue'
+import PostCard from '@/components/blog/post-card.vue'
 import { useContext } from '@/composables/useContext'
 import { usePostFeed } from '@/composables/usePostFeed'
+import Layout from '@/layouts/blog.vue'
 import type { IPostGroup } from '@/types/models/post'
-import PostCard from '@/components/blog/post-card.vue'
 
 interface Props {
     posts: IPostGroup;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { IPost } from '@/types/models/post'
 import { computed } from 'vue';
+import type { IPost } from '@/types/models/post'
 
 const props = defineProps<{
     subTopics: IPost["sub_topics"],
