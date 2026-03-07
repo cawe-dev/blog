@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { PropType } from 'vue'
-import type { IChangelogItem } from '@/types/models/changeLog'
-import { getChangelogIcon, getChangelogIconColor } from '@/utils/changelog'
-import { formatDate } from '@/utils/date'
+import { ref } from 'vue';
+import type { PropType } from 'vue';
+import type { IChangelogItem } from '@/types/models/changeLog';
+import { getChangelogIcon, getChangelogIconColor } from '@/utils/changelog';
+import { formatDate } from '@/utils/date';
 
 const props = defineProps({
     features: {
         type: Array as PropType<IChangelogItem[]>,
-    }
-})
-const isOpen = ref(false)
+    },
+});
+const isOpen = ref(false);
 </script>
 
 <template>
@@ -22,22 +22,18 @@ const isOpen = ref(false)
 
         <UModal v-model:open="isOpen">
             <template #content>
-
                 <UCard>
                     <template #header>
                         <div class="flex items-center">
-                            <h2 class="text-lg font-semibold">
-                                Funcionalidades pós-publicação
-                            </h2>
+                            <h2 class="text-lg font-semibold">Funcionalidades pós-publicação</h2>
                         </div>
                     </template>
 
                     <ul>
                         <li v-for="feature in features" :key="feature.id" class="p-4">
                             <div class="flex justify-between">
-                                <p class="font-semibold truncate">
-                                    <UIcon :name="getChangelogIcon(feature.type)"
-                                        :class="['inline', getChangelogIconColor(feature.type)]" />
+                                <p class="truncate font-semibold">
+                                    <UIcon :name="getChangelogIcon(feature.type)" :class="['inline', getChangelogIconColor(feature.type)]" />
                                     {{ feature.title }}
                                 </p>
                                 <UBadge :label="`v${feature.version}`" color="primary" variant="subtle" />

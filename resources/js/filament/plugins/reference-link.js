@@ -5,28 +5,28 @@ const ReferenceLink = Mark.create({
 
     addAttributes() {
         return {
-            'referenceId': {
+            referenceId: {
                 default: null,
-                parseHTML: element => element.getAttribute('referenceId'),
-                renderHTML: attributes => {
+                parseHTML: (element) => element.getAttribute('referenceId'),
+                renderHTML: (attributes) => {
                     if (!attributes['referenceId']) return {};
-                    return { 'referenceId': attributes['referenceId'] };
+                    return { referenceId: attributes['referenceId'] };
                 },
             },
-            'term': {
+            term: {
                 default: null,
-                parseHTML: element => element.getAttribute('term'),
-                renderHTML: attributes => {
+                parseHTML: (element) => element.getAttribute('term'),
+                renderHTML: (attributes) => {
                     if (!attributes['term']) return {};
-                    return { 'term': attributes['term'] };
+                    return { term: attributes['term'] };
                 },
             },
-            'context': {
+            context: {
                 default: null,
-                parseHTML: element => element.getAttribute('context'),
-                renderHTML: attributes => {
+                parseHTML: (element) => element.getAttribute('context'),
+                renderHTML: (attributes) => {
                     if (!attributes['context']) return {};
-                    return { 'context': attributes['context'] };
+                    return { context: attributes['context'] };
                 },
             },
         };
@@ -42,12 +42,16 @@ const ReferenceLink = Mark.create({
 
     addCommands() {
         return {
-            setReferenceLink: (attributes) => ({ commands }) => {
-                return commands.setMark(this.name, attributes);
-            },
-            unsetReferenceLink: () => ({ commands }) => {
-                return commands.unsetMark(this.name);
-            },
+            setReferenceLink:
+                (attributes) =>
+                ({ commands }) => {
+                    return commands.setMark(this.name, attributes);
+                },
+            unsetReferenceLink:
+                () =>
+                ({ commands }) => {
+                    return commands.unsetMark(this.name);
+                },
         };
     },
 });

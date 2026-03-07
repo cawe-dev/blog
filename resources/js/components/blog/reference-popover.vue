@@ -1,82 +1,80 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import type { IPost } from '@/types/models/post'
+import { ref, computed } from 'vue';
+import type { IPost } from '@/types/models/post';
 
 const props = defineProps<{
-    references: IPost['references']
-}>()
+    references: IPost['references'];
+}>();
 
 defineExpose({
-    handleMouseOver
-})
+    handleMouseOver,
+});
 
-const isOpen = ref(false)
-const activeReferenceId = ref<number | null>(null)
-const activeTerm = ref<string | null>(null)
-const triggerElement = ref<HTMLElement | null>(null)
-let closeTimeout: ReturnType<typeof setTimeout> | null = null
+const isOpen = ref(false);
+const activeReferenceId = ref<number | null>(null);
+const activeTerm = ref<string | null>(null);
+const triggerElement = ref<HTMLElement | null>(null);
+let closeTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const activeReferenceData = computed(() => {
-    if (!activeReferenceId.value) return null
-    return props.references?.find(r => r.id == activeReferenceId.value && r.pivot.term == activeTerm.value)
-})
+    if (!activeReferenceId.value) return null;
+    return props.references?.find((r) => r.id == activeReferenceId.value && r.pivot.term == activeTerm.value);
+});
 
 const virtualReference = computed(() => {
-    if (!triggerElement.value) return undefined
+    if (!triggerElement.value) return undefined;
 
     return {
-        getBoundingClientRect: () => triggerElement.value!.getBoundingClientRect()
-    }
-})
+        getBoundingClientRect: () => triggerElement.value!.getBoundingClientRect(),
+    };
+});
 
 function handleMouseOver(event: MouseEvent) {
-    const target = event.target as HTMLElement
+    const target = event.target as HTMLElement;
 
-    const referenceSpan = target.closest('span[data-reference-id]') as HTMLElement
+    const referenceSpan = target.closest('span[data-reference-id]') as HTMLElement;
 
     if (referenceSpan) {
-        if (closeTimeout) clearTimeout(closeTimeout)
+        if (closeTimeout) clearTimeout(closeTimeout);
 
-        activeReferenceId.value = Number(referenceSpan.dataset.referenceId)
-        activeTerm.value = referenceSpan.dataset.term
-        triggerElement.value = referenceSpan
-        isOpen.value = true
+        activeReferenceId.value = Number(referenceSpan.dataset.referenceId);
+        activeTerm.value = referenceSpan.dataset.term;
+        triggerElement.value = referenceSpan;
+        isOpen.value = true;
     } else {
-        scheduleClose()
+        scheduleClose();
     }
 }
 
 function scheduleClose() {
-    if (closeTimeout) clearTimeout(closeTimeout)
+    if (closeTimeout) clearTimeout(closeTimeout);
 
     closeTimeout = setTimeout(() => {
-        isOpen.value = false
-        activeReferenceId.value = null
-        triggerElement.value = null
-    }, 200)
+        isOpen.value = false;
+        activeReferenceId.value = null;
+        triggerElement.value = null;
+    }, 200);
 }
 
 function onPopoverEnter() {
-    if (closeTimeout) clearTimeout(closeTimeout)
+    if (closeTimeout) clearTimeout(closeTimeout);
 }
 
 function onPopoverLeave() {
-    scheduleClose()
+    scheduleClose();
 }
 </script>
 
 <template>
-    <UPopover :open="isOpen" :reference="virtualReference" :open-delay="0" :close-delay="0" @mouseenter="onPopoverEnter"
-        @mouseleave="onPopoverLeave">
-
+    <UPopover :open="isOpen" :reference="virtualReference" :open-delay="0" :close-delay="0" @mouseenter="onPopoverEnter" @mouseleave="onPopoverLeave">
         <template #content>
             <div class="w-80 space-y-3 p-4" v-if="activeReferenceData">
                 <header>
-                    <div class="border-b border-gray-200 dark:border-gray-700 pb-3">
+                    <div class="border-b border-gray-200 pb-3 dark:border-gray-700">
                         <h3 class="text-base font-semibold text-default">
-                            <p>Titulo: {{ activeReferenceData.title }} </p>
+                            <p>Titulo: {{ activeReferenceData.title }}</p>
                         </h3>
-                        <p class="text-xs text-muted mt-1">
+                        <p class="mt-1 text-xs text-muted">
                             <span>Descrição: {{ activeReferenceData.description }}</span>
                         </p>
                     </div>
@@ -84,11 +82,9 @@ function onPopoverLeave() {
 
                 <section name="context-section">
                     <div class="space-y-2">
-                        <p class="text-xs font-medium text-muted uppercase tracking-wide">
-                            Contexto:
-                        </p>
-                        <div class="bg-accented rounded-md p-3 border border-gray-200 dark:border-gray-700">
-                            <p class="text-sm text-default leading-relaxed">
+                        <p class="text-xs font-medium tracking-wide text-muted uppercase">Contexto:</p>
+                        <div class="rounded-md border border-gray-200 bg-accented p-3 dark:border-gray-700">
+                            <p class="text-sm leading-relaxed text-default">
                                 {{ activeReferenceData.pivot.context }}
                             </p>
                         </div>
@@ -106,13 +102,10 @@ function onPopoverLeave() {
                         </div>
                         <div class="flex items-center gap-2 text-xs text-muted">
                             <UIcon name="i-lucide-calendar" class="h-3.5 w-3.5" />
-                            <span>{{ new
-                                Date(activeReferenceData.pivot.created_at).toLocaleDateString('pt-BR')
-                                }}</span>
+                            <span>{{ new Date(activeReferenceData.pivot.created_at).toLocaleDateString('pt-BR') }}</span>
                         </div>
                     </div>
                 </section>
-
             </div>
         </template>
     </UPopover>

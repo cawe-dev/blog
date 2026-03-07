@@ -5,20 +5,20 @@ const MediaIndexerLink = Mark.create({
 
     addAttributes() {
         return {
-            'type': {
+            type: {
                 default: null,
-                parseHTML: element => element.getAttribute('type'),
-                renderHTML: attributes => {
+                parseHTML: (element) => element.getAttribute('type'),
+                renderHTML: (attributes) => {
                     if (!attributes['type']) return {};
-                    return { 'type': attributes['type'] };
+                    return { type: attributes['type'] };
                 },
             },
-            'url': {
+            url: {
                 default: null,
-                parseHTML: element => element.getAttribute('url'),
-                renderHTML: attributes => {
+                parseHTML: (element) => element.getAttribute('url'),
+                renderHTML: (attributes) => {
                     if (!attributes['url']) return {};
-                    return { 'url': attributes['url'] };
+                    return { url: attributes['url'] };
                 },
             },
         };
@@ -34,12 +34,16 @@ const MediaIndexerLink = Mark.create({
 
     addCommands() {
         return {
-            setMediaIndexerLink: (attributes) => ({ commands }) => {
-                return commands.setMark(this.name, attributes);
-            },
-            unsetMediaIndexerLink: () => ({ commands }) => {
-                return commands.unsetMark(this.name);
-            },
+            setMediaIndexerLink:
+                (attributes) =>
+                ({ commands }) => {
+                    return commands.setMark(this.name, attributes);
+                },
+            unsetMediaIndexerLink:
+                () =>
+                ({ commands }) => {
+                    return commands.unsetMark(this.name);
+                },
         };
     },
 });
