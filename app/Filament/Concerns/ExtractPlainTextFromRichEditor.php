@@ -4,9 +4,11 @@ namespace App\Filament\Concerns;
 
 trait ExtractPlainTextFromRichEditor
 {
-    protected static function extractPlainText(array | string $state): string
+    protected static function extractPlainText(array|string $state): string
     {
-        if (! is_array($state)) return (string) $state;
+        if (! is_array($state)) {
+            return (string) $state;
+        }
 
         $text = '';
 

@@ -1,106 +1,106 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import Layout from '@/layouts/blog.vue'
-import { Link } from '@inertiajs/vue3'
-import type { IPost } from '@/types/models/post'
-import type { IViewMode, ViewModeKeys } from '@/types/enums/contentPostViewMode'
-import { VIEW_MODE_CONFIG } from '@/types/enums/contentPostViewMode'
-import ReferencePopover from '@/components/blog/reference-popover.vue'
-import { IChangelogs, IChangelogItem } from '@/types/models/changeLog'
-import PostFeaturesBagde from '@/components/blog/PostFeaturesBagde.vue'
-import { useContext } from '@/composables/useContext'
-import { formatDate } from '@/utils/date'
-import Topics from '@/components/blog/topics.vue'
-import CategoryBadge from '@/components/blog/category-badge.vue'
+import { Link } from '@inertiajs/vue3';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import CategoryBadge from '@/components/blog/category-badge.vue';
+import PostFeaturesBagde from '@/components/blog/PostFeaturesBagde.vue';
+import ReferencePopover from '@/components/blog/reference-popover.vue';
+import Topics from '@/components/blog/topics.vue';
+import { useContext } from '@/composables/useContext';
+import Layout from '@/layouts/blog.vue';
+import type { IViewMode, ViewModeKeys } from '@/types/enums/contentPostViewMode';
+import { VIEW_MODE_CONFIG } from '@/types/enums/contentPostViewMode';
+import type { IChangelogs, IChangelogItem } from '@/types/models/changeLog';
+import type { IPost } from '@/types/models/post';
+import { formatDate } from '@/utils/date';
 
 const props = defineProps<{
-    post: IPost,
-    changelogs: IChangelogs
-}>()
+    post: IPost;
+    changelogs: IChangelogs;
+}>();
 
-defineOptions({ layout: Layout })
+defineOptions({ layout: Layout });
 
-const toast = useToast()
-const { font, lineLength } = useContext()
+const toast = useToast();
+const { font, lineLength } = useContext();
 
-const readingProgress = ref<number>(0)
-const referencePopoverRef = ref<InstanceType<typeof ReferencePopover>>()
-const viewMode = ref<ViewModeKeys>('concept')
+const readingProgress = ref<number>(0);
+const referencePopoverRef = ref<InstanceType<typeof ReferencePopover>>();
+const viewMode = ref<ViewModeKeys>('concept');
 
 function updateReadingProgress() {
-    const scrollTop = window.scrollY
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight
-    readingProgress.value = docHeight > 0 ? Math.min(100, Math.round((scrollTop / docHeight) * 100)) : 0
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    readingProgress.value = docHeight > 0 ? Math.min(100, Math.round((scrollTop / docHeight) * 100)) : 0;
 }
 
 onMounted(() => {
-    window.addEventListener('scroll', updateReadingProgress)
-    updateReadingProgress()
+    window.addEventListener('scroll', updateReadingProgress);
+    updateReadingProgress();
 
-    document.querySelectorAll('span[data-has-spoiler="true"]').forEach(el => {
+    document.querySelectorAll('span[data-has-spoiler="true"]').forEach((el) => {
         el.addEventListener('click', () => {
-            el.classList.toggle('spoiler-revealed')
-        })
-    })
-})
+            el.classList.toggle('spoiler-revealed');
+        });
+    });
+});
 
 onUnmounted(() => {
-    window.removeEventListener('scroll', updateReadingProgress)
-})
+    window.removeEventListener('scroll', updateReadingProgress);
+});
 
 const formattedDate = computed(() => {
-    return formatDate(props.post.created_at)
-})
+    return formatDate(props.post.created_at);
+});
 
 const formattedUpdateDate = computed(() => {
     return new Date(props.post.updated_at).toLocaleDateString('pt-BR', {
         day: 'numeric',
         month: 'short',
         year: 'numeric',
-    })
-})
+    });
+});
 
 const wasEdited = computed(() => {
-    const created = new Date(props.post.created_at).getTime()
-    const updated = new Date(props.post.updated_at).getTime()
-    return updated - created > 3600000
-})
+    const created = new Date(props.post.created_at).getTime();
+    const updated = new Date(props.post.updated_at).getTime();
+    return updated - created > 3600000;
+});
 
 const viewModeItems = computed<IViewMode[]>(() => {
-    return (Object.keys(props.post.content_html).sort() as ViewModeKeys[]).map(key => ({
+    return (Object.keys(props.post.content_html).sort() as ViewModeKeys[]).map((key) => ({
         ...VIEW_MODE_CONFIG[key],
-        content: props.post.content_html[key]
+        content: props.post.content_html[key],
     }));
 });
 
 const featuresAfterPost = computed(() => {
     return props.changelogs.map((changelog: IChangelogItem) => {
-        return changelog
-    })
-})
+        return changelog;
+    });
+});
 
 const copyLink = async () => {
-    await navigator.clipboard.writeText(window.location.href)
+    await navigator.clipboard.writeText(window.location.href);
 
     toast.add({
         title: 'Link copiado!',
-        icon: 'i-lucide-copy-check'
-    })
-}
+        icon: 'i-lucide-copy-check',
+    });
+};
 
 const shareOnX = () => {
-    const url = encodeURIComponent(window.location.href)
-    const text = encodeURIComponent(props.post.title)
-    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank')
-}
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent(props.post.title);
+    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+};
 
 const handleSpoilerClick = (event: MouseEvent) => {
-    const target = event.target as HTMLElement
-    const spoiler = target.closest('span[data-has-spoiler="true"]')
+    const target = event.target as HTMLElement;
+    const spoiler = target.closest('span[data-has-spoiler="true"]');
     if (spoiler) {
-        spoiler.classList.toggle('spoiler-revealed')
+        spoiler.classList.toggle('spoiler-revealed');
     }
-}
+};
 </script>
 
 <template>
@@ -112,20 +112,17 @@ const handleSpoilerClick = (event: MouseEvent) => {
         </section>
 
         <div class="sm:grid sm:grid-cols-[700px_minmax(500px,1fr)_700px]">
-            <aside class="hidden w-full shrink-0 lg:block">
-            </aside>
+            <aside class="hidden w-full shrink-0 lg:block"></aside>
 
             <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6">
                 <div class="flex gap-8">
                     <article class="text-pretty">
                         <header class="mb-8">
-                            <Link href="/"
-                                class="mb-4 inline-flex items-center gap-1.5 text-sm text-default hover:text-accented">
+                            <Link href="/" class="hover:text-accented mb-4 inline-flex items-center gap-1.5 text-sm text-default">
                                 <UIcon name="i-lucide-arrow-left" class="h-4 w-4" />
                                 Voltar ao Blog
                             </Link>
-                            <h1
-                                class="mt-4 mb-4 text-balance text-2xl font-bold leading-tight text-highlighted sm:text-4xl lg:text-5xl">
+                            <h1 class="mt-4 mb-4 text-2xl leading-tight font-bold text-balance text-highlighted sm:text-4xl lg:text-5xl">
                                 {{ post.title }}
                             </h1>
 
@@ -136,8 +133,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                         <time :datetime="post.created_at">{{ formattedDate }}</time>
                                     </div>
 
-                                    <UBadge name="edited-post-indicator" v-if="wasEdited" variant="subtle"
-                                        color="secondary" size="sm">
+                                    <UBadge name="edited-post-indicator" v-if="wasEdited" variant="subtle" color="secondary" size="sm">
                                         <UIcon name="i-lucide-pencil" class="mr-1 h-3 w-3" />
                                         Editado em {{ formattedUpdateDate }}
                                     </UBadge>
@@ -158,21 +154,34 @@ const handleSpoilerClick = (event: MouseEvent) => {
 
                         <section name="content-section">
                             <div>
-                                <div v-if="typeof post.content_html === 'string'" class="mx-auto px-3 sm:px-0"
-                                    :class="lineLength">
-                                    <div class="prose dark:prose-invert" :class="font" v-html="post.content_html"
+                                <div v-if="typeof post.content_html === 'string'" class="mx-auto px-3 sm:px-0" :class="lineLength">
+                                    <div
+                                        class="prose dark:prose-invert"
+                                        :class="font"
+                                        v-html="post.content_html"
                                         @mouseover="referencePopoverRef?.handleMouseOver($event)"
-                                        @click="handleSpoilerClick" />
+                                        @click="handleSpoilerClick"
+                                    />
                                 </div>
 
                                 <div v-else class="mx-auto px-3" :class="lineLength">
-                                    <UTabs v-model="viewMode" :items="viewModeItems" size="sm" class="lg:hidden mt-12"
-                                        variant="pill" color="secondary">
+                                    <UTabs
+                                        v-model="viewMode"
+                                        :items="viewModeItems"
+                                        size="sm"
+                                        class="mt-12 lg:hidden"
+                                        variant="pill"
+                                        color="secondary"
+                                    >
                                         <template #content="{ item }">
                                             <div class="mt-8">
-                                                <div class="prose dark:prose-invert" :class="font" v-html="item.content"
+                                                <div
+                                                    class="prose dark:prose-invert"
+                                                    :class="font"
+                                                    v-html="item.content"
                                                     @mouseover="referencePopoverRef?.handleMouseOver($event)"
-                                                    @click="handleSpoilerClick" />
+                                                    @click="handleSpoilerClick"
+                                                />
                                             </div>
                                         </template>
                                     </UTabs>
@@ -180,13 +189,16 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                     <div class="hidden lg:block">
                                         <template v-for="item in viewModeItems" :key="item.value">
                                             <div v-show="viewMode === item.value">
-                                                <h3 class="mb-4 text-sm font-bold uppercase tracking-widest text-muted">
+                                                <h3 class="mb-4 text-sm font-bold tracking-widest text-muted uppercase">
                                                     {{ item.label }}
                                                 </h3>
-                                                <div class="prose max-w-none dark:prose-invert" :class="font"
+                                                <div
+                                                    class="prose dark:prose-invert max-w-none"
+                                                    :class="font"
                                                     v-html="item.content"
                                                     @mouseover="referencePopoverRef?.handleMouseOver($event)"
-                                                    @click="handleSpoilerClick" />
+                                                    @click="handleSpoilerClick"
+                                                />
                                             </div>
                                         </template>
                                     </div>
@@ -202,8 +214,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                 <div>
                                     <h3 class="mb-3 text-sm font-semibold text-default">Tags</h3>
                                     <div class="flex flex-wrap gap-2">
-                                        <UBadge v-for="tag in post.tags" :key="tag.id" variant="soft" color="neutral"
-                                            size="sm">
+                                        <UBadge v-for="tag in post.tags" :key="tag.id" variant="soft" color="neutral" size="sm">
                                             #{{ tag.name }}
                                         </UBadge>
                                     </div>
@@ -212,14 +223,12 @@ const handleSpoilerClick = (event: MouseEvent) => {
 
                             <section name="share-section">
                                 <div>
-                                    <h3 class="mb-3 text-sm font-semibold text-default">Compartilhar </h3>
+                                    <h3 class="mb-3 text-sm font-semibold text-default">Compartilhar</h3>
                                     <div class="flex gap-2">
-                                        <UButton variant="outline" color="neutral" size="sm" icon="i-lucide-link"
-                                            @click="copyLink">
+                                        <UButton variant="outline" color="neutral" size="sm" icon="i-lucide-link" @click="copyLink">
                                             Copiar Link
                                         </UButton>
-                                        <UButton variant="outline" color="neutral" size="sm" icon="i-lucide-twitter"
-                                            @click="shareOnX">
+                                        <UButton variant="outline" color="neutral" size="sm" icon="i-lucide-twitter" @click="shareOnX">
                                             Compartilhar no X
                                         </UButton>
                                     </div>
@@ -232,7 +241,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                 </div>
             </div>
 
-            <aside class="hidden w-64 shrink-0 lg:block mt-18">
+            <aside class="mt-18 hidden w-64 shrink-0 lg:block">
                 <div class="sticky top-24 space-y-6">
                     <UCard name="reading-progress-widget">
                         <template #header>
@@ -247,9 +256,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
                             </div>
                             <UProgress v-model="readingProgress" status :max="100" size="xs">
                                 <template #status>
-                                    <span>{{ readingProgress }}% {{ readingProgress >= 100 ? 'Concluído' :
-                                        'Lendo...'
-                                        }}</span>
+                                    <span>{{ readingProgress }}% {{ readingProgress >= 100 ? 'Concluído' : 'Lendo...' }}</span>
                                 </template>
                             </UProgress>
                         </div>
@@ -262,19 +269,17 @@ const handleSpoilerClick = (event: MouseEvent) => {
                                 <span class="text-sm font-medium text-default">Modo de Visualização</span>
                             </div>
                         </template>
-                        <UTabs v-model="viewMode" :items="viewModeItems" orientation="vertical" :content="false"
-                            variant="link" class="w-full" />
+                        <UTabs v-model="viewMode" :items="viewModeItems" orientation="vertical" :content="false" variant="link" class="w-full" />
                     </UCard>
 
                     <Topics :subTopics="post.sub_topics" />
                 </div>
             </aside>
         </div>
-
     </div>
     <section v-else name="loading-post-section">
-        <div class="flex items-center justify-center min-h-screen">
-            <USkeleton class="w-48 h-8 mb-4" />
+        <div class="flex min-h-screen items-center justify-center">
+            <USkeleton class="mb-4 h-8 w-48" />
         </div>
     </section>
 </template>
@@ -389,7 +394,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
     border: 1px solid var(--ui-border);
 }
 
-.prose :deep(p:has(img[data-type="img"])) {
+.prose :deep(p:has(img[data-type='img'])) {
     margin-top: 2rem;
     display: flex;
     flex-direction: column;
@@ -401,7 +406,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
     font-style: italic;
 }
 
-.prose :deep(img[data-type="img"]) {
+.prose :deep(img[data-type='img']) {
     max-width: 100%;
     height: auto;
     display: block;
@@ -411,7 +416,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
     font-style: normal;
 }
 
-.prose :deep(span[data-has-spoiler="true"]) {
+.prose :deep(span[data-has-spoiler='true']) {
     position: relative;
     display: inline;
     cursor: pointer;
@@ -421,7 +426,7 @@ const handleSpoilerClick = (event: MouseEvent) => {
     padding: 0 2px;
 }
 
-.prose :deep(span[data-has-spoiler="true"]::before) {
+.prose :deep(span[data-has-spoiler='true']::before) {
     content: '';
     position: absolute;
     inset: -2px -1px;
@@ -433,12 +438,12 @@ const handleSpoilerClick = (event: MouseEvent) => {
     transition: inherit;
 }
 
-.prose :deep(span[data-has-spoiler="true"]:hover::before) {
+.prose :deep(span[data-has-spoiler='true']:hover::before) {
     background-color: color-mix(in srgb, var(--ui-primary) 14%, transparent);
 }
 
-.prose :deep(span[data-has-spoiler="true"].spoiler-revealed::before),
-.prose :deep(span[data-has-spoiler="true"].spoiler-revealed::after) {
+.prose :deep(span[data-has-spoiler='true'].spoiler-revealed::before),
+.prose :deep(span[data-has-spoiler='true'].spoiler-revealed::after) {
     opacity: 0;
     pointer-events: none;
     backdrop-filter: blur(0);

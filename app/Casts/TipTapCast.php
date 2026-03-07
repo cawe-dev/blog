@@ -20,6 +20,7 @@ class TipTapCast implements CastsAttributes
         }
 
         $data = json_decode($value, true);
+
         return new Content(is_array($data) ? $data : []);
     }
 

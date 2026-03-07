@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { toRefs } from 'vue'
-import Layout from '@/layouts/blog.vue'
-import { useContext } from '@/composables/useContext'
-import { usePostFeed } from '@/composables/usePostFeed'
-import type { IPostGroup } from '@/types/models/post'
-import PostCard from '@/components/blog/post-card.vue'
+import { toRefs } from 'vue';
+import PostCard from '@/components/blog/post-card.vue';
+import { useContext } from '@/composables/useContext';
+import { usePostFeed } from '@/composables/usePostFeed';
+import Layout from '@/layouts/blog.vue';
+import type { IPostGroup } from '@/types/models/post';
 
 interface Props {
     posts: IPostGroup;
@@ -12,18 +12,12 @@ interface Props {
 
 const props = defineProps<Props>();
 
-defineOptions({ layout: Layout })
+defineOptions({ layout: Layout });
 
-const { context } = useContext()
+const { context } = useContext();
 
-const { posts: postsProp } = toRefs(props)
-const {
-    filteredPosts,
-    searchQuery,
-    allCategories,
-    selectedCategories,
-    viewMode,
-} = usePostFeed(postsProp)
+const { posts: postsProp } = toRefs(props);
+const { filteredPosts, searchQuery, allCategories, selectedCategories, viewMode } = usePostFeed(postsProp);
 </script>
 
 <template>
@@ -32,47 +26,61 @@ const {
             <div class="my-10">
                 <div>
                     <template v-if="context === 'professional'">
-                        <img src="/images/blog-profissional-intro.svg" alt="Logo do Blog Profissional">
-
+                        <img src="/images/blog-profissional-intro.svg" alt="Logo do Blog Profissional" />
                     </template>
                     <template v-else>
-                        <img src="/images/blog-personal-intro.svg" alt="Logo do Blog Pessoal">
+                        <img src="/images/blog-personal-intro.svg" alt="Logo do Blog Pessoal" />
                     </template>
                     <p class="text-muted">
-                        {{ context === 'professional'
-                            ? `Explorando features, padrões, design, e outros aspectos do desenvolvimento de software de
+                        {{
+                            context === 'professional'
+                                ? `Explorando features, padrões, design, e outros aspectos do desenvolvimento de software de
                         forma incremental neste
                         site.`
-                            : `Falando sobre tudo o que não é profissional.`
+                                : `Falando sobre tudo o que não é profissional.`
                         }}
                     </p>
                 </div>
             </div>
         </section>
 
-        <div class="flex gap-6 items-start">
-
-            <main class="flex-1 min-w-0">
+        <div class="flex items-start gap-6">
+            <main class="min-w-0 flex-1">
                 <section name="filters">
-                    <div class="mb-6 flex flex-wrap gap-3 items-center justify-between">
+                    <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
                         <div name="category-filter" class="flex flex-row gap-1 sm:gap-4">
                             <div name="search-filter" class="">
-                                <UInput v-model="searchQuery" icon="i-lucide-search" placeholder="Buscar..."
-                                    class="sm:w-48" />
+                                <UInput v-model="searchQuery" icon="i-lucide-search" placeholder="Buscar..." class="sm:w-48" />
                             </div>
 
                             <div name="category-filter">
-                                <USelectMenu multiple v-model="selectedCategories" :items="allCategories"
-                                    value-key="slug" label-key="name" searchable
-                                    placeholder="Selecione categoria(s)..." />
+                                <USelectMenu
+                                    multiple
+                                    v-model="selectedCategories"
+                                    :items="allCategories"
+                                    value-key="slug"
+                                    label-key="name"
+                                    searchable
+                                    placeholder="Selecione categoria(s)..."
+                                />
                             </div>
                         </div>
 
-                        <div class="hidden sm:flex border border-default rounded-md gap-0.5 p-1">
-                            <UButton :variant="viewMode === 'grid' ? 'solid' : 'ghost'" color="primary"
-                                icon="i-lucide-layout-grid" @click="viewMode = 'grid'" size="sm" />
-                            <UButton :variant="viewMode === 'list' ? 'solid' : 'ghost'" color="primary"
-                                icon="i-lucide-list" @click="viewMode = 'list'" size="sm" />
+                        <div class="hidden gap-0.5 rounded-md border border-default p-1 sm:flex">
+                            <UButton
+                                :variant="viewMode === 'grid' ? 'solid' : 'ghost'"
+                                color="primary"
+                                icon="i-lucide-layout-grid"
+                                @click="viewMode = 'grid'"
+                                size="sm"
+                            />
+                            <UButton
+                                :variant="viewMode === 'list' ? 'solid' : 'ghost'"
+                                color="primary"
+                                icon="i-lucide-list"
+                                @click="viewMode = 'list'"
+                                size="sm"
+                            />
                         </div>
                     </div>
                 </section>
@@ -84,9 +92,7 @@ const {
                 </section>
 
                 <section name="posts-not-found">
-                    <div v-if="!filteredPosts.length" class="py-12 text-center text-muted">
-                        Nenhum post encontrado para os filtros atuais.
-                    </div>
+                    <div v-if="!filteredPosts.length" class="py-12 text-center text-muted">Nenhum post encontrado para os filtros atuais.</div>
                 </section>
             </main>
         </div>

@@ -22,13 +22,15 @@ class Content implements Arrayable, JsonSerializable
 
     protected function toPlainText(): string
     {
-        if (empty($this->data)) return '';
+        if (empty($this->data)) {
+            return '';
+        }
 
         $text = '';
 
         array_walk_recursive($this->data, function ($value, $key) use (&$text) {
             if ($key === 'text') {
-                $text .= $value . ' ';
+                $text .= $value.' ';
             }
         });
 
@@ -48,6 +50,7 @@ class Content implements Arrayable, JsonSerializable
 
         if (is_string($data)) {
             $decoded = json_decode($data, true);
+
             return new self(is_array($decoded) ? $decoded : []);
         }
 

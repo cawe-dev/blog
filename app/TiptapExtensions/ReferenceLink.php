@@ -6,9 +6,8 @@ use DOMElement;
 use Tiptap\Core\Mark;
 use Tiptap\Utils\HTML;
 
-class ReferenceLink  extends Mark
+class ReferenceLink extends Mark
 {
-
     public static $name = 'referenceLink';
 
     public function addOptions()
@@ -32,16 +31,16 @@ class ReferenceLink  extends Mark
         return [
             ...parent::addAttributes(),
             'referenceId' => [
-                'parseHTML' => fn(DOMElement $DOMNode) => $DOMNode->getAttribute('data-reference-id'),
-                'renderHTML' => fn($attributes) => ['data-reference-id' => $attributes->referenceId ?? null],
+                'parseHTML' => fn (DOMElement $DOMNode) => $DOMNode->getAttribute('data-reference-id'),
+                'renderHTML' => fn ($attributes) => ['data-reference-id' => $attributes->referenceId ?? null],
             ],
             'term' => [
-                'parseHTML' => fn(DOMElement $DOMNode) => $DOMNode->getAttribute('data-term'),
-                'renderHTML' => fn($attributes) => ['data-term' => $attributes->term ?? null],
+                'parseHTML' => fn (DOMElement $DOMNode) => $DOMNode->getAttribute('data-term'),
+                'renderHTML' => fn ($attributes) => ['data-term' => $attributes->term ?? null],
             ],
             'context' => [
-                'parseHTML' => fn(DOMElement $DOMNode) => $DOMNode->getAttribute('data-context'),
-                'renderHTML' => fn($attributes) => ['data-context' => $attributes->context ?? null],
+                'parseHTML' => fn (DOMElement $DOMNode) => $DOMNode->getAttribute('data-context'),
+                'renderHTML' => fn ($attributes) => ['data-context' => $attributes->context ?? null],
             ],
         ];
     }

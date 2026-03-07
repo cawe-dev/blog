@@ -5,12 +5,12 @@ const subTopicLink = Mark.create({
 
     addAttributes() {
         return {
-            'subTopicId': {
+            subTopicId: {
                 default: null,
-                parseHTML: element => element.getAttribute('subTopicId'),
-                renderHTML: attributes => {
+                parseHTML: (element) => element.getAttribute('subTopicId'),
+                renderHTML: (attributes) => {
                     if (!attributes['subTopicId']) return {};
-                    return { 'subTopicId': attributes['subTopicId'] };
+                    return { subTopicId: attributes['subTopicId'] };
                 },
             },
         };
@@ -26,12 +26,16 @@ const subTopicLink = Mark.create({
 
     addCommands() {
         return {
-            setSubTopicLink: (attributes) => ({ commands }) => {
-                return commands.setMark(this.name, attributes);
-            },
-            unsetSubTopicLink: () => ({ commands }) => {
-                return commands.unsetMark(this.name);
-            },
+            setSubTopicLink:
+                (attributes) =>
+                ({ commands }) => {
+                    return commands.setMark(this.name, attributes);
+                },
+            unsetSubTopicLink:
+                () =>
+                ({ commands }) => {
+                    return commands.unsetMark(this.name);
+                },
         };
     },
 });

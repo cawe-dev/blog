@@ -1,7 +1,7 @@
 import type { User } from '../auth';
 import type { ICategory } from './category';
-import type { ITag } from './tag';
 import type { IReference } from './reference';
+import type { ITag } from './tag';
 
 export interface IPost {
     id: number;

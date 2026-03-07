@@ -21,7 +21,7 @@ class HasSpoilerRichContentPlugin implements RichContentPlugin
     public function getTipTapPhpExtensions(): array
     {
         return [
-            app(HasSpoilerLink::class)
+            app(HasSpoilerLink::class),
         ];
     }
 
@@ -56,7 +56,7 @@ class HasSpoilerRichContentPlugin implements RichContentPlugin
                                 [
                                     [
                                         'spoiler' => 'true',
-                                    ]
+                                    ],
                                 ],
                             ),
                             EditorCommand::make('focus', ['end']),
@@ -64,7 +64,7 @@ class HasSpoilerRichContentPlugin implements RichContentPlugin
                         ],
                         editorSelection: $arguments['editorSelection'],
                     );
-                })
+                }),
         ];
     }
 }

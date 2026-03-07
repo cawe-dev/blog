@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { IPost } from '@/types/models/post'
+import type { IPost } from '@/types/models/post';
 
-const props = defineProps<{
-    category: IPost["category"],
-    variant?: 'solid' | 'subtle',
-    color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger'
-}>()
+defineProps<{
+    category: IPost['category'];
+    variant?: 'solid' | 'subtle';
+    color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
+}>();
 </script>
 
 <template>

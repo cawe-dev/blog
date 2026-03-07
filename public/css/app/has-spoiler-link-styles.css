@@ -1,0 +1,11 @@
+.tiptap .has-spoiler-link,
+.fi-prose .has-spoiler-link,
+.has-spoiler-link {
+    background-color: #f8dee8b0 !important;
+    border-bottom: 2px solid #e07f9d79 !important;
+    padding: 2px 4px !important;
+    border-radius: 4px !important;
+    color: rgb(40, 32, 43) !important;
+    font-weight: 500 !important;
+    display: inline !important;
+}

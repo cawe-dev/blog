@@ -19,6 +19,7 @@ trait SyncsPostReferences
 
             if (empty($contentBody)) {
                 $contentPost->references()->detach();
+
                 continue;
             }
 

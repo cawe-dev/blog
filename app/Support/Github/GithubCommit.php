@@ -15,15 +15,14 @@ class GithubCommit implements Arrayable, JsonSerializable
         public string $url,
     ) {}
 
-
     public function toArray(): array
     {
         return [
-            'sha'     => $this->sha,
+            'sha' => $this->sha,
             'message' => $this->message,
-            'author'  => $this->author,
-            'date'    => $this->date,
-            'url'     => $this->url,
+            'author' => $this->author,
+            'date' => $this->date,
+            'url' => $this->url,
         ];
     }
 

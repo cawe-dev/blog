@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { IPost } from '@/types/models/post'
 import { computed } from 'vue';
+import type { IPost } from '@/types/models/post';
 
 const props = defineProps<{
-    subTopics: IPost["sub_topics"],
-}>()
+    subTopics: IPost['sub_topics'];
+}>();
 
 const formattedSubTopics = computed(() => {
-    return props.subTopics?.map(topic => {
-        return topic.charAt(0).toUpperCase() + topic.replace(/-/g, " ").slice(1);
-    })
+    return props.subTopics?.map((topic) => {
+        return topic.charAt(0).toUpperCase() + topic.replace(/-/g, ' ').slice(1);
+    });
 });
 </script>
 
@@ -24,8 +24,10 @@ const formattedSubTopics = computed(() => {
         <nav>
             <ul class="space-y-1.5 text-sm">
                 <li v-for="(topic, index) in formattedSubTopics" :key="index">
-                    <a :href="`#${topic}`"
-                        class="block px-2.5 py-1.5 text-muted hover:text-default hover:bg-accented transition-colors duration-150 border-l-2 border-transparent hover:border-primary">
+                    <a
+                        :href="`#${topic}`"
+                        class="block border-l-2 border-transparent px-2.5 py-1.5 text-muted transition-colors duration-150 hover:border-primary hover:bg-accented hover:text-default"
+                    >
                         {{ topic }}
                     </a>
                 </li>

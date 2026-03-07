@@ -5,12 +5,12 @@ const HasSpoilerLink = Mark.create({
 
     addAttributes() {
         return {
-            'spoiler': {
+            spoiler: {
                 default: null,
-                parseHTML: element => element.getAttribute('spoiler'),
-                renderHTML: attributes => {
+                parseHTML: (element) => element.getAttribute('spoiler'),
+                renderHTML: (attributes) => {
                     if (!attributes['spoiler']) return {};
-                    return { 'spoiler': attributes['spoiler'] };
+                    return { spoiler: attributes['spoiler'] };
                 },
             },
         };
@@ -26,12 +26,16 @@ const HasSpoilerLink = Mark.create({
 
     addCommands() {
         return {
-            setHasSpoilerLink: (attributes) => ({ commands }) => {
-                return commands.setMark(this.name, attributes);
-            },
-            unsetHasSpoilerLink: () => ({ commands }) => {
-                return commands.unsetMark(this.name);
-            },
+            setHasSpoilerLink:
+                (attributes) =>
+                ({ commands }) => {
+                    return commands.setMark(this.name, attributes);
+                },
+            unsetHasSpoilerLink:
+                () =>
+                ({ commands }) => {
+                    return commands.unsetMark(this.name);
+                },
         };
     },
 });

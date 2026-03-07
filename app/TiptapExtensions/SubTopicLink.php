@@ -8,7 +8,6 @@ use Tiptap\Utils\HTML;
 
 class SubTopicLink extends Mark
 {
-
     public static $name = 'subTopicLink';
 
     public function addOptions()
@@ -23,7 +22,7 @@ class SubTopicLink extends Mark
         return [
             [
                 'tag' => 'h2[data-subTopic]',
-            ]
+            ],
         ];
     }
 
@@ -32,8 +31,8 @@ class SubTopicLink extends Mark
         return [
             ...parent::addAttributes(),
             'subTopicId' => [
-                'parseHTML' => fn(DOMElement $DOMNode) => $DOMNode->getAttribute('id'),
-                'renderHTML' => fn($attributes) => ['id' => $attributes->subTopicId ?? null],
+                'parseHTML' => fn (DOMElement $DOMNode) => $DOMNode->getAttribute('id'),
+                'renderHTML' => fn ($attributes) => ['id' => $attributes->subTopicId ?? null],
             ],
         ];
     }

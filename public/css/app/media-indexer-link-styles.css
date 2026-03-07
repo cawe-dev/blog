@@ -1,0 +1,11 @@
+.tiptap .media-indexer-link,
+.fi-prose .media-indexer-link,
+.media-indexer-link {
+    background-color: #e6fec7 !important;
+    border-bottom: 2px solid #88f50b !important;
+    padding: 2px 4px !important;
+    border-radius: 4px !important;
+    color: #922d0e !important;
+    font-weight: 500 !important;
+    display: inline !important;
+}

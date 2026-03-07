@@ -5,13 +5,12 @@ namespace App\Filament\Plugins;
 use App\Models\Reference;
 use App\TiptapExtensions\ReferenceLink;
 use Filament\Actions\Action;
-use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\RichEditor\EditorCommand;
 use Filament\Forms\Components\RichEditor\Plugins\Contracts\RichContentPlugin;
 use Filament\Forms\Components\RichEditor\RichEditorTool;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Utilities\Get;
@@ -29,7 +28,7 @@ class ReferenceRichContentPlugin implements RichContentPlugin
     public function getTipTapPhpExtensions(): array
     {
         return [
-            app(ReferenceLink::class)
+            app(ReferenceLink::class),
         ];
     }
 
@@ -57,7 +56,7 @@ class ReferenceRichContentPlugin implements RichContentPlugin
         return [
             Action::make('reference-link')
                 ->modalWidth(Width::Large)
-                ->fillForm(fn(array $arguments): array => [
+                ->fillForm(fn (array $arguments): array => [
                     'term' => $arguments['term'] ?? null,
                 ])
                 ->schema([
@@ -67,29 +66,29 @@ class ReferenceRichContentPlugin implements RichContentPlugin
                         ->default(false)
                         ->required(),
                     Select::make('reference_id')
-                        ->hidden(fn(Get $get): bool => $get('is_new'))
-                        ->options(fn() => Reference::pluck('title', 'id'))
+                        ->hidden(fn (Get $get): bool => $get('is_new'))
+                        ->options(fn () => Reference::pluck('title', 'id'))
                         ->searchable()
                         ->preload()
                         ->required(),
                     Select::make('parent_id')
                         ->label('Parente')
-                        ->options(fn() => Reference::pluck('title', 'id'))
+                        ->options(fn () => Reference::pluck('title', 'id'))
                         ->searchable()
                         ->preload()
-                        ->hidden(fn(Get $get): bool => !$get('is_new')),
+                        ->hidden(fn (Get $get): bool => ! $get('is_new')),
                     TextInput::make('title')
                         ->required()
-                        ->hidden(fn(Get $get): bool => !$get('is_new')),
+                        ->hidden(fn (Get $get): bool => ! $get('is_new')),
                     TextInput::make('url')
                         ->url()
-                        ->hidden(fn(Get $get): bool => !$get('is_new')),
+                        ->hidden(fn (Get $get): bool => ! $get('is_new')),
                     Textarea::make('description')
                         ->required()
-                        ->hidden(fn(Get $get): bool => !$get('is_new')),
+                        ->hidden(fn (Get $get): bool => ! $get('is_new')),
                     TextInput::make('media_url')
                         ->url()
-                        ->hidden(fn(Get $get): bool => !$get('is_new')),
+                        ->hidden(fn (Get $get): bool => ! $get('is_new')),
                     TextInput::make('context'),
                     TextInput::make('term')
                         ->readOnly()
@@ -119,7 +118,7 @@ class ReferenceRichContentPlugin implements RichContentPlugin
                                         'referenceId' => (string) $referenceId,
                                         'term' => (string) ($data['term'] ?? ''),
                                         'context' => (string) ($data['context'] ?? ''),
-                                    ]
+                                    ],
                                 ],
                             ),
                             EditorCommand::make('focus', ['end']),
@@ -127,7 +126,7 @@ class ReferenceRichContentPlugin implements RichContentPlugin
                         ],
                         editorSelection: $arguments['editorSelection'],
                     );
-                })
+                }),
         ];
     }
 }

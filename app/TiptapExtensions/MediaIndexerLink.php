@@ -8,7 +8,6 @@ use Tiptap\Utils\HTML;
 
 class MediaIndexerLink extends Mark
 {
-
     public static $name = 'mediaIndexerLink';
 
     public function addOptions()
@@ -35,12 +34,12 @@ class MediaIndexerLink extends Mark
         return [
             ...parent::addAttributes(),
             'type' => [
-                'parseHTML' => fn(DOMElement $DOMNode) => $DOMNode->getAttribute('data-type'),
-                'renderHTML' => fn($attributes) => ['data-type' => $attributes->type ?? null],
+                'parseHTML' => fn (DOMElement $DOMNode) => $DOMNode->getAttribute('data-type'),
+                'renderHTML' => fn ($attributes) => ['data-type' => $attributes->type ?? null],
             ],
             'url' => [
-                'parseHTML' => fn(DOMElement $DOMNode) => $DOMNode->getAttribute('src'),
-                'renderHTML' => fn($attributes) => ['src' => $attributes->url ?? null],
+                'parseHTML' => fn (DOMElement $DOMNode) => $DOMNode->getAttribute('src'),
+                'renderHTML' => fn ($attributes) => ['src' => $attributes->url ?? null],
             ],
         ];
     }

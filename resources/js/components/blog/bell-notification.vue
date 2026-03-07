@@ -1,41 +1,40 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { IChangelogItem } from '@/types/models/changeLog'
-import { getChangelogIcon, getChangelogIconColor } from '@/utils/changelog'
+import { computed } from 'vue';
+import type { IChangelogItem } from '@/types/models/changeLog';
+import { getChangelogIcon, getChangelogIconColor } from '@/utils/changelog';
 
 const props = defineProps<{
-    items: IChangelogItem[]
-}>()
+    items: IChangelogItem[];
+}>();
 
 const groupedItems = computed(() => {
-    const groups: { [version: string]: IChangelogItem[] } = {}
+    const groups: { [version: string]: IChangelogItem[] } = {};
 
     for (const item of props.items) {
-        if (!groups[item.version])
-            groups[item.version] = []
-        groups[item.version].push(item)
+        if (!groups[item.version]) groups[item.version] = [];
+        groups[item.version].push(item);
     }
 
-    const groupsKeys = Object.keys(groups)
+    const groupsKeys = Object.keys(groups);
 
-    const result: any[] = []
+    const result: any[] = [];
     for (const version of groupsKeys) {
         result.push({
             label: `Versão ${version}`,
             version,
             slot: 'version-header',
             disabled: true,
-        })
+        });
 
-        const logs = groups[version].map(log => ({
+        const logs = groups[version].map((log) => ({
             ...log,
             slot: 'changelog-item',
-        }))
-        result.push(...logs)
+        }));
+        result.push(...logs);
     }
 
-    return result
-})
+    return result;
+});
 </script>
 
 <template>
@@ -43,7 +42,8 @@ const groupedItems = computed(() => {
         <UButton variant="ghost" size="sm" class="relative cursor-pointer" square>
             <UIcon name="i-lucide-bell" class="h-4 w-4" />
             <span
-                class="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-inverted">
+                class="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-inverted"
+            >
                 {{ items.length }}
             </span>
             <span class="sr-only">Novidades</span>
@@ -51,15 +51,16 @@ const groupedItems = computed(() => {
 
         <template #version-header="{ item }">
             <div class="py-1">
-                <p>Versão <span class="font-bold">{{ item.version }}</span></p>
+                <p>
+                    Versão <span class="font-bold">{{ item.version }}</span>
+                </p>
             </div>
         </template>
 
         <template #changelog-item="{ item }">
             <div class="flex flex-col items-start gap-1 py-1">
                 <div class="flex items-center gap-2">
-                    <UIcon :name="getChangelogIcon(item.type)"
-                        :class="['h-3.5 w-3.5', getChangelogIconColor(item.type)]" />
+                    <UIcon :name="getChangelogIcon(item.type)" :class="['h-3.5 w-3.5', getChangelogIconColor(item.type)]" />
                     <span class="text-sm font-medium text-default">{{ item.title }}</span>
                 </div>
                 <span class="text-xs text-muted">{{ item.formattedDate }}</span>

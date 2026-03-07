@@ -1,0 +1,8 @@
+.tiptap .reference-link,
+.fi-prose .reference-link,
+.reference-link {
+    background-color: #87d4d6 !important;
+    border-bottom: 2px solid #b7bd68 !important;
+    color: #9be8eb !important;
+    display: inline !important;
+}

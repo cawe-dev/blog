@@ -8,7 +8,6 @@ use Tiptap\Utils\HTML;
 
 class HasSpoilerLink extends Mark
 {
-
     public static $name = 'hasSpoilerLink';
 
     public function addOptions()
@@ -23,7 +22,7 @@ class HasSpoilerLink extends Mark
         return [
             [
                 'tag' => 'span[data-has-spoiler]',
-            ]
+            ],
         ];
     }
 
@@ -32,9 +31,9 @@ class HasSpoilerLink extends Mark
         return [
             ...parent::addAttributes(),
             'spoiler' => [
-                'parseHTML' => fn(DOMElement $DOMNode) => $DOMNode->getAttribute('data-has-spoiler'),
-                'renderHTML' => fn($attributes) => ['data-has-spoiler' => $attributes->spoiler ?? null],
-            ]
+                'parseHTML' => fn (DOMElement $DOMNode) => $DOMNode->getAttribute('data-has-spoiler'),
+                'renderHTML' => fn ($attributes) => ['data-has-spoiler' => $attributes->spoiler ?? null],
+            ],
         ];
     }
 

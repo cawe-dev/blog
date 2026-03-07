@@ -14,15 +14,14 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
 class PostForm
 {
-
     use ExtractPlainTextFromRichEditor;
 
     public static function configure(Schema $schema): Schema
@@ -31,7 +30,7 @@ class PostForm
             ->components([
                 TextInput::make('title')
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))
+                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
                     ->required(),
                 TextInput::make('slug')
                     ->copyable(copyMessage: 'Copied!', copyMessageDuration: 1500)
@@ -47,7 +46,7 @@ class PostForm
                     ->createOptionForm([
                         TextInput::make('name')
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
                             ->required(),
                         TextInput::make('slug')
                             ->copyable(copyMessage: 'Copied!', copyMessageDuration: 1500)
@@ -67,7 +66,7 @@ class PostForm
                     ->createOptionForm([
                         TextInput::make('name')
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
                             ->required(),
                         TextInput::make('slug')
                             ->copyable(copyMessage: 'Copied!', copyMessageDuration: 1500)
@@ -87,7 +86,7 @@ class PostForm
                     ->relationship('contents')
                     ->schema([
                         RichEditor::make('body')
-                            ->formatStateUsing(fn($state) => $state instanceof Content ? $state->toArray() : $state)
+                            ->formatStateUsing(fn ($state) => $state instanceof Content ? $state->toArray() : $state)
                             ->json()
                             ->live(onBlur: true)
                             ->plugins([
@@ -101,20 +100,20 @@ class PostForm
                                 ['h2', 'h3', 'alignStart', 'alignCenter', 'alignEnd'],
                                 ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
                                 ['table', 'attachFiles', 'undo', 'redo'],
-                                ['reference-link', 'media-indexer-link', 'has-spoiler-link', 'sub-topic-link']
+                                ['reference-link', 'media-indexer-link', 'has-spoiler-link', 'sub-topic-link'],
                             ])
-                            ->afterStateUpdated(fn(Set $set, array | string $state) => $set('../../excerpt', Str::limit(self::extractPlainText($state), 200)))
+                            ->afterStateUpdated(fn (Set $set, array|string $state) => $set('../../excerpt', Str::limit(self::extractPlainText($state), 200)))
                             ->columnSpanFull()
                             ->required(),
                         Select::make('view_mode')
                             ->options(ContentPostViewMode::class)
                             ->default(ContentPostViewMode::CONCEPT)
-                            ->required()
+                            ->required(),
                     ])
                     ->columnSpanFull(),
                 Textarea::make('excerpt')
                     ->required()
-                    ->columnSpanFull()
+                    ->columnSpanFull(),
             ]);
     }
 }
